@@ -1,0 +1,182 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ImageUploader } from "@/components/ImageUploader";
+import { Sparkles, Clock, Trash2, PlayCircle } from "lucide-react";
+import type { ProcessImageResponse } from "@/lib/types";
+import {
+  listSessions,
+  deleteSession,
+  setCurrentSessionId,
+  type SessionSummary,
+} from "@/lib/session-storage";
+
+export default function HomePage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [savedSessions, setSavedSessions] = useState<SessionSummary[]>([]);
+
+  // Load saved sessions on mount
+  useEffect(() => {
+    setSavedSessions(listSessions());
+  }, []);
+
+  const handleImageSelect = async (file: File) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch("/api/process-image", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data: ProcessImageResponse = await response.json();
+
+      if (!data.success || !data.data) {
+        throw new Error(data.error || "Failed to process image");
+      }
+
+      // Store session data in sessionStorage for practice page to pick up
+      sessionStorage.setItem("mathclicks-session", JSON.stringify(data.data));
+
+      // Navigate to practice page
+      router.push("/practice");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+      setIsLoading(false);
+    }
+  };
+
+  const handleResumeSession = (sessionId: string) => {
+    setCurrentSessionId(sessionId);
+    router.push("/practice");
+  };
+
+  const handleDeleteSession = (sessionId: string) => {
+    deleteSession(sessionId);
+    setSavedSessions(listSessions());
+  };
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString();
+  };
+
+  return (
+    <main className="min-h-screen p-6 md:p-12">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-indigo-100 px-4 py-2 rounded-full mb-4">
+            <Sparkles className="w-5 h-5 text-[var(--primary)]" />
+            <span className="text-[var(--primary)] font-semibold">Math Practice</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+            MathClicks
+          </h1>
+          <p className="text-xl text-gray-600">
+            Take a photo of your math lesson and practice with personalized problems!
+          </p>
+        </div>
+
+        {/* Error Display */}
+        {error && (
+          <div className="mb-6 p-4 bg-[var(--error-light)] border border-[var(--error)] rounded-xl text-[var(--error)]">
+            {error}
+          </div>
+        )}
+
+        {/* Image Uploader */}
+        <ImageUploader onImageSelect={handleImageSelect} isLoading={isLoading} />
+
+        {/* Saved Sessions */}
+        {savedSessions.length > 0 && (
+          <div className="mt-10">
+            <h2 className="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
+              <Clock className="w-5 h-5" />
+              Continue Practice
+            </h2>
+            <div className="space-y-3">
+              {savedSessions.slice(0, 5).map((session) => (
+                <div
+                  key={session.id}
+                  className="card p-4 flex items-center justify-between hover:shadow-md transition-shadow"
+                >
+                  <div className="flex-1">
+                    <h3 className="font-medium text-gray-800">{session.topic}</h3>
+                    <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
+                      <span>
+                        {session.progress.correct}/{session.progress.total} correct
+                      </span>
+                      <span>
+                        Problem {session.progress.current} of {session.progress.total}
+                      </span>
+                      <span>{formatDate(session.updatedAt)}</span>
+                      {session.isComplete && (
+                        <span className="text-green-600 font-medium">Completed</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleResumeSession(session.id)}
+                      className="btn-primary px-4 py-2 flex items-center gap-2"
+                    >
+                      <PlayCircle className="w-4 h-4" />
+                      {session.isComplete ? "Review" : "Resume"}
+                    </button>
+                    <button
+                      onClick={() => handleDeleteSession(session.id)}
+                      className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Delete session"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Instructions */}
+        <div className="mt-12 text-center">
+          <h2 className="text-lg font-semibold text-gray-700 mb-4">How it works:</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="card p-6">
+              <div className="text-3xl mb-3">📸</div>
+              <h3 className="font-semibold mb-2">1. Capture</h3>
+              <p className="text-gray-600 text-sm">Take a photo of your whiteboard or math notes</p>
+            </div>
+            <div className="card p-6">
+              <div className="text-3xl mb-3">🤖</div>
+              <h3 className="font-semibold mb-2">2. Generate</h3>
+              <p className="text-gray-600 text-sm">AI creates practice problems based on your lesson</p>
+            </div>
+            <div className="card p-6">
+              <div className="text-3xl mb-3">✨</div>
+              <h3 className="font-semibold mb-2">3. Practice</h3>
+              <p className="text-gray-600 text-sm">Solve problems and get instant feedback with hints</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
