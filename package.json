@@ -5,14 +5,19 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
+    "start": "ts-node src/server.ts",
+    "dev": "ts-node src/server.ts",
     "test:pipeline": "ts-node src/test-pipeline.ts",
-    "start": "ts-node src/index.ts"
+    "test:validation": "ts-node src/test-validation.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.0.0",
     "@types/node": "^25.0.0",
     "@types/uuid": "^10.0.0",
     "canvas": "^3.2.0",
@@ -21,7 +26,10 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "multer": "^2.0.2",
     "uuid": "^13.0.0",
     "zod": "^4.1.13"
   }
