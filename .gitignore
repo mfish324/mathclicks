@@ -18,6 +18,7 @@ Thumbs.db
 
 # Test artifacts
 test-results/
+coverage/
 
 # Debug logs
 *.log

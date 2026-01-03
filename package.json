@@ -7,8 +7,10 @@
     "build": "tsc",
     "start": "ts-node src/server.ts",
     "dev": "ts-node src/server.ts",
-    "test:pipeline": "ts-node src/test-pipeline.ts",
-    "test:validation": "ts-node src/test-validation.ts"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:pipeline": "ts-node src/test-pipeline.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,10 +21,14 @@
     "@types/express": "^5.0.6",
     "@types/multer": "^2.0.0",
     "@types/node": "^25.0.0",
+    "@types/supertest": "^6.0.3",
     "@types/uuid": "^10.0.0",
+    "@vitest/coverage-v8": "^4.0.16",
     "canvas": "^3.2.0",
+    "supertest": "^7.1.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
