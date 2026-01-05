@@ -3,7 +3,7 @@
  * Persists practice sessions to localStorage with automatic expiration
  */
 
-import type { Problem, ImageExtractionResult, ProblemSet } from "./types";
+import type { Problem, ImageExtractionResult, ProblemSet, ProblemAttempt } from "./types";
 
 // Session data structure for storage
 export interface StoredSession {
@@ -16,6 +16,8 @@ export interface StoredSession {
   currentIndex: number;
   attempts: Record<string, number>;
   results: Record<string, boolean>;
+  // Canvas work and attempt history per problem
+  problemAttempts?: Record<string, ProblemAttempt[]>;
 }
 
 // Summary for listing sessions
@@ -131,7 +133,7 @@ export function createSession(
  */
 export function updateSession(
   sessionId: string,
-  updates: Partial<Pick<StoredSession, "currentIndex" | "attempts" | "results">>
+  updates: Partial<Pick<StoredSession, "currentIndex" | "attempts" | "results" | "problemAttempts">>
 ): StoredSession | null {
   const sessions = getAllSessions();
   const session = sessions[sessionId];
@@ -248,4 +250,52 @@ export function hasSavedSessions(): boolean {
  */
 export function getIncompleteSessions(): SessionSummary[] {
   return listSessions().filter((s) => !s.isComplete);
+}
+
+/**
+ * Save a problem attempt (includes canvas work)
+ */
+export function saveProblemAttempt(
+  sessionId: string,
+  problemId: string,
+  attempt: ProblemAttempt
+): void {
+  const session = getSession(sessionId);
+  if (!session) return;
+
+  const problemAttempts = session.problemAttempts || {};
+  const attempts = problemAttempts[problemId] || [];
+  attempts.push(attempt);
+  problemAttempts[problemId] = attempts;
+
+  updateSession(sessionId, { problemAttempts });
+}
+
+/**
+ * Get attempts for a specific problem
+ */
+export function getProblemAttempts(
+  sessionId: string,
+  problemId: string
+): ProblemAttempt[] {
+  const session = getSession(sessionId);
+  if (!session || !session.problemAttempts) return [];
+  return session.problemAttempts[problemId] || [];
+}
+
+/**
+ * Get the latest canvas image for a problem
+ */
+export function getLatestCanvasImage(
+  sessionId: string,
+  problemId: string
+): string | null {
+  const attempts = getProblemAttempts(sessionId, problemId);
+  for (let i = attempts.length - 1; i >= 0; i--) {
+    const canvasImage = attempts[i].canvasImage;
+    if (canvasImage) {
+      return canvasImage;
+    }
+  }
+  return null;
 }

@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 // Backend URL - when set, proxies to backend server; otherwise uses CLI bridge
 const BACKEND_URL = process.env.BACKEND_URL;
 
+// Extend timeout for long-running AI operations (image extraction + problem generation)
+export const maxDuration = 300; // 5 minutes
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
@@ -28,6 +31,9 @@ export async function POST(request: NextRequest) {
     if (BACKEND_URL) {
       const backendFormData = new FormData();
       backendFormData.append("image", file);
+      // Only generate Tier 1 initially (3 problems) for fast startup
+      // Students can start immediately while more problems load
+      backendFormData.append("tier", "1");
       backendFormData.append("count", "3");
 
       const response = await fetch(`${BACKEND_URL}/api/process-image`, {

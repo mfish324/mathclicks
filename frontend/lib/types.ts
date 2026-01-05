@@ -80,6 +80,7 @@ export interface CheckAnswerRequest {
   problem: Problem;
   studentAnswer: string;
   attemptNumber: number;
+  canvasImage?: string;  // Base64 PNG of student's work (optional)
 }
 
 export interface CheckAnswerResponse {
@@ -90,6 +91,23 @@ export interface CheckAnswerResponse {
   hint_text?: string;
 }
 
+// Problem attempt tracking (includes canvas work)
+export interface ProblemAttempt {
+  problemId: string;
+  attemptNumber: number;
+  answer?: string;
+  canvasImage?: string;  // Base64 PNG of student's work
+  canvasUsed: boolean;
+  timestamp: string;
+  correct?: boolean;
+  feedback?: string;
+  // Socratic dialogue (for Phase 2)
+  aiQuestion?: string;
+  studentResponse?: string;
+  voiceRecording?: string;  // Base64 audio (for Phase 3)
+  voiceTranscript?: string;
+}
+
 // Session state
 export interface PracticeSession {
   extraction: ImageExtractionResult;
@@ -97,4 +115,6 @@ export interface PracticeSession {
   currentIndex: number;
   attempts: Record<string, number>;
   results: Record<string, boolean>;
+  // Canvas work stored per problem
+  problemAttempts?: Record<string, ProblemAttempt[]>;
 }

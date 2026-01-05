@@ -10,6 +10,19 @@ import path from 'path';
 import fs from 'fs';
 import { createPipeline, MathClicksPipeline } from './index';
 import { Problem, GenerationOptions } from './types';
+import { analyzeStudentWork, evaluateStudentResponse } from './lib/socratic-dialogue';
+import {
+  generateClassCode,
+  getOrCreateClass,
+  updateStudentSession,
+  getClassStudents,
+  getClassSummary,
+  getStudentSession,
+  addAchievement,
+  classExists,
+  type StudentSession,
+} from './lib/class-store';
+import Anthropic from '@anthropic-ai/sdk';
 
 // Load environment variables
 import 'dotenv/config';
@@ -17,8 +30,9 @@ import 'dotenv/config';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Initialize pipeline
+// Initialize pipeline and Anthropic client
 let pipeline: MathClicksPipeline | null = null;
+let anthropicClient: Anthropic | null = null;
 
 function getPipeline(): MathClicksPipeline {
   if (!pipeline) {
@@ -29,6 +43,17 @@ function getPipeline(): MathClicksPipeline {
     pipeline = createPipeline(apiKey, process.env.NODE_ENV === 'development');
   }
   return pipeline;
+}
+
+function getAnthropicClient(): Anthropic {
+  if (!anthropicClient) {
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) {
+      throw new Error('ANTHROPIC_API_KEY environment variable is not set');
+    }
+    anthropicClient = new Anthropic({ apiKey });
+  }
+  return anthropicClient;
 }
 
 // Configure multer for file uploads
@@ -206,6 +231,201 @@ app.post('/api/generate-problems', async (req: Request, res: Response) => {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to generate problems',
     });
+  }
+});
+
+// Analyze student work (Socratic questioning)
+app.post('/api/analyze-work', async (req: Request, res: Response) => {
+  try {
+    const { problem, canvasImage, previousQuestions } = req.body;
+
+    if (!problem || !canvasImage) {
+      res.status(400).json({
+        success: false,
+        error: 'Missing required fields: problem, canvasImage',
+      });
+      return;
+    }
+
+    const result = await analyzeStudentWork(getAnthropicClient(), {
+      problem: problem as Problem,
+      canvasImage,
+      previousQuestions,
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error analyzing work:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to analyze work',
+    });
+  }
+});
+
+// Evaluate student response to Socratic question
+app.post('/api/evaluate-response', async (req: Request, res: Response) => {
+  try {
+    const { problem, canvasImage, aiQuestion, studentResponse } = req.body;
+
+    if (!problem || !canvasImage || !aiQuestion || !studentResponse) {
+      res.status(400).json({
+        success: false,
+        error: 'Missing required fields: problem, canvasImage, aiQuestion, studentResponse',
+      });
+      return;
+    }
+
+    const result = await evaluateStudentResponse(getAnthropicClient(), {
+      problem: problem as Problem,
+      canvasImage,
+      aiQuestion,
+      studentResponse,
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error evaluating response:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to evaluate response',
+    });
+  }
+});
+
+// ============ Teacher Dashboard API ============
+
+// Create a new class code
+app.post('/api/class/create', (req: Request, res: Response) => {
+  const classCode = generateClassCode();
+  getOrCreateClass(classCode); // Initialize the class
+  res.json({ success: true, classCode });
+});
+
+// Join a class (student updates their session)
+app.post('/api/class/join', (req: Request, res: Response) => {
+  try {
+    const { classCode, session } = req.body;
+
+    if (!classCode || !session) {
+      res.status(400).json({ success: false, error: 'Missing classCode or session' });
+      return;
+    }
+
+    // Validate class code format
+    if (!/^[A-Z0-9]{6}$/.test(classCode)) {
+      res.status(400).json({ success: false, error: 'Invalid class code format' });
+      return;
+    }
+
+    // Create class if it doesn't exist (teacher may not have created it yet)
+    getOrCreateClass(classCode);
+
+    updateStudentSession(classCode, session as StudentSession);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error joining class:', error);
+    res.status(500).json({ success: false, error: 'Failed to join class' });
+  }
+});
+
+// Update student session (periodic updates)
+app.post('/api/class/update', (req: Request, res: Response) => {
+  try {
+    const { classCode, session } = req.body;
+
+    if (!classCode || !session) {
+      res.status(400).json({ success: false, error: 'Missing classCode or session' });
+      return;
+    }
+
+    if (!classExists(classCode)) {
+      res.status(404).json({ success: false, error: 'Class not found' });
+      return;
+    }
+
+    updateStudentSession(classCode, session as StudentSession);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error updating session:', error);
+    res.status(500).json({ success: false, error: 'Failed to update session' });
+  }
+});
+
+// Report achievement to class
+app.post('/api/class/achievement', (req: Request, res: Response) => {
+  try {
+    const { classCode, studentName, achievementName, achievementIcon } = req.body;
+
+    if (!classCode || !studentName || !achievementName) {
+      res.status(400).json({ success: false, error: 'Missing required fields' });
+      return;
+    }
+
+    addAchievement(classCode, studentName, achievementName, achievementIcon || '🏆');
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error reporting achievement:', error);
+    res.status(500).json({ success: false, error: 'Failed to report achievement' });
+  }
+});
+
+// Get class summary (for teacher dashboard)
+app.get('/api/class/:classCode/summary', (req: Request, res: Response) => {
+  try {
+    const { classCode } = req.params;
+
+    if (!classExists(classCode)) {
+      // Return empty summary for new classes
+      res.json({
+        success: true,
+        data: {
+          classCode,
+          activeStudents: 0,
+          totalStudents: 0,
+          studentsNeedingHelp: 0,
+          recentAchievements: [],
+        },
+      });
+      return;
+    }
+
+    const summary = getClassSummary(classCode);
+    res.json({ success: true, data: summary });
+  } catch (error) {
+    console.error('Error getting class summary:', error);
+    res.status(500).json({ success: false, error: 'Failed to get class summary' });
+  }
+});
+
+// Get all students in a class (for teacher dashboard)
+app.get('/api/class/:classCode/students', (req: Request, res: Response) => {
+  try {
+    const { classCode } = req.params;
+
+    const students = getClassStudents(classCode);
+    res.json({ success: true, data: students });
+  } catch (error) {
+    console.error('Error getting students:', error);
+    res.status(500).json({ success: false, error: 'Failed to get students' });
+  }
+});
+
+// Get specific student details (for teacher drill-down)
+app.get('/api/class/:classCode/student/:studentId', (req: Request, res: Response) => {
+  try {
+    const { classCode, studentId } = req.params;
+
+    const student = getStudentSession(classCode, studentId);
+    if (!student) {
+      res.status(404).json({ success: false, error: 'Student not found' });
+      return;
+    }
+
+    res.json({ success: true, data: student });
+  } catch (error) {
+    console.error('Error getting student:', error);
+    res.status(500).json({ success: false, error: 'Failed to get student' });
   }
 });
 

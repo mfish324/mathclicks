@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ImageUploader } from "@/components/ImageUploader";
-import { Sparkles, Clock, Trash2, PlayCircle } from "lucide-react";
+import { Sparkles, Clock, Trash2, PlayCircle, GraduationCap, Loader2, Users } from "lucide-react";
 import type { ProcessImageResponse } from "@/lib/types";
 import {
   listSessions,
@@ -17,6 +17,7 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [savedSessions, setSavedSessions] = useState<SessionSummary[]>([]);
+  const [isCreatingClass, setIsCreatingClass] = useState(false);
 
   // Load saved sessions on mount
   useEffect(() => {
@@ -61,6 +62,26 @@ export default function HomePage() {
   const handleDeleteSession = (sessionId: string) => {
     deleteSession(sessionId);
     setSavedSessions(listSessions());
+  };
+
+  const handleCreateClass = async () => {
+    setIsCreatingClass(true);
+    try {
+      const response = await fetch("/api/class/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      if (data.success && data.classCode) {
+        router.push(`/teacher/${data.classCode}`);
+      } else {
+        setError("Failed to create class");
+      }
+    } catch (err) {
+      setError("Failed to create class");
+    } finally {
+      setIsCreatingClass(false);
+    }
   };
 
   const formatDate = (dateStr: string) => {
@@ -174,6 +195,38 @@ export default function HomePage() {
               <h3 className="font-semibold mb-2">3. Practice</h3>
               <p className="text-gray-600 text-sm">Solve problems and get instant feedback with hints</p>
             </div>
+          </div>
+        </div>
+
+        {/* Teacher Section */}
+        <div className="mt-12 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-100">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                <GraduationCap className="w-6 h-6 text-indigo-600" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-800">For Teachers</h2>
+                <p className="text-gray-600 text-sm">Create a class to monitor student progress in real-time</p>
+              </div>
+            </div>
+            <button
+              onClick={handleCreateClass}
+              disabled={isCreatingClass}
+              className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white rounded-xl font-medium transition-colors flex items-center gap-2"
+            >
+              {isCreatingClass ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                <>
+                  <Users className="w-5 h-5" />
+                  Create Class
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>

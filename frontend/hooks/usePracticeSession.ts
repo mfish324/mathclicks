@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import type { Problem, ImageExtractionResult, ProblemSet, CheckAnswerResponse } from "@/lib/types";
+import type { Problem, ImageExtractionResult, ProblemSet, CheckAnswerResponse, ProblemAttempt } from "@/lib/types";
 import {
   createSession,
   updateSession,
@@ -10,6 +10,7 @@ import {
   setCurrentSessionId,
   clearCurrentSessionId,
   getSession,
+  saveProblemAttempt,
   type StoredSession,
 } from "@/lib/session-storage";
 
@@ -24,6 +25,7 @@ interface PracticeSessionState {
   error: string | null;
   lastFeedback: CheckAnswerResponse | null;
   isRestored: boolean;
+  isInitialized: boolean;
 }
 
 const initialState: PracticeSessionState = {
@@ -37,6 +39,7 @@ const initialState: PracticeSessionState = {
   error: null,
   lastFeedback: null,
   isRestored: false,
+  isInitialized: false,
 };
 
 export function usePracticeSession() {
@@ -61,7 +64,11 @@ export function usePracticeSession() {
         error: null,
         lastFeedback: null,
         isRestored: true,
+        isInitialized: true,
       });
+    } else {
+      // No session found, but we've finished checking
+      setState(prev => ({ ...prev, isInitialized: true }));
     }
   }, []);
 
@@ -108,6 +115,7 @@ export function usePracticeSession() {
       error: null,
       lastFeedback: null,
       isRestored: true,
+      isInitialized: true,
     });
 
     return true;
@@ -119,11 +127,27 @@ export function usePracticeSession() {
     setState(initialState);
   }, []);
 
+  // Add more problems to the current session (for progressive loading)
+  const addProblems = useCallback((newProblems: Problem[]) => {
+    setState(prev => {
+      // Filter out any duplicates by ID
+      const existingIds = new Set(prev.problems.map(p => p.id));
+      const uniqueNewProblems = newProblems.filter(p => !existingIds.has(p.id));
+
+      if (uniqueNewProblems.length === 0) return prev;
+
+      return {
+        ...prev,
+        problems: [...prev.problems, ...uniqueNewProblems],
+      };
+    });
+  }, []);
+
   const getCurrentProblem = useCallback((): Problem | null => {
     return state.problems[state.currentIndex] || null;
   }, [state.problems, state.currentIndex]);
 
-  const submitAnswer = useCallback(async (answer: string) => {
+  const submitAnswer = useCallback(async (answer: string, canvasImage?: string) => {
     const problem = state.problems[state.currentIndex];
     if (!problem) return;
 
@@ -139,10 +163,25 @@ export function usePracticeSession() {
       const response = await fetch("/api/check-answer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ problem, studentAnswer: answer, attemptNumber }),
+        body: JSON.stringify({ problem, studentAnswer: answer, attemptNumber, canvasImage }),
       });
 
       const data: CheckAnswerResponse = await response.json();
+
+      // Save the attempt with canvas work
+      if (state.sessionId) {
+        const attempt: ProblemAttempt = {
+          problemId: problem.id,
+          attemptNumber,
+          answer,
+          canvasImage,
+          canvasUsed: !!canvasImage,
+          timestamp: new Date().toISOString(),
+          correct: data.correct,
+          feedback: data.feedback,
+        };
+        saveProblemAttempt(state.sessionId, problem.id, attempt);
+      }
 
       setState(prev => ({
         ...prev,
@@ -160,7 +199,7 @@ export function usePracticeSession() {
       }));
       return null;
     }
-  }, [state.problems, state.currentIndex, state.attempts]);
+  }, [state.problems, state.currentIndex, state.attempts, state.sessionId]);
 
   const nextProblem = useCallback(() => {
     setState(prev => ({
@@ -168,6 +207,22 @@ export function usePracticeSession() {
       currentIndex: Math.min(prev.currentIndex + 1, prev.problems.length - 1),
       lastFeedback: null,
     }));
+  }, []);
+
+  // Skip current problem without marking it correct (for problems that are too hard)
+  const skipProblem = useCallback(() => {
+    setState(prev => {
+      const problem = prev.problems[prev.currentIndex];
+      if (!problem) return prev;
+
+      return {
+        ...prev,
+        currentIndex: Math.min(prev.currentIndex + 1, prev.problems.length - 1),
+        lastFeedback: null,
+        // Mark as attempted but not correct (skipped)
+        results: { ...prev.results, [problem.id]: false },
+      };
+    });
   }, []);
 
   const clearFeedback = useCallback(() => {
@@ -188,9 +243,11 @@ export function usePracticeSession() {
     startSession,
     resumeSession,
     endSession,
+    addProblems,
     getCurrentProblem,
     submitAnswer,
     nextProblem,
+    skipProblem,
     clearFeedback,
     getProgress,
     isComplete,
