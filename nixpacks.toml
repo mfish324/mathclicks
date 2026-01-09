@@ -5,10 +5,12 @@ providers = ["node"]
 nixPkgs = ["nodejs_20"]
 
 [phases.install]
-cmds = ["npm install"]
+# Only install root dependencies, ignore frontend
+cmds = ["rm -rf frontend", "npm install --production=false"]
 
 [phases.build]
-cmds = ["npm run build"]
+# Build TypeScript backend only
+cmds = ["npx tsc"]
 
 [start]
-cmd = "npm start"
+cmd = "node dist/server.js"
