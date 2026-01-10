@@ -1,5 +1,26 @@
 import { Problem, ValidationResult, ErrorType } from '../types';
 
+/**
+ * Parse mixed number format BEFORE normalization removes spaces
+ * Handles: "1 1/2", "-2 3/4", "10 1/4"
+ * Must be called on original (trimmed) input, not normalized
+ */
+function parseMixedNumber(value: string): number | null {
+  const trimmed = value.trim();
+  // Match: whole_number space numerator/denominator
+  const mixedMatch = trimmed.match(/^(-?\d+)\s+(\d+)\/(\d+)$/);
+  if (mixedMatch) {
+    const whole = parseInt(mixedMatch[1], 10);
+    const num = parseInt(mixedMatch[2], 10);
+    const den = parseInt(mixedMatch[3], 10);
+    if (den === 0) return null;
+    // Handle negative: -1 1/2 = -1.5 (not -0.5)
+    const sign = whole < 0 ? -1 : 1;
+    return sign * (Math.abs(whole) + num / den);
+  }
+  return null;
+}
+
 // Normalize answer for comparison
 function normalizeAnswer(answer: string): string {
   let normalized = answer.trim().toLowerCase();
@@ -52,15 +73,24 @@ function fractionToDecimal(fraction: string): number | null {
 }
 
 // Check if two numbers are approximately equal
-function approximatelyEqual(a: number, b: number, tolerance: number = 0.001): boolean {
+// Tolerance of 0.005 allows for reasonable decimal approximations of repeating fractions
+// e.g., "0.33" for 1/3 (diff = 0.00333), "0.67" for 2/3 (diff = 0.00333)
+function approximatelyEqual(a: number, b: number, tolerance: number = 0.005): boolean {
   return Math.abs(a - b) <= tolerance;
 }
 
 // Parse a numeric string (handles fractions, decimals, integers)
 function parseNumeric(value: string): number | null {
+  // CRITICAL: Try mixed number FIRST, before normalization removes spaces
+  // This fixes the bug where "1 1/2" was being normalized to "11/2" (5.5 instead of 1.5)
+  const mixedValue = parseMixedNumber(value);
+  if (mixedValue !== null) {
+    return mixedValue;
+  }
+
   const normalized = normalizeAnswer(value);
 
-  // Try as fraction first
+  // Try as simple fraction
   const fractionValue = fractionToDecimal(normalized);
   if (fractionValue !== null) {
     return fractionValue;

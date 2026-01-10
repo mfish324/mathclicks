@@ -93,6 +93,80 @@ describe('Answer Validation', () => {
     });
   });
 
+  describe('Mixed number answers', () => {
+    it('accepts mixed number format "1 1/2"', () => {
+      const problem = createProblem('1 1/2', 'fraction');
+      expect(validateAnswer(problem, '1 1/2').correct).toBe(true);
+    });
+
+    it('accepts decimal equivalent of mixed number', () => {
+      const problem = createProblem('1 1/2', 'fraction');
+      expect(validateAnswer(problem, '1.5').correct).toBe(true);
+    });
+
+    it('accepts improper fraction equivalent of mixed number', () => {
+      const problem = createProblem('1 1/2', 'fraction');
+      expect(validateAnswer(problem, '3/2').correct).toBe(true);
+    });
+
+    it('handles larger mixed numbers', () => {
+      const problem = createProblem('2 3/4', 'fraction');
+      expect(validateAnswer(problem, '2 3/4').correct).toBe(true);
+      expect(validateAnswer(problem, '2.75').correct).toBe(true);
+      expect(validateAnswer(problem, '11/4').correct).toBe(true);
+    });
+
+    it('handles negative mixed numbers', () => {
+      const problem = createProblem('-2 1/4', 'fraction');
+      expect(validateAnswer(problem, '-2 1/4').correct).toBe(true);
+      expect(validateAnswer(problem, '-2.25').correct).toBe(true);
+      expect(validateAnswer(problem, '-9/4').correct).toBe(true);
+    });
+
+    it('does not confuse mixed numbers with simple fractions', () => {
+      // "11/2" should be 5.5, not confused with "1 1/2" = 1.5
+      const problem = createProblem('11/2', 'fraction');
+      expect(validateAnswer(problem, '5.5').correct).toBe(true);
+      expect(validateAnswer(problem, '1.5').correct).toBe(false);
+    });
+
+    it('accepts mixed number when answer is decimal', () => {
+      const problem = createProblem('1.5', 'decimal');
+      expect(validateAnswer(problem, '1 1/2').correct).toBe(true);
+    });
+
+    it('accepts mixed number when answer is improper fraction', () => {
+      const problem = createProblem('3/2', 'fraction');
+      expect(validateAnswer(problem, '1 1/2').correct).toBe(true);
+    });
+  });
+
+  describe('Repeating decimal tolerance', () => {
+    it('accepts reasonable decimal approximations for 1/3', () => {
+      const problem = createProblem('1/3', 'fraction');
+      expect(validateAnswer(problem, '0.333').correct).toBe(true);
+      expect(validateAnswer(problem, '0.33').correct).toBe(true);
+    });
+
+    it('accepts reasonable decimal approximations for 2/3', () => {
+      const problem = createProblem('2/3', 'fraction');
+      expect(validateAnswer(problem, '0.667').correct).toBe(true);
+      expect(validateAnswer(problem, '0.67').correct).toBe(true);
+    });
+
+    it('accepts reasonable decimal approximations for 1/6', () => {
+      const problem = createProblem('1/6', 'fraction');
+      expect(validateAnswer(problem, '0.167').correct).toBe(true);
+      expect(validateAnswer(problem, '0.17').correct).toBe(true);
+    });
+
+    it('still rejects clearly wrong approximations', () => {
+      const problem = createProblem('1/3', 'fraction');
+      expect(validateAnswer(problem, '0.4').correct).toBe(false);
+      expect(validateAnswer(problem, '0.3').correct).toBe(false);
+    });
+  });
+
   describe('Coordinate answers', () => {
     const problem = createProblem('(3, 4)', 'coordinate');
 
