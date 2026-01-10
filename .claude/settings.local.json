@@ -18,7 +18,8 @@
       "Bash(gh run view:*)",
       "Bash(curl:*)",
       "Bash(npm run build:*)",
-      "WebFetch(domain:mathclicks.vercel.app)"
+      "WebFetch(domain:mathclicks.vercel.app)",
+      "Bash(node -e:*)"
     ]
   }
 }

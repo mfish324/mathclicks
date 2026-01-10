@@ -229,6 +229,11 @@ export default function HomePage() {
             </button>
           </div>
         </div>
+
+        {/* Build Info */}
+        <div className="mt-8 text-center text-xs text-gray-400">
+          Build: {process.env.NEXT_PUBLIC_BUILD_ID || "dev"}
+        </div>
       </div>
     </main>
   );
