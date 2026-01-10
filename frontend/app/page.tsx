@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ImageUploader } from "@/components/ImageUploader";
+import { ReviewProblemsModal } from "@/components/ReviewProblemsModal";
+import { ExtractionVerification } from "@/components/ExtractionVerification";
 import { Sparkles, Clock, Trash2, PlayCircle, GraduationCap, Loader2, Users } from "lucide-react";
-import type { ProcessImageResponse } from "@/lib/types";
+import type { ProcessImageResponse, ImageExtractionResult, ProblemSet } from "@/lib/types";
 import {
   listSessions,
   deleteSession,
@@ -12,12 +14,21 @@ import {
   type SessionSummary,
 } from "@/lib/session-storage";
 
+type FlowState = "idle" | "loading" | "verifying" | "navigating";
+
 export default function HomePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [savedSessions, setSavedSessions] = useState<SessionSummary[]>([]);
   const [isCreatingClass, setIsCreatingClass] = useState(false);
+
+  // New flow state management
+  const [flowState, setFlowState] = useState<FlowState>("idle");
+  const [apiComplete, setApiComplete] = useState(false);
+  const [pendingExtraction, setPendingExtraction] = useState<ImageExtractionResult | null>(null);
+  const [pendingProblems, setPendingProblems] = useState<ProblemSet | null>(null);
+  const pendingFileRef = useRef<File | null>(null);
 
   // Load saved sessions on mount
   useEffect(() => {
@@ -27,6 +38,9 @@ export default function HomePage() {
   const handleImageSelect = async (file: File) => {
     setIsLoading(true);
     setError(null);
+    setFlowState("loading");
+    setApiComplete(false);
+    pendingFileRef.current = file;
 
     try {
       const formData = new FormData();
@@ -43,15 +57,42 @@ export default function HomePage() {
         throw new Error(data.error || "Failed to process image");
       }
 
-      // Store session data in sessionStorage for practice page to pick up
-      sessionStorage.setItem("mathclicks-session", JSON.stringify(data.data));
-
-      // Navigate to practice page
-      router.push("/practice");
+      // Store pending data for verification
+      setPendingExtraction(data.data.extraction);
+      setPendingProblems(data.data.problems);
+      setApiComplete(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
       setIsLoading(false);
+      setFlowState("idle");
     }
+  };
+
+  // Called when user finishes review and API is ready
+  const handleReviewComplete = () => {
+    setFlowState("verifying");
+  };
+
+  // Called when user confirms the extraction
+  const handleVerificationConfirm = () => {
+    if (pendingExtraction && pendingProblems) {
+      sessionStorage.setItem("mathclicks-session", JSON.stringify({
+        extraction: pendingExtraction,
+        problems: pendingProblems,
+      }));
+      setFlowState("navigating");
+      router.push("/practice");
+    }
+  };
+
+  // Called when user wants to try a different image
+  const handleVerificationRetry = () => {
+    setFlowState("idle");
+    setIsLoading(false);
+    setApiComplete(false);
+    setPendingExtraction(null);
+    setPendingProblems(null);
+    pendingFileRef.current = null;
   };
 
   const handleResumeSession = (sessionId: string) => {
@@ -235,6 +276,22 @@ export default function HomePage() {
           Build: {process.env.NEXT_PUBLIC_BUILD_ID || "dev"}
         </div>
       </div>
+
+      {/* Review Problems Modal - shown during image processing */}
+      <ReviewProblemsModal
+        isOpen={flowState === "loading"}
+        apiComplete={apiComplete}
+        onApiComplete={handleReviewComplete}
+      />
+
+      {/* Extraction Verification - shown after API completes */}
+      {flowState === "verifying" && pendingExtraction && (
+        <ExtractionVerification
+          extraction={pendingExtraction}
+          onConfirm={handleVerificationConfirm}
+          onRetry={handleVerificationRetry}
+        />
+      )}
     </main>
   );
 }
