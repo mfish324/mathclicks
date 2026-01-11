@@ -17,6 +17,22 @@ const DIFFICULTY_DESCRIPTIONS: Record<number, string> = {
   5: 'Challenge level, multi-step problems. Combine concepts. May require multiple strategies.',
 };
 
+// Grade level to max tier mapping (same as class-store.ts)
+export const GRADE_TO_MAX_TIER: Record<number, number> = {
+  4: 3,
+  5: 3,
+  6: 4,
+  7: 4,
+  8: 5,
+};
+
+/**
+ * Get the maximum problem tier allowed for a given grade level
+ */
+export function getMaxTierForGrade(gradeLevel: number): number {
+  return GRADE_TO_MAX_TIER[gradeLevel] ?? 5;
+}
+
 function buildGenerationPrompt(
   extraction: ImageExtractionResult,
   options: GenerationOptions
@@ -186,26 +202,32 @@ export async function generateProblems(
 
 // Generate problems across multiple difficulty tiers
 // startTier defaults to difficulty_baseline from extraction (or 1 if not set)
+// maxTier can be used to cap difficulty based on class grade level
 export async function generateAdaptiveProblems(
   extraction: ImageExtractionResult,
   problemsPerTier: number = 3,
-  startTier?: number
+  startTier?: number,
+  maxTier?: number
 ): Promise<ProblemSet> {
   const config = getConfig();
   const allProblems: Problem[] = [];
 
   // Use difficulty_baseline from extraction, default to tier 1
   const baseTier = startTier ?? extraction.difficulty_baseline ?? 1;
-  // Clamp to valid range 1-5
-  const effectiveStartTier = Math.max(1, Math.min(5, baseTier));
+
+  // Determine effective max tier (use provided maxTier or default to 5)
+  const effectiveMaxTier = maxTier ?? 5;
+
+  // Clamp start tier to valid range 1-maxTier
+  const effectiveStartTier = Math.max(1, Math.min(effectiveMaxTier, baseTier));
 
   if (config.debug) {
-    console.log(`[DEBUG] Starting problem generation at tier ${effectiveStartTier} (extraction baseline: ${extraction.difficulty_baseline})`);
+    console.log(`[DEBUG] Starting problem generation at tier ${effectiveStartTier} (extraction baseline: ${extraction.difficulty_baseline}, max tier: ${effectiveMaxTier})`);
   }
 
-  // Generate for tiers starting from effectiveStartTier up to 5, then wrap to lower tiers
+  // Generate for tiers starting from effectiveStartTier up to maxTier, then wrap to lower tiers
   const tierOrder: number[] = [];
-  for (let t = effectiveStartTier; t <= 5; t++) tierOrder.push(t);
+  for (let t = effectiveStartTier; t <= effectiveMaxTier; t++) tierOrder.push(t);
   for (let t = 1; t < effectiveStartTier; t++) tierOrder.push(t);
 
   for (const tier of tierOrder) {
@@ -240,13 +262,18 @@ export async function generateAdaptiveProblems(
 }
 
 // Generate a single replacement problem (for adaptive difficulty during quest)
+// maxTier can be used to cap difficulty based on class grade level
 export async function generateSingleProblem(
   extraction: ImageExtractionResult,
-  tier: number
+  tier: number,
+  maxTier?: number
 ): Promise<Problem | null> {
   try {
+    // Cap tier to maxTier if provided
+    const effectiveTier = maxTier ? Math.min(tier, maxTier) : tier;
+
     const result = await generateProblems(extraction, {
-      tier,
+      tier: effectiveTier,
       count: 1,
       includeHints: true,
       includeCommonMistakes: true,

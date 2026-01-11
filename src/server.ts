@@ -20,7 +20,14 @@ import {
   getStudentSession,
   addAchievement,
   classExists,
+  createClassWithSettings,
+  getClassSettings,
+  updateClassSettings,
+  getMaxTierForClass,
+  getWarmUpSettings,
   type StudentSession,
+  type GradeLevel,
+  type WarmUpSettings,
 } from './lib/class-store';
 import Anthropic from '@anthropic-ai/sdk';
 
@@ -337,11 +344,33 @@ app.post('/api/evaluate-response', async (req: Request, res: Response) => {
 
 // ============ Teacher Dashboard API ============
 
-// Create a new class code
+// Create a new class with settings
 app.post('/api/class/create', (req: Request, res: Response) => {
-  const classCode = generateClassCode();
-  getOrCreateClass(classCode); // Initialize the class
-  res.json({ success: true, classCode });
+  try {
+    const { gradeLevel, warmUp } = req.body;
+
+    // If no grade level provided, use legacy behavior
+    if (!gradeLevel) {
+      const classCode = generateClassCode();
+      getOrCreateClass(classCode);
+      res.json({ success: true, classCode });
+      return;
+    }
+
+    // Validate grade level
+    const validGrades: GradeLevel[] = [4, 5, 6, 7, 8];
+    if (!validGrades.includes(gradeLevel)) {
+      res.status(400).json({ success: false, error: 'Invalid grade level. Must be 4-8.' });
+      return;
+    }
+
+    // Create class with settings
+    const settings = createClassWithSettings(gradeLevel as GradeLevel, warmUp);
+    res.json({ success: true, classCode: settings.classCode, settings });
+  } catch (error) {
+    console.error('Error creating class:', error);
+    res.status(500).json({ success: false, error: 'Failed to create class' });
+  }
 });
 
 // Join a class (student updates their session)
@@ -468,6 +497,106 @@ app.get('/api/class/:classCode/student/:studentId', (req: Request, res: Response
   } catch (error) {
     console.error('Error getting student:', error);
     res.status(500).json({ success: false, error: 'Failed to get student' });
+  }
+});
+
+// ============ Class Settings API ============
+
+// Get class settings
+app.get('/api/class/:classCode/settings', (req: Request, res: Response) => {
+  try {
+    const { classCode } = req.params;
+
+    const settings = getClassSettings(classCode);
+    if (!settings) {
+      // Return default settings for legacy classes
+      res.json({
+        success: true,
+        data: {
+          classCode,
+          gradeLevel: 6, // Default to 6th grade
+          warmUp: {
+            enabled: false,
+            duration: 2,
+            focus: 'mixed',
+            required: false,
+          },
+        },
+      });
+      return;
+    }
+
+    res.json({ success: true, data: settings });
+  } catch (error) {
+    console.error('Error getting class settings:', error);
+    res.status(500).json({ success: false, error: 'Failed to get class settings' });
+  }
+});
+
+// Update class settings
+app.patch('/api/class/:classCode/settings', (req: Request, res: Response) => {
+  try {
+    const { classCode } = req.params;
+    const updates = req.body;
+
+    // Validate grade level if provided
+    if (updates.gradeLevel !== undefined) {
+      const validGrades: GradeLevel[] = [4, 5, 6, 7, 8];
+      if (!validGrades.includes(updates.gradeLevel)) {
+        res.status(400).json({ success: false, error: 'Invalid grade level. Must be 4-8.' });
+        return;
+      }
+    }
+
+    const updated = updateClassSettings(classCode, updates);
+    if (!updated) {
+      res.status(404).json({ success: false, error: 'Class not found' });
+      return;
+    }
+
+    res.json({ success: true, data: updated });
+  } catch (error) {
+    console.error('Error updating class settings:', error);
+    res.status(500).json({ success: false, error: 'Failed to update class settings' });
+  }
+});
+
+// Get max tier for a class (for problem generation)
+app.get('/api/class/:classCode/max-tier', (req: Request, res: Response) => {
+  try {
+    const { classCode } = req.params;
+    const maxTier = getMaxTierForClass(classCode);
+    res.json({ success: true, maxTier });
+  } catch (error) {
+    console.error('Error getting max tier:', error);
+    res.status(500).json({ success: false, error: 'Failed to get max tier' });
+  }
+});
+
+// Get warm-up settings for a class
+app.get('/api/class/:classCode/warmup', (req: Request, res: Response) => {
+  try {
+    const { classCode } = req.params;
+    const warmUp = getWarmUpSettings(classCode);
+
+    if (!warmUp) {
+      // Return disabled warm-up for legacy classes
+      res.json({
+        success: true,
+        data: {
+          enabled: false,
+          duration: 2,
+          focus: 'mixed',
+          required: false,
+        },
+      });
+      return;
+    }
+
+    res.json({ success: true, data: warmUp });
+  } catch (error) {
+    console.error('Error getting warm-up settings:', error);
+    res.status(500).json({ success: false, error: 'Failed to get warm-up settings' });
   }
 });
 

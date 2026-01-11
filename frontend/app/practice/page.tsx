@@ -8,6 +8,7 @@ import { ProblemCard } from "@/components/ProblemCard";
 import { WorkArea } from "@/components/WorkArea";
 import { FeedbackDisplay } from "@/components/FeedbackDisplay";
 import { WorkPhotoUpload } from "@/components/WorkPhotoUpload";
+import { WarmUpModal } from "@/components/WarmUpModal";
 import { ProgressBar } from "@/components/ProgressBar";
 import { XpDisplay } from "@/components/XpDisplay";
 import { XpPopup } from "@/components/XpPopup";
@@ -18,12 +19,14 @@ import { getFunComment } from "@/lib/fun-comments";
 import {
   getOrCreateProfile,
   handleProblemCompleted,
+  handleWarmUpCompleted,
   type StudentProfile,
   type XpAward,
   type LevelUpResult,
   type Achievement,
 } from "@/lib/gamification";
 import type { ImageExtractionResult, ProblemSet, Problem } from "@/lib/types";
+import type { GradeLevel, Operation } from "@/lib/math-facts";
 
 // Work photo analysis feedback
 interface WorkAnalysisFeedback {
@@ -31,6 +34,14 @@ interface WorkAnalysisFeedback {
   feedback?: string;
   suggestion?: string;
   encouragement?: string;
+}
+
+// Warm-up settings from class
+interface WarmUpSettings {
+  enabled: boolean;
+  duration: 1 | 2 | 3 | 5;
+  focus: Operation | "mixed";
+  required: boolean;
 }
 
 export default function PracticePage() {
@@ -46,6 +57,12 @@ export default function PracticePage() {
   const [isAnalyzingWork, setIsAnalyzingWork] = useState(false);
   const [workAnalysisFeedback, setWorkAnalysisFeedback] = useState<WorkAnalysisFeedback | null>(null);
   const [lastIncorrectAnswer, setLastIncorrectAnswer] = useState<string | null>(null);
+
+  // Warm-up state
+  const [showWarmUp, setShowWarmUp] = useState(false);
+  const [warmUpCompleted, setWarmUpCompleted] = useState(false);
+  const [warmUpSettings, setWarmUpSettings] = useState<WarmUpSettings | null>(null);
+  const [classGradeLevel, setClassGradeLevel] = useState<GradeLevel>(6);
 
   // Gamification state
   const [profile, setProfile] = useState<StudentProfile | null>(null);
@@ -124,6 +141,32 @@ export default function PracticePage() {
     const studentProfile = getOrCreateProfile();
     setProfile(studentProfile);
   }, []);
+
+  // Fetch warm-up settings when connected to a class
+  useEffect(() => {
+    if (!isSharing || !classCode) return;
+
+    const fetchWarmUpSettings = async () => {
+      try {
+        const response = await fetch(`/api/class/${classCode}/warmup`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.data) {
+            setWarmUpSettings(data.data);
+            setClassGradeLevel(data.data.gradeLevel || 6);
+            // Show warm-up modal if enabled and not yet completed
+            if (data.data.enabled && !warmUpCompleted) {
+              setShowWarmUp(true);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch warm-up settings:", error);
+      }
+    };
+
+    fetchWarmUpSettings();
+  }, [isSharing, classCode, warmUpCompleted]);
 
   // Sync session data with teacher when sharing is enabled
   useEffect(() => {
@@ -330,6 +373,38 @@ export default function PracticePage() {
 
   const handleDismissWorkFeedback = () => {
     setWorkAnalysisFeedback(null);
+  };
+
+  // Handle warm-up completion
+  const handleWarmUpComplete = (factsAttempted: number, factsCorrect: number) => {
+    setWarmUpCompleted(true);
+    setShowWarmUp(false);
+
+    // Award XP for warm-up
+    if (profile) {
+      const warmUpResult = handleWarmUpCompleted(profile, factsAttempted, factsCorrect);
+      setProfile(warmUpResult.profile);
+
+      // Show XP popup if there are rewards
+      if (warmUpResult.xpAwarded.length > 0 || warmUpResult.levelUp || warmUpResult.newAchievements.length > 0) {
+        setPendingXpAwards(warmUpResult.xpAwarded);
+        setPendingLevelUp(warmUpResult.levelUp);
+        setPendingAchievements(warmUpResult.newAchievements);
+        setShowXpPopup(true);
+
+        // Report achievements to teacher if sharing
+        if (isSharing) {
+          for (const achievement of warmUpResult.newAchievements) {
+            reportAchievement(achievement.name, achievement.icon);
+          }
+        }
+      }
+    }
+  };
+
+  // Handle warm-up skip (only if not required)
+  const handleWarmUpSkip = () => {
+    setShowWarmUp(false);
   };
 
   if (isComplete) {
@@ -608,6 +683,19 @@ export default function PracticePage() {
         currentStudentName={studentName}
         currentClassCode={classCode}
       />
+
+      {/* Warm-Up Modal */}
+      {warmUpSettings && (
+        <WarmUpModal
+          isOpen={showWarmUp}
+          gradeLevel={classGradeLevel}
+          duration={warmUpSettings.duration}
+          focus={warmUpSettings.focus}
+          required={warmUpSettings.required}
+          onComplete={handleWarmUpComplete}
+          onSkip={warmUpSettings.required ? undefined : handleWarmUpSkip}
+        />
+      )}
     </main>
   );
 }

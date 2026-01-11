@@ -20,6 +20,8 @@ export type ErrorType =
   | "unit_error"
   | "unknown";
 
+export type ProblemCategory = "lesson" | "math_fact";
+
 export interface Problem {
   id: string;
   tier: number;
@@ -31,6 +33,7 @@ export interface Problem {
   solution_steps: string[];
   hints: string[];
   common_mistakes?: string[];
+  category?: ProblemCategory; // lesson problems vs interleaved math facts
 }
 
 export interface ProblemSet {

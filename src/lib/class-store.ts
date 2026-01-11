@@ -4,6 +4,45 @@
  * TODO: Migrate to database (Supabase) for production
  */
 
+// ============ Class Settings Types ============
+
+export type GradeLevel = 4 | 5 | 6 | 7 | 8;
+export type WarmUpFocus = 'addition' | 'subtraction' | 'multiplication' | 'division' | 'mixed';
+export type WarmUpDuration = 1 | 2 | 3 | 5;
+
+export interface WarmUpSettings {
+  enabled: boolean;
+  duration: WarmUpDuration; // minutes
+  focus: WarmUpFocus;
+  required: boolean; // If true, students must complete before lesson
+}
+
+export interface ClassSettings {
+  classCode: string;
+  gradeLevel: GradeLevel;
+  createdAt: string;
+  warmUp: WarmUpSettings;
+}
+
+// Grade level to max problem tier mapping
+export const GRADE_TO_MAX_TIER: Record<GradeLevel, number> = {
+  4: 3,
+  5: 3,
+  6: 4,
+  7: 4,
+  8: 5,
+};
+
+// Default warm-up settings
+export const DEFAULT_WARMUP_SETTINGS: WarmUpSettings = {
+  enabled: false,
+  duration: 2,
+  focus: 'mixed',
+  required: false,
+};
+
+// ============ Student Session Types ============
+
 export interface StudentSession {
   id: string;
   studentName: string;
@@ -57,6 +96,7 @@ export interface RecentAchievement {
 // In-memory storage
 const classes: Map<string, Map<string, StudentSession>> = new Map();
 const recentAchievements: Map<string, RecentAchievement[]> = new Map();
+const classSettings: Map<string, ClassSettings> = new Map();
 
 // Generate a simple class code
 export function generateClassCode(): string {
@@ -168,4 +208,75 @@ export function removeStudent(classCode: string, studentId: string): void {
 // Check if class exists
 export function classExists(classCode: string): boolean {
   return classes.has(classCode);
+}
+
+// ============ Class Settings Functions ============
+
+// Create class with settings
+export function createClassWithSettings(
+  gradeLevel: GradeLevel,
+  warmUp?: Partial<WarmUpSettings>
+): ClassSettings {
+  const classCode = generateClassCode();
+
+  const settings: ClassSettings = {
+    classCode,
+    gradeLevel,
+    createdAt: new Date().toISOString(),
+    warmUp: {
+      ...DEFAULT_WARMUP_SETTINGS,
+      ...warmUp,
+    },
+  };
+
+  classSettings.set(classCode, settings);
+  getOrCreateClass(classCode); // Initialize student storage
+
+  return settings;
+}
+
+// Get class settings
+export function getClassSettings(classCode: string): ClassSettings | null {
+  return classSettings.get(classCode) || null;
+}
+
+// Update class settings
+export function updateClassSettings(
+  classCode: string,
+  updates: Partial<Omit<ClassSettings, 'classCode' | 'createdAt'>>
+): ClassSettings | null {
+  const existing = classSettings.get(classCode);
+  if (!existing) return null;
+
+  const updated: ClassSettings = {
+    ...existing,
+    ...updates,
+    warmUp: updates.warmUp
+      ? { ...existing.warmUp, ...updates.warmUp }
+      : existing.warmUp,
+  };
+
+  classSettings.set(classCode, updated);
+  return updated;
+}
+
+// Get max tier for a class (based on grade level)
+export function getMaxTierForClass(classCode: string): number {
+  const settings = classSettings.get(classCode);
+  if (!settings) return 5; // Default to max if no settings
+  return GRADE_TO_MAX_TIER[settings.gradeLevel];
+}
+
+// Check if warm-up is required for a class
+export function isWarmUpRequired(classCode: string): boolean {
+  const settings = classSettings.get(classCode);
+  if (!settings) return false;
+  return settings.warmUp.enabled && settings.warmUp.required;
+}
+
+// Get warm-up settings for a class
+export function getWarmUpSettings(classCode: string): WarmUpSettings | null {
+  const settings = classSettings.get(classCode);
+  if (!settings) return null;
+  return settings.warmUp;
 }

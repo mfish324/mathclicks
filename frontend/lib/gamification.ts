@@ -14,6 +14,15 @@ export interface Achievement {
   unlockedAt?: string; // ISO date string when unlocked
 }
 
+export interface SpeedChallengeStats {
+  totalChallenges: number;
+  bestScore: number; // Most correct in 60 seconds
+  averageScore: number;
+  perfectChallenges: number; // All attempted were correct
+  totalFactsAttempted: number;
+  totalFactsCorrect: number;
+}
+
 export interface StudentProfile {
   id: string;
   createdAt: string;
@@ -25,6 +34,13 @@ export interface StudentProfile {
   problemsCorrectFirstTry: number;
   canvasUsageCount: number;
   voiceExplanationCount: number;
+  // Math Facts Stats
+  mathFactsCompleted: number;
+  mathFactsCorrect: number;
+  // Speed Challenge
+  speedChallengeStats: SpeedChallengeStats;
+  // Warm-up Stats
+  warmUpsCompleted: number;
   // Streaks
   currentStreak: number;
   longestStreak: number;
@@ -54,6 +70,13 @@ export const XP_AWARDS = {
   CANVAS_USED: 3,
   VOICE_EXPLANATION: 3,
   STREAK_DAY: 2,
+  // Math Facts
+  MATH_FACT_CORRECT: 2,
+  WARMUP_COMPLETE: 10,
+  // Speed Challenge
+  SPEED_CHALLENGE_COMPLETE: 15,
+  SPEED_CHALLENGE_PERFECT: 25,  // All attempted correct
+  SPEED_CHALLENGE_HIGH_SPEED: 5, // >20 correct
 } as const;
 
 // ============ Achievements ============
@@ -150,6 +173,58 @@ export const ACHIEVEMENTS: Omit<Achievement, "unlockedAt">[] = [
     icon: "🖐️",
     xpBonus: 25,
   },
+  // Speed Challenge Achievements
+  {
+    id: "speed_demon",
+    name: "Speed Demon",
+    description: "Complete your first speed challenge",
+    icon: "⚡",
+    xpBonus: 10,
+  },
+  {
+    id: "lightning_fast",
+    name: "Lightning Fast",
+    description: "Get 20+ correct in a speed challenge",
+    icon: "🏎️",
+    xpBonus: 20,
+  },
+  {
+    id: "perfectionist",
+    name: "Perfectionist",
+    description: "Get a perfect score in a speed challenge",
+    icon: "💯",
+    xpBonus: 30,
+  },
+  {
+    id: "speed_addict",
+    name: "Speed Addict",
+    description: "Complete 10 speed challenges",
+    icon: "🔄",
+    xpBonus: 25,
+  },
+  // Math Facts Achievements
+  {
+    id: "fact_finder",
+    name: "Fact Finder",
+    description: "Answer 50 math facts correctly",
+    icon: "🔢",
+    xpBonus: 15,
+  },
+  {
+    id: "fact_master",
+    name: "Fact Master",
+    description: "Answer 200 math facts correctly",
+    icon: "🧠",
+    xpBonus: 30,
+  },
+  // Warm-up Achievements
+  {
+    id: "warm_starter",
+    name: "Warm Starter",
+    description: "Complete 5 warm-ups",
+    icon: "☀️",
+    xpBonus: 15,
+  },
 ];
 
 // ============ Storage ============
@@ -201,6 +276,17 @@ export function createProfile(): StudentProfile {
     problemsCorrectFirstTry: 0,
     canvasUsageCount: 0,
     voiceExplanationCount: 0,
+    mathFactsCompleted: 0,
+    mathFactsCorrect: 0,
+    speedChallengeStats: {
+      totalChallenges: 0,
+      bestScore: 0,
+      averageScore: 0,
+      perfectChallenges: 0,
+      totalFactsAttempted: 0,
+      totalFactsCorrect: 0,
+    },
+    warmUpsCompleted: 0,
     currentStreak: 0,
     longestStreak: 0,
     lastPracticeDate: null,
@@ -357,6 +443,30 @@ export function checkAchievements(profile: StudentProfile): {
       case "high_five":
         unlocked = profile.level >= 5;
         break;
+      // Speed Challenge Achievements
+      case "speed_demon":
+        unlocked = profile.speedChallengeStats.totalChallenges >= 1;
+        break;
+      case "lightning_fast":
+        unlocked = profile.speedChallengeStats.bestScore >= 20;
+        break;
+      case "perfectionist":
+        unlocked = profile.speedChallengeStats.perfectChallenges >= 1;
+        break;
+      case "speed_addict":
+        unlocked = profile.speedChallengeStats.totalChallenges >= 10;
+        break;
+      // Math Facts Achievements
+      case "fact_finder":
+        unlocked = profile.mathFactsCorrect >= 50;
+        break;
+      case "fact_master":
+        unlocked = profile.mathFactsCorrect >= 200;
+        break;
+      // Warm-up Achievements
+      case "warm_starter":
+        unlocked = profile.warmUpsCompleted >= 5;
+        break;
     }
 
     if (unlocked) {
@@ -478,4 +588,220 @@ export function handleProblemCompleted(
     levelUp,
     newAchievements: achievementResult.newAchievements,
   };
+}
+
+// ============ Speed Challenge Handler ============
+
+export interface SpeedChallengeResult {
+  profile: StudentProfile;
+  xpAwarded: XpAward[];
+  levelUp: LevelUpResult | null;
+  newAchievements: Achievement[];
+  isNewBest: boolean;
+}
+
+export function handleSpeedChallengeCompleted(
+  profile: StudentProfile,
+  attempted: number,
+  correct: number
+): SpeedChallengeResult {
+  let currentProfile = { ...profile };
+  const xpAwarded: XpAward[] = [];
+  let levelUp: LevelUpResult | null = null;
+
+  const isPerfect = attempted > 0 && correct === attempted;
+  const isHighSpeed = correct >= 20;
+  const isNewBest = correct > currentProfile.speedChallengeStats.bestScore;
+
+  // Update speed challenge stats
+  const prevStats = currentProfile.speedChallengeStats;
+  const newTotalChallenges = prevStats.totalChallenges + 1;
+  const newTotalAttempted = prevStats.totalFactsAttempted + attempted;
+  const newTotalCorrect = prevStats.totalFactsCorrect + correct;
+
+  currentProfile.speedChallengeStats = {
+    totalChallenges: newTotalChallenges,
+    bestScore: Math.max(prevStats.bestScore, correct),
+    averageScore: newTotalCorrect / newTotalChallenges,
+    perfectChallenges: prevStats.perfectChallenges + (isPerfect ? 1 : 0),
+    totalFactsAttempted: newTotalAttempted,
+    totalFactsCorrect: newTotalCorrect,
+  };
+
+  // Update math facts stats
+  currentProfile.mathFactsCompleted += attempted;
+  currentProfile.mathFactsCorrect += correct;
+
+  // Award base XP for completing
+  const baseResult = awardXp(currentProfile, XP_AWARDS.SPEED_CHALLENGE_COMPLETE, "Speed challenge complete!");
+  currentProfile = baseResult.profile;
+  xpAwarded.push(...baseResult.awards);
+  if (baseResult.levelUp) levelUp = baseResult.levelUp;
+
+  // Bonus XP for perfect score
+  if (isPerfect && attempted >= 5) {
+    const perfectResult = awardXp(currentProfile, XP_AWARDS.SPEED_CHALLENGE_PERFECT, "Perfect score!");
+    currentProfile = perfectResult.profile;
+    xpAwarded.push({ ...perfectResult.awards[0], isBonus: true });
+    if (perfectResult.levelUp) levelUp = perfectResult.levelUp;
+  }
+
+  // Bonus XP for high speed (20+ correct)
+  if (isHighSpeed) {
+    const speedResult = awardXp(currentProfile, XP_AWARDS.SPEED_CHALLENGE_HIGH_SPEED, "Lightning fast!");
+    currentProfile = speedResult.profile;
+    xpAwarded.push({ ...speedResult.awards[0], isBonus: true });
+    if (speedResult.levelUp) levelUp = speedResult.levelUp;
+  }
+
+  // Update streak
+  const streakResult = updateStreak(currentProfile);
+  currentProfile = streakResult.profile;
+  if (streakResult.streakXp > 0) {
+    const streakXpResult = awardXp(currentProfile, streakResult.streakXp, `${currentProfile.currentStreak} day streak!`);
+    currentProfile = streakXpResult.profile;
+    xpAwarded.push({ ...streakXpResult.awards[0], isBonus: true });
+    if (streakXpResult.levelUp) levelUp = streakXpResult.levelUp;
+  }
+
+  // Check for new achievements
+  const achievementResult = checkAchievements(currentProfile);
+  currentProfile = achievementResult.profile;
+
+  // Award XP for achievements
+  for (const achievement of achievementResult.newAchievements) {
+    if (achievement.xpBonus > 0) {
+      const achievementXp = awardXp(currentProfile, achievement.xpBonus, `Achievement: ${achievement.name}`);
+      currentProfile = achievementXp.profile;
+      xpAwarded.push({ ...achievementXp.awards[0], isBonus: true });
+      if (achievementXp.levelUp) levelUp = achievementXp.levelUp;
+    }
+  }
+
+  // Save the profile
+  saveProfile(currentProfile);
+
+  return {
+    profile: currentProfile,
+    xpAwarded,
+    levelUp,
+    newAchievements: achievementResult.newAchievements,
+    isNewBest,
+  };
+}
+
+// ============ Warm-up Handler ============
+
+export interface WarmUpResult {
+  profile: StudentProfile;
+  xpAwarded: XpAward[];
+  levelUp: LevelUpResult | null;
+  newAchievements: Achievement[];
+}
+
+export function handleWarmUpCompleted(
+  profile: StudentProfile,
+  factsAttempted: number,
+  factsCorrect: number
+): WarmUpResult {
+  let currentProfile = { ...profile };
+  const xpAwarded: XpAward[] = [];
+  let levelUp: LevelUpResult | null = null;
+
+  // Update stats
+  currentProfile.warmUpsCompleted += 1;
+  currentProfile.mathFactsCompleted += factsAttempted;
+  currentProfile.mathFactsCorrect += factsCorrect;
+
+  // Award XP for completing warm-up
+  const baseResult = awardXp(currentProfile, XP_AWARDS.WARMUP_COMPLETE, "Warm-up complete!");
+  currentProfile = baseResult.profile;
+  xpAwarded.push(...baseResult.awards);
+  if (baseResult.levelUp) levelUp = baseResult.levelUp;
+
+  // Award XP for correct facts
+  const factXp = factsCorrect * XP_AWARDS.MATH_FACT_CORRECT;
+  if (factXp > 0) {
+    const factResult = awardXp(currentProfile, factXp, `${factsCorrect} facts correct`);
+    currentProfile = factResult.profile;
+    xpAwarded.push(...factResult.awards);
+    if (factResult.levelUp) levelUp = factResult.levelUp;
+  }
+
+  // Update streak
+  const streakResult = updateStreak(currentProfile);
+  currentProfile = streakResult.profile;
+  if (streakResult.streakXp > 0) {
+    const streakXpResult = awardXp(currentProfile, streakResult.streakXp, `${currentProfile.currentStreak} day streak!`);
+    currentProfile = streakXpResult.profile;
+    xpAwarded.push({ ...streakXpResult.awards[0], isBonus: true });
+    if (streakXpResult.levelUp) levelUp = streakXpResult.levelUp;
+  }
+
+  // Check for new achievements
+  const achievementResult = checkAchievements(currentProfile);
+  currentProfile = achievementResult.profile;
+
+  // Award XP for achievements
+  for (const achievement of achievementResult.newAchievements) {
+    if (achievement.xpBonus > 0) {
+      const achievementXp = awardXp(currentProfile, achievement.xpBonus, `Achievement: ${achievement.name}`);
+      currentProfile = achievementXp.profile;
+      xpAwarded.push({ ...achievementXp.awards[0], isBonus: true });
+      if (achievementXp.levelUp) levelUp = achievementXp.levelUp;
+    }
+  }
+
+  // Save the profile
+  saveProfile(currentProfile);
+
+  return {
+    profile: currentProfile,
+    xpAwarded,
+    levelUp,
+    newAchievements: achievementResult.newAchievements,
+  };
+}
+
+// ============ Profile Migration ============
+
+/**
+ * Migrate existing profiles to include new fields
+ */
+export function migrateProfile(profile: StudentProfile): StudentProfile {
+  const defaults = {
+    mathFactsCompleted: 0,
+    mathFactsCorrect: 0,
+    speedChallengeStats: {
+      totalChallenges: 0,
+      bestScore: 0,
+      averageScore: 0,
+      perfectChallenges: 0,
+      totalFactsAttempted: 0,
+      totalFactsCorrect: 0,
+    },
+    warmUpsCompleted: 0,
+  };
+
+  return {
+    ...defaults,
+    ...profile,
+    speedChallengeStats: profile.speedChallengeStats || defaults.speedChallengeStats,
+  };
+}
+
+/**
+ * Get profile with migration applied
+ */
+export function getOrCreateProfileWithMigration(): StudentProfile {
+  const existing = getProfile();
+  if (existing) {
+    const migrated = migrateProfile(existing);
+    // Save if migration was needed
+    if (JSON.stringify(existing) !== JSON.stringify(migrated)) {
+      saveProfile(migrated);
+    }
+    return migrated;
+  }
+  return createProfile();
 }

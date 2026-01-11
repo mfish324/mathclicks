@@ -4,10 +4,19 @@ const BACKEND_URL = process.env.BACKEND_URL;
 
 export async function POST(request: NextRequest) {
   try {
+    // Parse request body (may contain gradeLevel and warmUp settings)
+    let body = {};
+    try {
+      body = await request.json();
+    } catch {
+      // Empty body is OK for legacy behavior
+    }
+
     if (BACKEND_URL) {
       const response = await fetch(`${BACKEND_URL}/api/class/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
       });
 
       const result = await response.json();
