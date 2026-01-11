@@ -8,15 +8,19 @@ import {
   isExtractionError,
 } from '../types';
 
-const EXTRACTION_PROMPT = `You are analyzing an image of a math lesson from a middle school classroom whiteboard or hand-drawn math work.
+const EXTRACTION_PROMPT = `You are analyzing an image of a math lesson from a classroom whiteboard or hand-drawn math work.
 
 Your task is to extract structured information about the mathematical content shown.
 
 Extract the following and return as JSON:
-1. "topic": The main math topic being taught (e.g., "Two-Step Equations", "Proportions", "Fractions", "Linear Graphs")
-2. "subtopics": Array of specific skills/concepts (e.g., ["isolating variables", "cross multiplication", "inverse operations"])
-3. "grade_level": Estimated grade (6, 7, or 8 based on Common Core standards)
-4. "standards": Relevant Common Core math standards (e.g., ["7.EE.B.4a", "7.RP.A.2"])
+1. "topic": The main math topic being taught. Examples:
+   - Linear: "Two-Step Equations", "Linear Graphs", "Systems of Equations"
+   - Quadratic: "Quadratic Equations", "Factoring Polynomials", "Quadratic Formula"
+   - Polynomials: "Second-Degree Polynomials", "Polynomial Operations", "FOIL Method"
+   - Other: "Proportions", "Fractions", "Exponents", "Radicals"
+2. "subtopics": Array of specific skills/concepts (e.g., ["factoring trinomials", "completing the square", "vertex form"])
+3. "grade_level": Estimated grade (6-12 based on content complexity)
+4. "standards": Relevant Common Core math standards (e.g., ["A.SSE.A.2", "A.REI.B.4"])
 5. "extracted_content": Object containing:
    - "equations": Array of equations shown (if any)
    - "examples_shown": Array of worked examples with solutions (if any)
@@ -25,6 +29,12 @@ Extract the following and return as JSON:
    - "definitions": Array of definitions given (if any)
    - "graphs_described": Description of any graphs/diagrams (if any)
 6. "difficulty_baseline": Number 1-5 indicating typical difficulty level (3 = grade level)
+
+CRITICAL - IDENTIFY POLYNOMIAL DEGREE:
+- Look for x², x³, or higher powers - these indicate polynomials beyond linear
+- "ax² + bx + c" is a QUADRATIC (second-degree), NOT linear
+- Parabolas indicate quadratic content
+- Terms like "vertex", "axis of symmetry", "roots", "zeros" suggest quadratics
 
 CRITICAL - HANDWRITTEN CONTENT RECOGNITION:
 When reading handwritten math, be VERY careful to distinguish between:
@@ -51,11 +61,19 @@ IMPORTANT GUIDELINES:
 - Recognize PROPORTIONS (a/b = c/d) as a distinct topic from two-step equations
 
 COMMON MATH STANDARDS REFERENCE:
+Middle School:
 - 6.RP.A.3: Ratio and rate reasoning
 - 7.RP.A.2: Recognize and represent proportional relationships
 - 7.EE.B.4a: Solve word problems leading to equations (px + q = r)
-- 7.EE.B.4b: Solve word problems leading to inequalities
 - 8.EE.C.7: Solve linear equations in one variable
+
+High School Algebra:
+- A.SSE.A.2: Use structure of expressions (factoring, completing square)
+- A.SSE.B.3: Write expressions in equivalent forms to solve problems
+- A.APR.A.1: Polynomial arithmetic (add, subtract, multiply)
+- A.REI.B.4: Solve quadratic equations (factoring, completing square, quadratic formula)
+- F.IF.C.7a: Graph linear and quadratic functions, show key features
+- F.IF.C.8a: Factor quadratics to show zeros, max/min, symmetry
 
 If the image is unclear, does not contain math content, or cannot be analyzed:
 Return an error object: {"error": true, "message": "description of the issue", "suggestion": "what the user could do"}
