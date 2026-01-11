@@ -190,6 +190,146 @@ RESPONSE FORMAT (JSON):
   "readyToSubmit": true/false
 }`;
 
+/**
+ * Analyze incorrect work after student gets an answer wrong
+ * This provides specific feedback on what went wrong
+ */
+export interface AnalyzeIncorrectWorkRequest {
+  problem: Problem;
+  workImage: string;  // Base64 image of notebook work
+  studentAnswer: string;
+  attemptNumber: number;
+}
+
+export interface AnalyzeIncorrectWorkResponse {
+  success: boolean;
+  feedback?: string;
+  errorIdentified?: string;
+  suggestion?: string;
+  encouragement?: string;
+  error?: string;
+}
+
+const ANALYZE_INCORRECT_PROMPT = `You are a supportive math tutor helping a student understand their mistake. They got the problem wrong and have uploaded a photo of their notebook work.
+
+PROBLEM:
+{problem_text}
+
+CORRECT ANSWER: {correct_answer}
+
+STUDENT'S ANSWER: {student_answer} (This is WRONG)
+
+THEIR ATTEMPT NUMBER: {attempt_number}
+
+LOOKING AT THEIR WORK:
+Analyze the image of their handwritten work carefully. Identify WHERE they went wrong.
+
+YOUR TASK:
+1. Find the specific step where they made an error
+2. Explain what went wrong WITHOUT giving away the answer
+3. Give a hint about what to try differently
+4. Be encouraging - mistakes are how we learn!
+
+RESPONSE FORMAT (JSON):
+{
+  "errorIdentified": "Describe the specific error you found (1-2 sentences)",
+  "feedback": "Explain what went wrong in student-friendly language (2-3 sentences)",
+  "suggestion": "Give a helpful hint for what to try next (1-2 sentences)",
+  "encouragement": "A brief encouraging message (1 sentence)"
+}
+
+IMPORTANT:
+- Do NOT reveal the correct answer
+- Do NOT show the full solution
+- Be specific about the error you see in their work
+- Be warm and encouraging
+- If you can't see clear work, acknowledge that and suggest they show more steps`;
+
+export async function analyzeIncorrectWork(
+  client: Anthropic,
+  request: AnalyzeIncorrectWorkRequest
+): Promise<AnalyzeIncorrectWorkResponse> {
+  const { problem, workImage, studentAnswer, attemptNumber } = request;
+
+  const prompt = ANALYZE_INCORRECT_PROMPT
+    .replace('{problem_text}', problem.problem_text)
+    .replace('{correct_answer}', problem.answer)
+    .replace('{student_answer}', studentAnswer)
+    .replace('{attempt_number}', attemptNumber.toString());
+
+  try {
+    // Remove data URL prefix if present
+    const base64Data = workImage.replace(/^data:image\/\w+;base64,/, '');
+
+    // Detect media type from base64 or default to jpeg for photos
+    let mediaType: 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp' = 'image/jpeg';
+    if (workImage.startsWith('data:image/png')) {
+      mediaType = 'image/png';
+    } else if (workImage.startsWith('data:image/gif')) {
+      mediaType = 'image/gif';
+    } else if (workImage.startsWith('data:image/webp')) {
+      mediaType = 'image/webp';
+    }
+
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 800,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: {
+                type: 'base64',
+                media_type: mediaType,
+                data: base64Data,
+              },
+            },
+            {
+              type: 'text',
+              text: prompt,
+            },
+          ],
+        },
+      ],
+    });
+
+    // Extract text content
+    const textContent = response.content.find(c => c.type === 'text');
+    if (!textContent || textContent.type !== 'text') {
+      return { success: false, error: 'No response from AI' };
+    }
+
+    // Parse JSON response
+    const jsonMatch = textContent.text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      return { success: false, error: 'Invalid response format' };
+    }
+
+    const parsed = JSON.parse(jsonMatch[0]) as {
+      errorIdentified: string;
+      feedback: string;
+      suggestion: string;
+      encouragement: string;
+    };
+
+    return {
+      success: true,
+      errorIdentified: parsed.errorIdentified,
+      feedback: parsed.feedback,
+      suggestion: parsed.suggestion,
+      encouragement: parsed.encouragement,
+    };
+  } catch (error) {
+    console.error('Error analyzing incorrect work:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to analyze work',
+    };
+  }
+}
+
 export async function evaluateStudentResponse(
   client: Anthropic,
   request: EvaluateResponseRequest

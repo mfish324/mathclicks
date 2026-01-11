@@ -7,7 +7,7 @@ import { ArrowLeft, BookOpen, GraduationCap, Trophy, Loader2, Sparkles, Lightbul
 import { ProblemCard } from "@/components/ProblemCard";
 import { WorkArea } from "@/components/WorkArea";
 import { FeedbackDisplay } from "@/components/FeedbackDisplay";
-import { SocraticDialogue } from "@/components/SocraticDialogue";
+import { WorkPhotoUpload } from "@/components/WorkPhotoUpload";
 import { ProgressBar } from "@/components/ProgressBar";
 import { XpDisplay } from "@/components/XpDisplay";
 import { XpPopup } from "@/components/XpPopup";
@@ -25,10 +25,12 @@ import {
 } from "@/lib/gamification";
 import type { ImageExtractionResult, ProblemSet, Problem } from "@/lib/types";
 
-interface SocraticQuestion {
-  question: string;
-  category: "understanding" | "process" | "reasoning" | "connection";
-  encouragement: string;
+// Work photo analysis feedback
+interface WorkAnalysisFeedback {
+  errorIdentified?: string;
+  feedback?: string;
+  suggestion?: string;
+  encouragement?: string;
 }
 
 export default function PracticePage() {
@@ -39,14 +41,11 @@ export default function PracticePage() {
   const [showFunComment, setShowFunComment] = useState(true);
   const hasStartedBackgroundLoad = useRef(false);
 
-  // Socratic dialogue state
-  const [socraticQuestion, setSocraticQuestion] = useState<SocraticQuestion | null>(null);
+  // Work photo upload state
+  const [showPhotoUpload, setShowPhotoUpload] = useState(false);
   const [isAnalyzingWork, setIsAnalyzingWork] = useState(false);
-  const [currentCanvasImage, setCurrentCanvasImage] = useState<string | null>(null);
-  const [dialogueFeedback, setDialogueFeedback] = useState<string | undefined>();
-  const [followUpQuestion, setFollowUpQuestion] = useState<string | undefined>();
-  const [readyToSubmit, setReadyToSubmit] = useState(false);
-  const [previousQuestions, setPreviousQuestions] = useState<string[]>([]);
+  const [workAnalysisFeedback, setWorkAnalysisFeedback] = useState<WorkAnalysisFeedback | null>(null);
+  const [lastIncorrectAnswer, setLastIncorrectAnswer] = useState<string | null>(null);
 
   // Gamification state
   const [profile, setProfile] = useState<StudentProfile | null>(null);
@@ -54,8 +53,6 @@ export default function PracticePage() {
   const [pendingXpAwards, setPendingXpAwards] = useState<XpAward[]>([]);
   const [pendingLevelUp, setPendingLevelUp] = useState<LevelUpResult | null>(null);
   const [pendingAchievements, setPendingAchievements] = useState<Achievement[]>([]);
-  const [usedCanvasThisProblem, setUsedCanvasThisProblem] = useState(false);
-  const [usedVoiceThisProblem, setUsedVoiceThisProblem] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
 
   // Teacher sharing hook
@@ -222,42 +219,46 @@ export default function PracticePage() {
     );
   }
 
-  const handleSubmit = async (answer: string, canvasImage?: string) => {
-    // Track canvas usage
-    if (canvasImage) {
-      setUsedCanvasThisProblem(true);
-    }
+  const handleSubmit = async (answer: string) => {
+    const result = await submitAnswer(answer);
 
-    const result = await submitAnswer(answer, canvasImage);
+    if (result?.correct) {
+      // Award XP if correct
+      if (profile && currentProblem) {
+        const attemptNumber = attempts[currentProblem.id] || 1;
+        const isFirstTry = attemptNumber === 1;
 
-    // Award XP if correct
-    if (result?.correct && profile && currentProblem) {
-      const attemptNumber = attempts[currentProblem.id] || 1;
-      const isFirstTry = attemptNumber === 1;
+        const xpResult = handleProblemCompleted(profile, {
+          correct: true,
+          isFirstTry,
+          usedCanvas: false,
+          usedVoice: false,
+        });
 
-      const xpResult = handleProblemCompleted(profile, {
-        correct: true,
-        isFirstTry,
-        usedCanvas: usedCanvasThisProblem || !!canvasImage,
-        usedVoice: usedVoiceThisProblem,
-      });
+        setProfile(xpResult.profile);
 
-      setProfile(xpResult.profile);
+        // Show XP popup if there are rewards
+        if (xpResult.xpAwarded.length > 0 || xpResult.levelUp || xpResult.newAchievements.length > 0) {
+          setPendingXpAwards(xpResult.xpAwarded);
+          setPendingLevelUp(xpResult.levelUp);
+          setPendingAchievements(xpResult.newAchievements);
+          setShowXpPopup(true);
 
-      // Show XP popup if there are rewards
-      if (xpResult.xpAwarded.length > 0 || xpResult.levelUp || xpResult.newAchievements.length > 0) {
-        setPendingXpAwards(xpResult.xpAwarded);
-        setPendingLevelUp(xpResult.levelUp);
-        setPendingAchievements(xpResult.newAchievements);
-        setShowXpPopup(true);
-
-        // Report achievements to teacher if sharing
-        if (isSharing) {
-          for (const achievement of xpResult.newAchievements) {
-            reportAchievement(achievement.name, achievement.icon);
+          // Report achievements to teacher if sharing
+          if (isSharing) {
+            for (const achievement of xpResult.newAchievements) {
+              reportAchievement(achievement.name, achievement.icon);
+            }
           }
         }
       }
+      // Reset photo upload state on correct answer
+      setShowPhotoUpload(false);
+      setWorkAnalysisFeedback(null);
+      setLastIncorrectAnswer(null);
+    } else {
+      // Track incorrect answer for potential photo upload
+      setLastIncorrectAnswer(answer);
     }
   };
 
@@ -271,112 +272,64 @@ export default function PracticePage() {
 
   const handleSkip = () => {
     skipProblem();
-    // Reset Socratic state when moving to next problem
-    resetSocraticState();
+    // Reset photo upload state when moving to next problem
+    resetPhotoUploadState();
   };
 
-  const resetSocraticState = () => {
-    setSocraticQuestion(null);
-    setCurrentCanvasImage(null);
-    setDialogueFeedback(undefined);
-    setFollowUpQuestion(undefined);
-    setReadyToSubmit(false);
-    setPreviousQuestions([]);
-    // Reset tracking for next problem
-    setUsedCanvasThisProblem(false);
-    setUsedVoiceThisProblem(false);
+  const resetPhotoUploadState = () => {
+    setShowPhotoUpload(false);
+    setWorkAnalysisFeedback(null);
+    setLastIncorrectAnswer(null);
   };
 
-  const handleCheckWork = async (canvasImage: string) => {
-    if (!currentProblem) return;
+  // Handle photo upload for work analysis
+  const handlePhotoUploaded = async (base64Image: string) => {
+    if (!currentProblem || !lastIncorrectAnswer) return;
 
     setIsAnalyzingWork(true);
-    setCurrentCanvasImage(canvasImage);
 
     try {
-      const response = await fetch("/api/analyze-work", {
+      const response = await fetch("/api/analyze-work-photo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           problem: currentProblem,
-          canvasImage,
-          previousQuestions,
+          workImage: base64Image,
+          studentAnswer: lastIncorrectAnswer,
+          attemptNumber: attempts[currentProblem.id] || 1,
         }),
       });
 
       const result = await response.json();
 
-      if (result.success && result.data) {
-        setSocraticQuestion(result.data);
-        setPreviousQuestions((prev) => [...prev, result.data.question]);
-
-        if (result.readyToSubmit) {
-          setReadyToSubmit(true);
-        }
+      if (result.success) {
+        setWorkAnalysisFeedback({
+          errorIdentified: result.errorIdentified,
+          feedback: result.feedback,
+          suggestion: result.suggestion,
+          encouragement: result.encouragement,
+        });
+        setShowPhotoUpload(false);
       } else {
         console.error("Failed to analyze work:", result.error);
       }
     } catch (error) {
-      console.error("Error analyzing work:", error);
+      console.error("Error analyzing work photo:", error);
     } finally {
       setIsAnalyzingWork(false);
     }
   };
 
-  const handleSocraticResponse = async (response: string, isVoice = false) => {
-    if (!currentProblem || !currentCanvasImage || !socraticQuestion) return;
-
-    setIsAnalyzingWork(true);
-
-    try {
-      const apiResponse = await fetch("/api/evaluate-response", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          problem: currentProblem,
-          canvasImage: currentCanvasImage,
-          aiQuestion: followUpQuestion || socraticQuestion.question,
-          studentResponse: response,
-        }),
-      });
-
-      const result = await apiResponse.json();
-
-      if (result.success) {
-        setDialogueFeedback(result.feedback);
-
-        if (result.followUpQuestion) {
-          setFollowUpQuestion(result.followUpQuestion);
-          setPreviousQuestions((prev) => [...prev, result.followUpQuestion!]);
-        } else {
-          setFollowUpQuestion(undefined);
-        }
-
-        if (result.readyToSubmit) {
-          setReadyToSubmit(true);
-        }
-
-        // Track voice usage for gamification XP bonus
-        if (isVoice) {
-          setUsedVoiceThisProblem(true);
-        }
-      } else {
-        console.error("Failed to evaluate response:", result.error);
-      }
-    } catch (error) {
-      console.error("Error evaluating response:", error);
-    } finally {
-      setIsAnalyzingWork(false);
-    }
+  const handleCancelPhotoUpload = () => {
+    setShowPhotoUpload(false);
   };
 
-  const handleReadyToSubmit = () => {
-    // Close the Socratic dialogue and let user submit their answer
-    setSocraticQuestion(null);
-    setDialogueFeedback(undefined);
-    setFollowUpQuestion(undefined);
-    setReadyToSubmit(false);
-    // Keep the canvas image so it can be submitted with the answer
+  const handleShowPhotoUpload = () => {
+    setShowPhotoUpload(true);
+  };
+
+  const handleDismissWorkFeedback = () => {
+    setWorkAnalysisFeedback(null);
   };
 
   if (isComplete) {
@@ -562,29 +515,68 @@ export default function PracticePage() {
                 hint={lastFeedback.hint_text}
                 onNext={() => {
                   handleNext();
-                  resetSocraticState();
+                  resetPhotoUploadState();
                 }}
                 onTryAgain={handleTryAgain}
               />
-            ) : socraticQuestion ? (
-              <SocraticDialogue
-                question={socraticQuestion}
-                onRespond={handleSocraticResponse}
-                onReadyToSubmit={handleReadyToSubmit}
-                isLoading={isAnalyzingWork}
-                feedback={dialogueFeedback}
-                followUpQuestion={followUpQuestion}
-                readyToSubmit={readyToSubmit}
+            ) : showPhotoUpload ? (
+              <WorkPhotoUpload
+                onPhotoUploaded={handlePhotoUploaded}
+                onCancel={handleCancelPhotoUpload}
+                isAnalyzing={isAnalyzingWork}
+                problemText={currentProblem.problem_text}
               />
+            ) : workAnalysisFeedback ? (
+              <div className="space-y-4">
+                {/* Work Analysis Feedback */}
+                <div className="bg-gradient-to-b from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
+                  {workAnalysisFeedback.encouragement && (
+                    <p className="text-indigo-700 font-medium mb-3">{workAnalysisFeedback.encouragement}</p>
+                  )}
+                  {workAnalysisFeedback.errorIdentified && (
+                    <div className="mb-3">
+                      <p className="text-sm font-medium text-gray-600">What I noticed:</p>
+                      <p className="text-gray-800">{workAnalysisFeedback.errorIdentified}</p>
+                    </div>
+                  )}
+                  {workAnalysisFeedback.feedback && (
+                    <div className="mb-3">
+                      <p className="text-gray-800">{workAnalysisFeedback.feedback}</p>
+                    </div>
+                  )}
+                  {workAnalysisFeedback.suggestion && (
+                    <div className="bg-white/50 rounded-lg p-3">
+                      <p className="text-sm font-medium text-indigo-600">Try this:</p>
+                      <p className="text-gray-700">{workAnalysisFeedback.suggestion}</p>
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={handleDismissWorkFeedback}
+                  className="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-colors"
+                >
+                  Got it - Try Again
+                </button>
+              </div>
             ) : (
-              <WorkArea
-                onSubmit={handleSubmit}
-                onSkip={handleSkip}
-                onCheckWork={handleCheckWork}
-                disabled={isLoading || isAnalyzingWork}
-                showCheckWork={true}
-                problemId={currentProblem.id}
-              />
+              <div className="space-y-4">
+                <WorkArea
+                  onSubmit={handleSubmit}
+                  onSkip={handleSkip}
+                  disabled={isLoading || isAnalyzingWork}
+                  problemId={currentProblem.id}
+                />
+                {/* Show "Upload Work" button after incorrect answer */}
+                {lastIncorrectAnswer && (
+                  <button
+                    onClick={handleShowPhotoUpload}
+                    className="w-full px-4 py-3 bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Lightbulb className="w-5 h-5" />
+                    Show My Work for Help
+                  </button>
+                )}
+              </div>
             )}
           </ProblemCard>
         </AnimatePresence>

@@ -10,7 +10,7 @@ import path from 'path';
 import fs from 'fs';
 import { createPipeline, MathClicksPipeline } from './index';
 import { Problem, GenerationOptions } from './types';
-import { analyzeStudentWork, evaluateStudentResponse } from './lib/socratic-dialogue';
+import { analyzeStudentWork, evaluateStudentResponse, analyzeIncorrectWork } from './lib/socratic-dialogue';
 import {
   generateClassCode,
   getOrCreateClass,
@@ -268,6 +268,36 @@ app.post('/api/analyze-work', async (req: Request, res: Response) => {
     res.json(result);
   } catch (error) {
     console.error('Error analyzing work:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to analyze work',
+    });
+  }
+});
+
+// Analyze incorrect work (after student gets answer wrong)
+app.post('/api/analyze-incorrect-work', async (req: Request, res: Response) => {
+  try {
+    const { problem, workImage, studentAnswer, attemptNumber } = req.body;
+
+    if (!problem || !workImage || !studentAnswer) {
+      res.status(400).json({
+        success: false,
+        error: 'Missing required fields: problem, workImage, studentAnswer',
+      });
+      return;
+    }
+
+    const result = await analyzeIncorrectWork(getAnthropicClient(), {
+      problem: problem as Problem,
+      workImage,
+      studentAnswer,
+      attemptNumber: attemptNumber || 1,
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error analyzing incorrect work:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Failed to analyze work',
