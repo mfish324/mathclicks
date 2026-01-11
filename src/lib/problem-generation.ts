@@ -185,15 +185,30 @@ export async function generateProblems(
 }
 
 // Generate problems across multiple difficulty tiers
+// startTier defaults to difficulty_baseline from extraction (or 1 if not set)
 export async function generateAdaptiveProblems(
   extraction: ImageExtractionResult,
-  problemsPerTier: number = 3
+  problemsPerTier: number = 3,
+  startTier?: number
 ): Promise<ProblemSet> {
   const config = getConfig();
   const allProblems: Problem[] = [];
 
-  // Generate for tiers 1-5
-  for (let tier = 1; tier <= 5; tier++) {
+  // Use difficulty_baseline from extraction, default to tier 1
+  const baseTier = startTier ?? extraction.difficulty_baseline ?? 1;
+  // Clamp to valid range 1-5
+  const effectiveStartTier = Math.max(1, Math.min(5, baseTier));
+
+  if (config.debug) {
+    console.log(`[DEBUG] Starting problem generation at tier ${effectiveStartTier} (extraction baseline: ${extraction.difficulty_baseline})`);
+  }
+
+  // Generate for tiers starting from effectiveStartTier up to 5, then wrap to lower tiers
+  const tierOrder: number[] = [];
+  for (let t = effectiveStartTier; t <= 5; t++) tierOrder.push(t);
+  for (let t = 1; t < effectiveStartTier; t++) tierOrder.push(t);
+
+  for (const tier of tierOrder) {
     if (config.debug) {
       console.log(`[DEBUG] Generating tier ${tier} problems...`);
     }

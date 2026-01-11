@@ -31,9 +31,8 @@ export async function POST(request: NextRequest) {
     if (BACKEND_URL) {
       const backendFormData = new FormData();
       backendFormData.append("image", file);
-      // Only generate Tier 1 initially (3 problems) for fast startup
-      // Students can start immediately while more problems load
-      backendFormData.append("tier", "1");
+      // Generate initial problems at difficulty matching the extracted content
+      // Backend will use difficulty_baseline from extraction to determine tier
       backendFormData.append("count", "3");
 
       const response = await fetch(`${BACKEND_URL}/api/process-image`, {
