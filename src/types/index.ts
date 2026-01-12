@@ -37,7 +37,7 @@ export const ExtractedContentSchema = z.object({
 export const ImageExtractionResultSchema = z.object({
   topic: z.string(),
   subtopics: z.array(z.string()),
-  grade_level: z.number().min(6).max(8),
+  grade_level: z.number().min(4).max(12),
   standards: z.array(z.string()),
   extracted_content: ExtractedContentSchema,
   difficulty_baseline: z.number().min(1).max(5),
