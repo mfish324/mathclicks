@@ -29,6 +29,7 @@ import {
   type GradeLevel,
   type WarmUpSettings,
 } from './lib/class-store';
+import { getStandardByCode, type MathStandard } from './lib/math-standards';
 import Anthropic from '@anthropic-ai/sdk';
 
 // Load environment variables
@@ -246,6 +247,57 @@ app.post('/api/generate-problems', async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Error generating problems:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to generate problems',
+    });
+  }
+});
+
+// Generate problems from a math standard (no image needed)
+app.post('/api/generate-from-standard', async (req: Request, res: Response) => {
+  try {
+    const { standardCode, count = 10 } = req.body;
+
+    if (!standardCode) {
+      res.status(400).json({ success: false, error: 'Missing required field: standardCode' });
+      return;
+    }
+
+    // Look up the standard
+    const standard = getStandardByCode(standardCode);
+    if (!standard) {
+      res.status(404).json({ success: false, error: `Standard not found: ${standardCode}` });
+      return;
+    }
+
+    // Create a synthetic extraction from the standard
+    const syntheticExtraction = {
+      topic: standard.title,
+      subtopics: [standard.description],
+      grade_level: standard.gradeLevel,
+      standards: [standard.code],
+      extracted_content: {
+        concepts: [standard.description],
+        examples_shown: standard.examples || [],
+      },
+      difficulty_baseline: 3,
+    };
+
+    // Generate adaptive problems across tiers
+    const { generateAdaptiveProblems } = await import('./lib/problem-generation');
+    const problems = await generateAdaptiveProblems(syntheticExtraction, count);
+
+    res.json({
+      success: true,
+      data: {
+        extraction: syntheticExtraction,
+        problems,
+        standard,
+      },
+    });
+  } catch (error) {
+    console.error('Error generating from standard:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Failed to generate problems',

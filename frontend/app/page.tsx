@@ -8,7 +8,9 @@ import { ExtractionVerification } from "@/components/ExtractionVerification";
 import { CreateClassModal } from "@/components/CreateClassModal";
 import { JoinClassModal } from "@/components/JoinClassModal";
 import { SpeedChallenge } from "@/components/SpeedChallenge";
-import { Sparkles, Clock, Trash2, PlayCircle, GraduationCap, Loader2, Users, Zap, UserPlus } from "lucide-react";
+import { StandardSelector } from "@/components/StandardSelector";
+import { Sparkles, Clock, Trash2, PlayCircle, GraduationCap, Loader2, Users, Zap, UserPlus, BookOpen } from "lucide-react";
+import type { MathStandard } from "@/lib/math-standards";
 import type { ProcessImageResponse, ImageExtractionResult, ProblemSet } from "@/lib/types";
 import {
   listSessions,
@@ -29,6 +31,8 @@ export default function HomePage() {
   const [showCreateClassModal, setShowCreateClassModal] = useState(false);
   const [showJoinClassModal, setShowJoinClassModal] = useState(false);
   const [showSpeedChallenge, setShowSpeedChallenge] = useState(false);
+  const [showStandardSelector, setShowStandardSelector] = useState(false);
+  const [isGeneratingFromStandard, setIsGeneratingFromStandard] = useState(false);
   const [speedChallengeGrade, setSpeedChallengeGrade] = useState<GradeLevel>(6);
 
   // New flow state management
@@ -142,6 +146,40 @@ export default function HomePage() {
     // The result is already saved by the SpeedChallenge component
   };
 
+  const handleStandardSelect = async (standard: MathStandard) => {
+    setIsGeneratingFromStandard(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/generate-from-standard", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ standardCode: standard.code, count: 10 }),
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.data) {
+        // Store session data and navigate to practice
+        sessionStorage.setItem("mathclicks-session", JSON.stringify({
+          extraction: data.data.extraction,
+          problems: {
+            topic: data.data.extraction.topic,
+            problems: data.data.problems.problems,
+            generated_at: new Date().toISOString(),
+          },
+        }));
+        setShowStandardSelector(false);
+        router.push("/practice");
+      } else {
+        throw new Error(data.error || "Failed to generate problems");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to generate problems from standard");
+      setIsGeneratingFromStandard(false);
+    }
+  };
+
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     const now = new Date();
@@ -183,6 +221,25 @@ export default function HomePage() {
 
         {/* Image Uploader */}
         <ImageUploader onImageSelect={handleImageSelect} isLoading={isLoading} />
+
+        {/* Or Select Standard */}
+        <div className="mt-6 text-center">
+          <div className="flex items-center gap-4 justify-center mb-4">
+            <div className="h-px bg-gray-200 flex-1 max-w-[100px]" />
+            <span className="text-sm text-gray-400">or</span>
+            <div className="h-px bg-gray-200 flex-1 max-w-[100px]" />
+          </div>
+          <button
+            onClick={() => setShowStandardSelector(true)}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 rounded-xl font-medium transition-colors"
+          >
+            <BookOpen className="w-5 h-5" />
+            Select a Math Standard
+          </button>
+          <p className="text-sm text-gray-400 mt-2">
+            Choose a Common Core standard if image analysis doesn't work
+          </p>
+        </div>
 
         {/* Saved Sessions */}
         {savedSessions.length > 0 && (
@@ -365,6 +422,17 @@ export default function HomePage() {
           onClose={() => setShowSpeedChallenge(false)}
         />
       )}
+
+      {/* Standard Selector */}
+      <StandardSelector
+        isOpen={showStandardSelector}
+        onClose={() => {
+          setShowStandardSelector(false);
+          setIsGeneratingFromStandard(false);
+        }}
+        onSelect={handleStandardSelect}
+        isLoading={isGeneratingFromStandard}
+      />
     </main>
   );
 }
