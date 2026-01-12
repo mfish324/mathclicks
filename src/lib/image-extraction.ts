@@ -211,12 +211,14 @@ export async function extractMathContent(
     // Validate as successful extraction
     const result = ImageExtractionResultSchema.safeParse(parsed);
     if (!result.success) {
-      if (config.debug) {
-        console.log(`[DEBUG] Validation errors:`, result.error.issues);
-      }
+      const errorDetails = result.error.issues
+        .map((i) => `${i.path.join('.')}: ${i.message}`)
+        .join('; ');
+      console.log(`[VALIDATION] Errors:`, errorDetails);
+      console.log(`[VALIDATION] Raw response:`, JSON.stringify(parsed, null, 2));
       return {
         error: true,
-        message: 'AI response did not match expected format',
+        message: `AI response did not match expected format: ${errorDetails}`,
         suggestion: 'Try with a different image or clearer photo',
       };
     }
