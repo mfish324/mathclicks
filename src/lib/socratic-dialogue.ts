@@ -4,6 +4,7 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
+import { withRetryAndFallback } from '../api/claude-client';
 import type { Problem } from '../types';
 
 export interface SocraticQuestion {
@@ -86,29 +87,37 @@ export async function analyzeStudentWork(
     // Remove data URL prefix if present
     const base64Data = canvasImage.replace(/^data:image\/\w+;base64,/, '');
 
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 500,
-      messages: [
-        {
-          role: 'user',
-          content: [
+    const response = await withRetryAndFallback(
+      (model) =>
+        client.messages.create({
+          model,
+          max_tokens: 500,
+          messages: [
             {
-              type: 'image',
-              source: {
-                type: 'base64',
-                media_type: 'image/png',
-                data: base64Data,
-              },
-            },
-            {
-              type: 'text',
-              text: prompt,
+              role: 'user',
+              content: [
+                {
+                  type: 'image',
+                  source: {
+                    type: 'base64',
+                    media_type: 'image/png',
+                    data: base64Data,
+                  },
+                },
+                {
+                  type: 'text',
+                  text: prompt,
+                },
+              ],
             },
           ],
+        }),
+      {
+        onFallback: (from, to) => {
+          console.log(`[SOCRATIC] Falling back from ${from} to ${to}`);
         },
-      ],
-    });
+      }
+    );
 
     // Extract text content
     const textContent = response.content.find(c => c.type === 'text');
@@ -271,29 +280,37 @@ export async function analyzeIncorrectWork(
       mediaType = 'image/webp';
     }
 
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 800,
-      messages: [
-        {
-          role: 'user',
-          content: [
+    const response = await withRetryAndFallback(
+      (model) =>
+        client.messages.create({
+          model,
+          max_tokens: 800,
+          messages: [
             {
-              type: 'image',
-              source: {
-                type: 'base64',
-                media_type: mediaType,
-                data: base64Data,
-              },
-            },
-            {
-              type: 'text',
-              text: prompt,
+              role: 'user',
+              content: [
+                {
+                  type: 'image',
+                  source: {
+                    type: 'base64',
+                    media_type: mediaType,
+                    data: base64Data,
+                  },
+                },
+                {
+                  type: 'text',
+                  text: prompt,
+                },
+              ],
             },
           ],
+        }),
+      {
+        onFallback: (from, to) => {
+          console.log(`[ANALYZE_INCORRECT] Falling back from ${from} to ${to}`);
         },
-      ],
-    });
+      }
+    );
 
     // Extract text content
     const textContent = response.content.find(c => c.type === 'text');
@@ -345,29 +362,37 @@ export async function evaluateStudentResponse(
     // Remove data URL prefix if present
     const base64Data = canvasImage.replace(/^data:image\/\w+;base64,/, '');
 
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 500,
-      messages: [
-        {
-          role: 'user',
-          content: [
+    const response = await withRetryAndFallback(
+      (model) =>
+        client.messages.create({
+          model,
+          max_tokens: 500,
+          messages: [
             {
-              type: 'image',
-              source: {
-                type: 'base64',
-                media_type: 'image/png',
-                data: base64Data,
-              },
-            },
-            {
-              type: 'text',
-              text: prompt,
+              role: 'user',
+              content: [
+                {
+                  type: 'image',
+                  source: {
+                    type: 'base64',
+                    media_type: 'image/png',
+                    data: base64Data,
+                  },
+                },
+                {
+                  type: 'text',
+                  text: prompt,
+                },
+              ],
             },
           ],
+        }),
+      {
+        onFallback: (from, to) => {
+          console.log(`[EVALUATE_RESPONSE] Falling back from ${from} to ${to}`);
         },
-      ],
-    });
+      }
+    );
 
     // Extract text content
     const textContent = response.content.find(c => c.type === 'text');

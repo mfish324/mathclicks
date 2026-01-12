@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { getClient, getModel, getConfig } from '../api/claude-client';
+import { getClient, getConfig, withRetryAndFallback } from '../api/claude-client';
 import {
   ImageExtractionResponse,
   ImageExtractionResultSchema,
@@ -143,29 +143,37 @@ export async function extractMathContent(
   }
 
   try {
-    const response = await client.messages.create({
-      model: getModel(),
-      max_tokens: 2048,
-      messages: [
-        {
-          role: 'user',
-          content: [
+    const response = await withRetryAndFallback(
+      (model) =>
+        client.messages.create({
+          model,
+          max_tokens: 2048,
+          messages: [
             {
-              type: 'image',
-              source: {
-                type: 'base64',
-                media_type: mediaType,
-                data: imageBase64,
-              },
-            },
-            {
-              type: 'text',
-              text: EXTRACTION_PROMPT,
+              role: 'user',
+              content: [
+                {
+                  type: 'image',
+                  source: {
+                    type: 'base64',
+                    media_type: mediaType,
+                    data: imageBase64,
+                  },
+                },
+                {
+                  type: 'text',
+                  text: EXTRACTION_PROMPT,
+                },
+              ],
             },
           ],
+        }),
+      {
+        onFallback: (from, to) => {
+          console.log(`[EXTRACTION] Falling back from ${from} to ${to}`);
         },
-      ],
-    });
+      }
+    );
 
     // Extract text content from response
     const textBlock = response.content.find((block) => block.type === 'text');
@@ -246,28 +254,36 @@ export async function extractMathContentFromUrl(
   }
 
   try {
-    const response = await client.messages.create({
-      model: getModel(),
-      max_tokens: 2048,
-      messages: [
-        {
-          role: 'user',
-          content: [
+    const response = await withRetryAndFallback(
+      (model) =>
+        client.messages.create({
+          model,
+          max_tokens: 2048,
+          messages: [
             {
-              type: 'image',
-              source: {
-                type: 'url',
-                url: imageUrl,
-              },
-            },
-            {
-              type: 'text',
-              text: EXTRACTION_PROMPT,
+              role: 'user',
+              content: [
+                {
+                  type: 'image',
+                  source: {
+                    type: 'url',
+                    url: imageUrl,
+                  },
+                },
+                {
+                  type: 'text',
+                  text: EXTRACTION_PROMPT,
+                },
+              ],
             },
           ],
+        }),
+      {
+        onFallback: (from, to) => {
+          console.log(`[EXTRACTION] Falling back from ${from} to ${to}`);
         },
-      ],
-    });
+      }
+    );
 
     const textBlock = response.content.find((block) => block.type === 'text');
     if (!textBlock || textBlock.type !== 'text') {

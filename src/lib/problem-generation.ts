@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { getClient, getModel, getConfig } from '../api/claude-client';
+import { getClient, getConfig, withRetryAndFallback } from '../api/claude-client';
 import {
   ImageExtractionResult,
   Problem,
@@ -115,16 +115,24 @@ export async function generateProblems(
     console.log(`[DEBUG] Generation prompt:\n${prompt.slice(0, 500)}...`);
   }
 
-  const response = await client.messages.create({
-    model: getModel(),
-    max_tokens: 4096,
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
+  const response = await withRetryAndFallback(
+    (model) =>
+      client.messages.create({
+        model,
+        max_tokens: 4096,
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      }),
+    {
+      onFallback: (from, to) => {
+        console.log(`[GENERATION] Falling back from ${from} to ${to}`);
       },
-    ],
-  });
+    }
+  );
 
   const textBlock = response.content.find((block) => block.type === 'text');
   if (!textBlock || textBlock.type !== 'text') {
