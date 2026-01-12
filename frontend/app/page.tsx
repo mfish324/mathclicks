@@ -6,8 +6,9 @@ import { ImageUploader } from "@/components/ImageUploader";
 import { ReviewProblemsModal } from "@/components/ReviewProblemsModal";
 import { ExtractionVerification } from "@/components/ExtractionVerification";
 import { CreateClassModal } from "@/components/CreateClassModal";
+import { JoinClassModal } from "@/components/JoinClassModal";
 import { SpeedChallenge } from "@/components/SpeedChallenge";
-import { Sparkles, Clock, Trash2, PlayCircle, GraduationCap, Loader2, Users, Zap } from "lucide-react";
+import { Sparkles, Clock, Trash2, PlayCircle, GraduationCap, Loader2, Users, Zap, UserPlus } from "lucide-react";
 import type { ProcessImageResponse, ImageExtractionResult, ProblemSet } from "@/lib/types";
 import {
   listSessions,
@@ -26,6 +27,7 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [savedSessions, setSavedSessions] = useState<SessionSummary[]>([]);
   const [showCreateClassModal, setShowCreateClassModal] = useState(false);
+  const [showJoinClassModal, setShowJoinClassModal] = useState(false);
   const [showSpeedChallenge, setShowSpeedChallenge] = useState(false);
   const [speedChallengeGrade, setSpeedChallengeGrade] = useState<GradeLevel>(6);
 
@@ -254,8 +256,30 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Student Join Class Section */}
+        <div className="mt-12 p-6 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
+                <UserPlus className="w-6 h-6 text-emerald-600" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-800">Join Your Class</h2>
+                <p className="text-gray-600 text-sm">Enter your class code to share progress with your teacher</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowJoinClassModal(true)}
+              className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-medium transition-colors flex items-center gap-2"
+            >
+              <UserPlus className="w-5 h-5" />
+              Join Class
+            </button>
+          </div>
+        </div>
+
         {/* Speed Challenge Section */}
-        <div className="mt-12 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl border border-purple-100">
+        <div className="mt-6 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl border border-purple-100">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
@@ -325,6 +349,12 @@ export default function HomePage() {
         isOpen={showCreateClassModal}
         onClose={() => setShowCreateClassModal(false)}
         onCreateClass={handleCreateClass}
+      />
+
+      {/* Join Class Modal */}
+      <JoinClassModal
+        isOpen={showJoinClassModal}
+        onClose={() => setShowJoinClassModal(false)}
       />
 
       {/* Speed Challenge */}

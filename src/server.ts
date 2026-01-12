@@ -344,6 +344,36 @@ app.post('/api/evaluate-response', async (req: Request, res: Response) => {
 
 // ============ Teacher Dashboard API ============
 
+// Check if a class exists (for student join validation)
+app.get('/api/class/:code/exists', (req: Request, res: Response) => {
+  try {
+    const { code } = req.params;
+    const upperCode = code.toUpperCase();
+
+    // Check if class has settings (teacher created it)
+    const settings = getClassSettings(upperCode);
+    if (settings) {
+      res.json({
+        exists: true,
+        gradeLevel: settings.gradeLevel,
+        warmUpRequired: settings.warmUp.enabled && settings.warmUp.required,
+      });
+      return;
+    }
+
+    // Check if class has students (legacy class without settings)
+    if (classExists(upperCode)) {
+      res.json({ exists: true, gradeLevel: null, warmUpRequired: false });
+      return;
+    }
+
+    res.json({ exists: false });
+  } catch (error) {
+    console.error('Error checking class:', error);
+    res.status(500).json({ exists: false, error: 'Failed to check class' });
+  }
+});
+
 // Create a new class with settings
 app.post('/api/class/create', (req: Request, res: Response) => {
   try {
