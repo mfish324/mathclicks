@@ -36,21 +36,44 @@ CRITICAL - IDENTIFY POLYNOMIAL DEGREE:
 - Parabolas indicate quadratic content
 - Terms like "vertex", "axis of symmetry", "roots", "zeros" suggest quadratics
 
-CRITICAL - HANDWRITTEN CONTENT RECOGNITION:
-When reading handwritten math, be VERY careful to distinguish between:
-- NUMBERS vs VARIABLES: "34" (thirty-four) vs "3y" (three times y)
-- Common confusions to watch for:
-  * "4" vs "y" - look at the overall shape and context
-  * "1" vs "l" vs "I" - context matters
-  * "0" vs "O" - in math, prefer "0" (zero)
-  * "2" vs "z" - context matters
-  * Multi-digit numbers: "34", "17", "272" are common; unusual variable combinations like "3y" in a denominator are less common
+CRITICAL - HANDWRITTEN NUMBER RECOGNITION:
+When reading handwritten math on paper, be EXTREMELY careful with numbers:
 
-CONTEXT CLUES for numbers vs variables:
-- In fractions like a/b, both numerator and denominator are usually NUMBERS (e.g., "34/2" not "3y/2")
-- In proportions like a/b = c/d, all four values are typically NUMBERS
-- Variables usually appear with coefficients (e.g., "2x", "3n") or alone ("x", "y")
-- If it looks like a two-digit number (10-99), it is probably a number, not a variable combination
+DIGIT-BY-DIGIT RECOGNITION:
+- Read each digit separately before combining into a number
+- "1" has a single vertical stroke (may have small top serif)
+- "2" has a curved top and flat bottom with diagonal
+- "3" has two curved bumps on the right
+- "4" has a vertical line with a horizontal cross, may be open or closed top
+- "5" has a flat top, curved bottom
+- "6" has a curved top loop going down into a bottom loop
+- "7" has a flat top with diagonal down-stroke
+- "8" has two stacked loops
+- "9" has a top loop with tail going down
+- "0" is an oval/circle
+
+COMMON HANDWRITING CONFUSIONS - BE CAREFUL:
+- "1" vs "7": Look for the top horizontal line (7 has it, 1 doesn't)
+- "4" vs "9": Look at the overall shape - 4 has angles, 9 is rounded
+- "5" vs "6": 5 has a flat top, 6 has a curved top
+- "6" vs "0": 6 has a tail/stem, 0 is closed
+- "3" vs "8": 3 is open on left, 8 is closed
+- "2" vs "7": 2 curves at bottom, 7 is straight diagonal
+
+NUMBERS vs VARIABLES:
+- "34" (thirty-four) vs "3y" (three times y)
+- "4" vs "y" - 4 has angular strokes, y has a descender tail
+- "1" vs "l" vs "I" - in math context, prefer reading as "1"
+- "0" vs "O" - in math, prefer "0" (zero)
+- "2" vs "z" - 2 is more curved, z is angular
+- Multi-digit numbers (10-99, 100-999) are VERY common in math problems
+
+CONTEXT CLUES - ASSUME NUMBERS UNLESS CLEARLY A VARIABLE:
+- In equations like "2x + 5 = 17", the 2, 5, and 17 are numbers
+- In fractions, numerator and denominator are usually NUMBERS
+- In proportions (a/b = c/d), all four values are typically NUMBERS
+- Coefficients are usually single digits (2x, 3y) not multi-digit (34x is unusual)
+- If it could be a two-digit number OR a variable combo, choose the NUMBER
 
 IMPORTANT GUIDELINES:
 - Extract ALL mathematical content visible, even if partially obscured
