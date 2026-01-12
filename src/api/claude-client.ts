@@ -32,5 +32,5 @@ export function getConfig(): PipelineConfig {
 }
 
 export function getModel(): string {
-  return currentConfig?.model || 'claude-sonnet-4-20250514';
+  return currentConfig?.model || 'claude-opus-4-5-20251101';
 }
