@@ -32,9 +32,12 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
+    "@supabase/supabase-js": "^2.90.1",
     "cors": "^2.8.5",
+    "csv-parse": "^6.1.0",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "glob": "^13.0.0",
     "multer": "^2.0.2",
     "uuid": "^13.0.0",
     "zod": "^4.1.13"

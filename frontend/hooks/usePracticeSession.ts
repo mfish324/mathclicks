@@ -1,7 +1,15 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import type { Problem, ImageExtractionResult, ProblemSet, CheckAnswerResponse, ProblemAttempt } from "@/lib/types";
+import type {
+  Problem,
+  ImageExtractionResult,
+  ProblemSet,
+  CheckAnswerResponse,
+  ProblemAttempt,
+  MasteryUpdate,
+  SelectionResult,
+} from "@/lib/types";
 import {
   createSession,
   updateSession,
@@ -26,6 +34,11 @@ interface PracticeSessionState {
   lastFeedback: CheckAnswerResponse | null;
   isRestored: boolean;
   isInitialized: boolean;
+  // Mastery tracking
+  currentTier: number;
+  lastMasteryUpdate: MasteryUpdate | null;
+  standardCode: string | null;
+  studentId: string | null;
 }
 
 const initialState: PracticeSessionState = {
@@ -40,6 +53,11 @@ const initialState: PracticeSessionState = {
   lastFeedback: null,
   isRestored: false,
   isInitialized: false,
+  // Mastery tracking
+  currentTier: 3, // Default starting tier
+  lastMasteryUpdate: null,
+  standardCode: null,
+  studentId: null,
 };
 
 export function usePracticeSession() {
@@ -235,7 +253,159 @@ export function usePracticeSession() {
     correct: Object.values(state.results).filter(Boolean).length,
   }), [state.currentIndex, state.problems.length, state.results]);
 
-  const isComplete = state.currentIndex >= state.problems.length - 1 && 
+  // ============ Mastery Tracking ============
+
+  // Set student and standard for mastery tracking
+  const setMasteryContext = useCallback((studentId: string, standardCode: string, initialTier?: number) => {
+    setState(prev => ({
+      ...prev,
+      studentId,
+      standardCode,
+      currentTier: initialTier ?? prev.currentTier,
+    }));
+  }, []);
+
+  // Record attempt with mastery update
+  // If problem is AI-generated and correct, it will be auto-saved to database
+  const recordAttemptWithMastery = useCallback(async (
+    problemId: string,
+    studentAnswer: string,
+    isCorrect: boolean,
+    options?: {
+      timeSpentSeconds?: number;
+      hintsUsed?: number;
+      errorType?: string;
+      feedbackGiven?: string;
+      problem?: Problem; // Pass full problem for AI-generated auto-save
+      problemSource?: "stored" | "ai_generated";
+    }
+  ): Promise<MasteryUpdate | null> => {
+    if (!state.studentId || !state.standardCode) {
+      console.warn("Mastery context not set, skipping mastery update");
+      return null;
+    }
+
+    try {
+      const response = await fetch(`/api/problems/${problemId}/attempt`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          studentId: state.studentId,
+          standardCode: state.standardCode,
+          studentAnswer,
+          isCorrect,
+          timeSpentSeconds: options?.timeSpentSeconds,
+          hintsUsed: options?.hintsUsed,
+          sessionId: state.sessionId,
+          errorType: options?.errorType,
+          feedbackGiven: options?.feedbackGiven,
+          // For auto-saving AI problems on correct answer
+          problem: options?.problemSource === "ai_generated" ? options.problem : undefined,
+          problemSource: options?.problemSource,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to record attempt:", await response.text());
+        return null;
+      }
+
+      const data = await response.json();
+      const masteryUpdate = data.data?.masteryUpdate as MasteryUpdate | null;
+      const savedProblemId = data.data?.savedProblemId as string | undefined;
+
+      if (savedProblemId) {
+        console.log(`AI problem auto-saved to database: ${savedProblemId}`);
+      }
+
+      if (masteryUpdate) {
+        setState(prev => ({
+          ...prev,
+          currentTier: masteryUpdate.newTier,
+          lastMasteryUpdate: masteryUpdate,
+        }));
+      }
+
+      return masteryUpdate;
+    } catch (error) {
+      console.error("Error recording attempt:", error);
+      return null;
+    }
+  }, [state.studentId, state.standardCode, state.sessionId]);
+
+  // Select problems using adaptive selection
+  const selectAdaptiveProblems = useCallback(async (
+    standardCode: string,
+    count: number = 5,
+    options: { preferStored?: boolean; maxTier?: number } = {}
+  ): Promise<SelectionResult | null> => {
+    try {
+      setState(prev => ({ ...prev, isLoading: true, error: null }));
+
+      const response = await fetch("/api/problems/select", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          standardCode,
+          studentId: state.studentId,
+          count,
+          preferStored: options.preferStored ?? true,
+          maxTier: options.maxTier,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to select problems");
+      }
+
+      const data = await response.json();
+      const result = data.data as SelectionResult;
+
+      // Update state with selected problems
+      const problems = result.problems.map(sp => ({
+        ...sp.problem,
+        source: sp.source,
+      }));
+
+      setState(prev => ({
+        ...prev,
+        isLoading: false,
+        problems,
+        currentTier: result.metadata.studentTier,
+        standardCode,
+      }));
+
+      return result;
+    } catch (error) {
+      setState(prev => ({
+        ...prev,
+        isLoading: false,
+        error: error instanceof Error ? error.message : "Failed to select problems",
+      }));
+      return null;
+    }
+  }, [state.studentId]);
+
+  // Get student's mastery summary
+  const getMasterySummary = useCallback(async () => {
+    if (!state.studentId) {
+      return null;
+    }
+
+    try {
+      const response = await fetch(`/api/student/${state.studentId}/mastery`);
+      if (!response.ok) {
+        return null;
+      }
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      console.error("Error fetching mastery summary:", error);
+      return null;
+    }
+  }, [state.studentId]);
+
+  const isComplete = state.currentIndex >= state.problems.length - 1 &&
     state.results[state.problems[state.currentIndex]?.id];
 
   return {
@@ -251,5 +421,10 @@ export function usePracticeSession() {
     clearFeedback,
     getProgress,
     isComplete,
+    // Mastery tracking
+    setMasteryContext,
+    recordAttemptWithMastery,
+    selectAdaptiveProblems,
+    getMasterySummary,
   };
 }

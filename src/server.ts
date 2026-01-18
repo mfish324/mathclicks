@@ -682,6 +682,320 @@ app.get('/api/class/:classCode/warmup', (req: Request, res: Response) => {
   }
 });
 
+// ============ Problem Bank & Adaptive Selection API ============
+
+// Select problems (hybrid stored + AI)
+app.post('/api/problems/select', async (req: Request, res: Response) => {
+  try {
+    const { standardCode, studentId, count = 5, preferStored = true, tierOverride, maxTier } = req.body;
+
+    if (!standardCode) {
+      res.status(400).json({ success: false, error: 'Missing required field: standardCode' });
+      return;
+    }
+
+    const { selectProblems } = await import('./lib/problem-selection');
+    const result = await selectProblems({
+      standardCode,
+      studentId,
+      count,
+      preferStored,
+      allowAIFallback: true,
+      tierOverride,
+      maxTier,
+    });
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    console.error('Error selecting problems:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to select problems',
+    });
+  }
+});
+
+// Record a problem attempt and update mastery
+app.post('/api/problems/:problemId/attempt', async (req: Request, res: Response) => {
+  try {
+    const { problemId } = req.params;
+    const {
+      studentId,
+      standardCode,
+      studentAnswer,
+      isCorrect,
+      timeSpentSeconds,
+      hintsUsed,
+      sessionId,
+      errorType,
+      feedbackGiven,
+      // For auto-saving AI-generated problems on correct answer
+      problem,
+      problemSource,
+    } = req.body;
+
+    if (!studentId || !standardCode || !studentAnswer || isCorrect === undefined) {
+      res.status(400).json({
+        success: false,
+        error: 'Missing required fields: studentId, standardCode, studentAnswer, isCorrect',
+      });
+      return;
+    }
+
+    const { recordAttempt } = await import('./lib/mastery-tracker');
+
+    // If this is an AI-generated problem and the answer is correct, save it to the database
+    let savedProblemId: string | null = null;
+    if (isCorrect && problemSource === 'ai_generated' && problem) {
+      const { storeGeneratedProblem } = await import('./lib/problem-selection');
+      savedProblemId = await storeGeneratedProblem(problem, standardCode, {
+        source: 'ai_generated',
+        markReviewed: false, // Not reviewed, but validated by correct answer
+      });
+      if (savedProblemId) {
+        console.log(`[AUTO-SAVE] Stored AI problem ${savedProblemId} for standard ${standardCode}`);
+      }
+    }
+
+    const masteryUpdate = await recordAttempt({
+      studentId,
+      problemId: savedProblemId || (problemId !== 'ai' ? problemId : undefined),
+      standardCode,
+      studentAnswer,
+      isCorrect,
+      timeSpentSeconds,
+      hintsUsed,
+      sessionId,
+      errorType,
+      feedbackGiven,
+    });
+
+    res.json({
+      success: true,
+      data: {
+        masteryUpdate,
+        savedProblemId, // Let frontend know if problem was saved
+      },
+    });
+  } catch (error) {
+    console.error('Error recording attempt:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to record attempt',
+    });
+  }
+});
+
+// Get problem statistics for a standard
+app.get('/api/problems/stats/:standardCode', async (req: Request, res: Response) => {
+  try {
+    const { standardCode } = req.params;
+
+    const { getProblemStats } = await import('./lib/problem-selection');
+    const stats = await getProblemStats(standardCode);
+
+    res.json({ success: true, data: stats });
+  } catch (error) {
+    console.error('Error getting problem stats:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to get problem stats',
+    });
+  }
+});
+
+// ============ Standards API (Database-backed) ============
+
+// Get all standards
+app.get('/api/standards', async (req: Request, res: Response) => {
+  try {
+    const { grade } = req.query;
+
+    const { getAllStandards, getStandardsForGrade } = await import('./lib/standards-service');
+
+    let standards;
+    if (grade) {
+      standards = await getStandardsForGrade(parseInt(grade as string, 10));
+    } else {
+      standards = await getAllStandards();
+    }
+
+    res.json({ success: true, data: standards });
+  } catch (error) {
+    console.error('Error getting standards:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to get standards',
+    });
+  }
+});
+
+// Get standards by domain for a grade
+app.get('/api/standards/by-domain/:grade', async (req: Request, res: Response) => {
+  try {
+    const { grade } = req.params;
+
+    const { getStandardsByDomain } = await import('./lib/standards-service');
+    const categories = await getStandardsByDomain(parseInt(grade, 10));
+
+    res.json({ success: true, data: categories });
+  } catch (error) {
+    console.error('Error getting standards by domain:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to get standards',
+    });
+  }
+});
+
+// Search standards
+app.get('/api/standards/search', async (req: Request, res: Response) => {
+  try {
+    const { q, grade } = req.query;
+
+    if (!q) {
+      res.status(400).json({ success: false, error: 'Missing required query parameter: q' });
+      return;
+    }
+
+    const { searchStandards } = await import('./lib/standards-service');
+    const gradeFilter = grade ? parseInt(grade as string, 10) : undefined;
+    const standards = await searchStandards(q as string, gradeFilter);
+
+    res.json({ success: true, data: standards });
+  } catch (error) {
+    console.error('Error searching standards:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to search standards',
+    });
+  }
+});
+
+// Get a specific standard by code
+app.get('/api/standards/:code', async (req: Request, res: Response) => {
+  try {
+    const { code } = req.params;
+
+    const { getStandardByCode } = await import('./lib/standards-service');
+    const standard = await getStandardByCode(code);
+
+    if (!standard) {
+      res.status(404).json({ success: false, error: `Standard not found: ${code}` });
+      return;
+    }
+
+    res.json({ success: true, data: standard });
+  } catch (error) {
+    console.error('Error getting standard:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to get standard',
+    });
+  }
+});
+
+// ============ Student Sync API ============
+
+// Sync student from localStorage to database
+app.post('/api/student/sync', async (req: Request, res: Response) => {
+  try {
+    const { localId, name, displayName, gradeLevel, stats } = req.body;
+
+    if (!localId) {
+      res.status(400).json({ success: false, error: 'Missing required field: localId' });
+      return;
+    }
+
+    const { isSupabaseConfigured, getSupabaseAdmin } = await import('./lib/supabase');
+
+    if (!isSupabaseConfigured()) {
+      // Return success with local-only mode indicator
+      res.json({ success: true, data: { id: localId, mode: 'local' } });
+      return;
+    }
+
+    const supabase = getSupabaseAdmin();
+
+    // Upsert student record
+    const { data, error } = await supabase
+      .from('students')
+      .upsert(
+        {
+          local_id: localId,
+          name,
+          display_name: displayName,
+          grade_level: gradeLevel,
+          total_xp: stats?.totalXP || 0,
+          current_level: stats?.currentLevel || 1,
+          current_streak: stats?.currentStreak || 0,
+          longest_streak: stats?.longestStreak || 0,
+          problems_solved: stats?.problemsSolved || 0,
+          problems_attempted: stats?.problemsAttempted || 0,
+          last_activity_at: new Date().toISOString(),
+        },
+        { onConflict: 'local_id' }
+      )
+      .select('id')
+      .single();
+
+    if (error) {
+      console.error('Error syncing student:', error);
+      res.status(500).json({ success: false, error: 'Failed to sync student' });
+      return;
+    }
+
+    res.json({ success: true, data: { id: data.id, mode: 'synced' } });
+  } catch (error) {
+    console.error('Error syncing student:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to sync student',
+    });
+  }
+});
+
+// Get student mastery summary
+app.get('/api/student/:studentId/mastery', async (req: Request, res: Response) => {
+  try {
+    const { studentId } = req.params;
+
+    const { getMasterySummary } = await import('./lib/mastery-tracker');
+    const summary = await getMasterySummary(studentId);
+
+    res.json({ success: true, data: summary });
+  } catch (error) {
+    console.error('Error getting mastery summary:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to get mastery summary',
+    });
+  }
+});
+
+// Get student mastery for a specific standard
+app.get('/api/student/:studentId/mastery/:standardCode', async (req: Request, res: Response) => {
+  try {
+    const { studentId, standardCode } = req.params;
+
+    const { getMasteryForStudent } = await import('./lib/mastery-tracker');
+    const mastery = await getMasteryForStudent(studentId, standardCode);
+
+    if (!mastery) {
+      res.json({ success: true, data: null });
+      return;
+    }
+
+    res.json({ success: true, data: mastery });
+  } catch (error) {
+    console.error('Error getting student mastery:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to get student mastery',
+    });
+  }
+});
+
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error('Unhandled error:', err);

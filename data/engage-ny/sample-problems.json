@@ -1,0 +1,108 @@
+[
+  {
+    "problemText": "What is 1/2 + 1/3?",
+    "answer": "5/6",
+    "answerType": "fraction",
+    "standardCode": "G5-M3",
+    "gradeLevel": 5,
+    "difficulty": 3,
+    "hints": [
+      "Find a common denominator for 2 and 3",
+      "Convert both fractions to sixths",
+      "Add the numerators: 3/6 + 2/6"
+    ],
+    "solutionSteps": [
+      "Find the LCD of 2 and 3, which is 6",
+      "Convert 1/2 to 3/6",
+      "Convert 1/3 to 2/6",
+      "Add: 3/6 + 2/6 = 5/6"
+    ],
+    "topic": "Adding Fractions with Unlike Denominators",
+    "sourceReference": "EngageNY G5-M3-L5",
+    "attribution": "EngageNY / Great Minds"
+  },
+  {
+    "problemText": "Solve: 2x + 3 = 11",
+    "answer": "4",
+    "answerType": "integer",
+    "standardCode": "G7-M3",
+    "gradeLevel": 7,
+    "difficulty": 2,
+    "hints": [
+      "First, isolate the term with x",
+      "Subtract 3 from both sides",
+      "Then divide by 2"
+    ],
+    "solutionSteps": [
+      "2x + 3 = 11",
+      "2x + 3 - 3 = 11 - 3",
+      "2x = 8",
+      "x = 4"
+    ],
+    "topic": "Two-Step Equations",
+    "sourceReference": "EngageNY G7-M3-L8",
+    "attribution": "EngageNY / Great Minds"
+  },
+  {
+    "problemText": "A store sells apples for $0.50 each. How much do 8 apples cost?",
+    "answer": "4.00",
+    "answerType": "decimal",
+    "standardCode": "G6-M1",
+    "gradeLevel": 6,
+    "difficulty": 2,
+    "hints": [
+      "What operation do you need?",
+      "Multiply the price by the quantity"
+    ],
+    "solutionSteps": [
+      "Cost = price per apple × number of apples",
+      "Cost = $0.50 × 8",
+      "Cost = $4.00"
+    ],
+    "topic": "Unit Rates",
+    "sourceReference": "EngageNY G6-M1-L2",
+    "attribution": "EngageNY / Great Minds"
+  },
+  {
+    "problemText": "Find the value of 2³ × 2⁴",
+    "answer": "128",
+    "answerType": "integer",
+    "standardCode": "G8-M1",
+    "gradeLevel": 8,
+    "difficulty": 2,
+    "hints": [
+      "When multiplying powers with the same base, add the exponents",
+      "2³ × 2⁴ = 2^(3+4)",
+      "Calculate 2⁷"
+    ],
+    "solutionSteps": [
+      "Apply the product rule: 2³ × 2⁴ = 2^(3+4)",
+      "2^7 = 128"
+    ],
+    "topic": "Exponent Properties",
+    "sourceReference": "EngageNY G8-M1-L1",
+    "attribution": "EngageNY / Great Minds"
+  },
+  {
+    "problemText": "If a rectangle has a length of 8 cm and a width of 5 cm, what is its perimeter?",
+    "answer": "26",
+    "answerType": "integer",
+    "standardCode": "4.NBT.B.4",
+    "gradeLevel": 4,
+    "difficulty": 2,
+    "hints": [
+      "Perimeter means the distance around the shape",
+      "Add all four sides",
+      "Or use the formula: P = 2l + 2w"
+    ],
+    "solutionSteps": [
+      "Perimeter = 2 × length + 2 × width",
+      "P = 2(8) + 2(5)",
+      "P = 16 + 10",
+      "P = 26 cm"
+    ],
+    "topic": "Multi-digit Addition",
+    "sourceReference": "EngageNY G4-M1-L3",
+    "attribution": "EngageNY / Great Minds"
+  }
+]

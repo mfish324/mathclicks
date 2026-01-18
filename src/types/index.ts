@@ -81,6 +81,40 @@ export const ProblemSchema = z.object({
   common_mistakes: z.array(z.string()).optional(),
 });
 
+// Extended problem schema with source/license tracking (for database storage)
+export const ProblemSourceSchema = z.enum([
+  'ai_generated',
+  'public_domain',
+  'engage_ny',
+  'illustrative_math',
+  'teacher_created',
+]);
+
+export const LicenseTypeSchema = z.enum([
+  'public_domain',
+  'cc0',
+  'cc_by',
+  'cc_by_sa',
+  'cc_by_nc',
+]);
+
+export const ExtendedProblemSchema = ProblemSchema.extend({
+  source: ProblemSourceSchema.optional(),
+  source_url: z.string().optional(),
+  source_reference: z.string().optional(),
+  license: LicenseTypeSchema.optional(),
+  attribution: z.string().optional(),
+  primary_standard_id: z.string().uuid().optional(),
+  is_reviewed: z.boolean().optional(),
+  quality_score: z.number().min(0).max(5).optional(),
+  usage_count: z.number().optional(),
+  success_rate: z.number().min(0).max(1).optional(),
+});
+
+export type ProblemSource = z.infer<typeof ProblemSourceSchema>;
+export type LicenseType = z.infer<typeof LicenseTypeSchema>;
+export type ExtendedProblem = z.infer<typeof ExtendedProblemSchema>;
+
 export const ProblemSetSchema = z.object({
   topic: z.string(),
   problems: z.array(ProblemSchema),
