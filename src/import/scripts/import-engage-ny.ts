@@ -14,6 +14,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { glob } from 'glob';
+import 'dotenv/config';
 import {
   importFromCSV,
   importFromJSON,
@@ -106,18 +107,6 @@ async function importFile(
 }
 
 async function main(): Promise<void> {
-  // Load environment variables
-  const dotenvPath = path.resolve(process.cwd(), '.env');
-  if (fs.existsSync(dotenvPath)) {
-    const envContent = fs.readFileSync(dotenvPath, 'utf-8');
-    for (const line of envContent.split('\n')) {
-      const [key, ...valueParts] = line.split('=');
-      if (key && valueParts.length > 0) {
-        process.env[key.trim()] = valueParts.join('=').trim();
-      }
-    }
-  }
-
   const { files, dryRun, batchSize, skipDuplicates } = parseArgs();
 
   if (files.length === 0) {

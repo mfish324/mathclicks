@@ -19,7 +19,13 @@
       "Bash(curl:*)",
       "Bash(npm run build:*)",
       "WebFetch(domain:mathclicks.vercel.app)",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(xargs:*)",
+      "Bash(npx tsx:*)",
+      "Bash(clip:*)",
+      "Bash(start npm run dev)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)"
     ]
   }
 }

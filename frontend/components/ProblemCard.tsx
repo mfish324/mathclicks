@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MathRenderer } from "./MathRenderer";
+import { DiagramRenderer } from "./DiagramRenderer";
 import type { Problem } from "@/lib/types";
 
 interface ProblemCardProps {
@@ -10,6 +11,7 @@ interface ProblemCardProps {
 }
 
 export function ProblemCard({ problem, children }: ProblemCardProps) {
+  const hasDiagram = problem.diagram_type && problem.diagram_data;
   const tierColors: Record<number, string> = {
     1: "bg-green-100 text-green-700",
     2: "bg-blue-100 text-blue-700",
@@ -44,11 +46,30 @@ export function ProblemCard({ problem, children }: ProblemCardProps) {
 
       {/* Problem */}
       <div className="mb-8">
-        <MathRenderer
-          text={problem.problem_text}
-          latex={problem.problem_latex}
-          className="text-center"
-        />
+        {hasDiagram ? (
+          <>
+            {/* For problems with diagrams, show clean text + diagram */}
+            <p className="text-lg text-gray-700 leading-relaxed mb-6">
+              {problem.problem_text}
+            </p>
+            <div className="flex justify-center">
+              <DiagramRenderer
+                type={problem.diagram_type!}
+                data={problem.diagram_data!}
+                width={380}
+                height={280}
+                className="max-w-full"
+              />
+            </div>
+          </>
+        ) : (
+          /* For problems without diagrams, use MathRenderer for LaTeX */
+          <MathRenderer
+            text={problem.problem_text}
+            latex={problem.problem_latex}
+            className="text-center"
+          />
+        )}
       </div>
 
       {/* Children (Answer input, feedback, etc.) */}

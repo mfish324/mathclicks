@@ -81,6 +81,92 @@ For EACH problem, provide:
 ${includeHints ? '7. "hints": Array of 3 progressive hints (vague → specific)' : ''}
 ${includeCommonMistakes ? '8. "common_mistakes": Array of 2-3 common student errors' : ''}
 
+DIAGRAM GENERATION (IMPORTANT):
+For problems that would benefit from a visual diagram, include:
+9. "diagram_type": One of the types below
+10. "diagram_data": Structured data for rendering (see schemas below)
+
+Generate diagrams for AT LEAST 50% of problems when the topic involves:
+- Coordinate planes, graphing points, or linear equations → use "coordinate_plane"
+- Shapes, area, perimeter, triangles, rectangles → use "geometry"
+- Number lines, plotting numbers, inequalities → use "number_line"
+- Part-whole relationships, comparison word problems → use "bar_model"
+- Multi-digit multiplication visualization → use "area_model"
+- Ratio comparisons, multiplicative comparisons → use "tape_diagram"
+- Angle measurement, rays, degrees → use "angle"
+- Percentages, fractions of a whole, pie charts → use "circle_graph"
+
+DIAGRAM DATA SCHEMAS:
+
+"coordinate_plane": {
+  "gridRange": { "xMin": -5, "xMax": 5, "yMin": -5, "yMax": 5 },
+  "showGrid": true,
+  "showAxes": true,
+  "points": [{ "x": 2, "y": 3, "label": "A", "color": "#3b82f6" }],
+  "lines": [{ "start": [-2, -1], "end": [3, 4], "color": "#ef4444", "label": "y=x+1" }],
+  "polygons": [{ "vertices": [[0,0], [3,0], [3,2]], "fill": "rgba(59,130,246,0.15)", "stroke": "#3b82f6" }]
+}
+
+"geometry": {
+  "shapes": [{
+    "type": "rectangle",
+    "vertices": [[10, 20], [90, 20], [90, 60], [10, 60]],
+    "sideLabels": ["8", "3", "8", "3"],
+    "fill": "rgba(59, 130, 246, 0.1)",
+    "stroke": "#3b82f6"
+  }]
+}
+For triangles: "type": "triangle", "vertices": [[x1,y1], [x2,y2], [x3,y3]]
+
+"number_line": {
+  "min": -5, "max": 5, "step": 1, "showTicks": true,
+  "points": [{ "value": 2.5, "label": "P", "color": "#ef4444" }],
+  "intervals": [{ "start": 1, "end": 4, "color": "#22c55e" }]
+}
+
+"bar_model": {
+  "total": 24,
+  "parts": [
+    { "value": 15, "label": "sold", "color": "#22c55e" },
+    { "value": 9, "label": "?", "color": "#3b82f6", "unknown": true }
+  ],
+  "showTotal": true
+}
+
+"area_model": {
+  "width": 23, "height": 14,
+  "partitionsX": [20, 3], "partitionsY": [10, 4],
+  "labelsTop": ["20", "3"], "labelsSide": ["10", "4"],
+  "cellLabels": [
+    { "row": 0, "col": 0, "label": "200" },
+    { "row": 0, "col": 1, "label": "30" },
+    { "row": 1, "col": 0, "label": "80" },
+    { "row": 1, "col": 1, "label": "12" }
+  ]
+}
+
+"tape_diagram": {
+  "tapes": [
+    { "label": "Maria", "segments": [{ "value": 6, "label": "6" }, { "value": 6, "label": "6" }] },
+    { "label": "Tom", "segments": [{ "value": 6, "label": "?" }, { "value": 6, "label": "?" }] }
+  ]
+}
+
+"angle": {
+  "vertex": [50, 50],
+  "rays": [{ "angle": 0, "length": 80, "label": "A" }, { "angle": 45, "length": 80, "label": "B" }],
+  "measure": 45, "showArc": true
+}
+
+"circle_graph": {
+  "sections": [
+    { "value": 40, "label": "Bus", "color": "#3b82f6" },
+    { "value": 25, "label": "Walk", "color": "#22c55e" },
+    { "value": 35, "label": "Car", "color": "#f59e0b" }
+  ],
+  "showPercents": true
+}
+
 ANSWER TYPE GUIDELINES:
 - "integer": Whole number answer (e.g., "8", "-3")
 - "decimal": Decimal answer (e.g., "3.5", "0.25")
@@ -91,6 +177,17 @@ ANSWER TYPE GUIDELINES:
 Return a JSON array of problem objects. Return ONLY valid JSON, no markdown or explanation.`;
 }
 
+const DiagramTypeSchema = z.enum([
+  'coordinate_plane',
+  'geometry',
+  'number_line',
+  'bar_model',
+  'area_model',
+  'tape_diagram',
+  'angle',
+  'circle_graph',
+]);
+
 const GeneratedProblemSchema = z.object({
   problem_text: z.string(),
   problem_latex: z.string().optional(),
@@ -100,6 +197,8 @@ const GeneratedProblemSchema = z.object({
   solution_steps: z.array(z.string()),
   hints: z.array(z.string()).optional(),
   common_mistakes: z.array(z.string()).optional(),
+  diagram_type: DiagramTypeSchema.optional(),
+  diagram_data: z.any().optional(),
 });
 
 export async function generateProblems(
@@ -188,6 +287,8 @@ export async function generateProblems(
       solution_steps: validProblem.solution_steps,
       hints: validProblem.hints || ['Think about what operation to use first'],
       common_mistakes: validProblem.common_mistakes,
+      diagram_type: validProblem.diagram_type,
+      diagram_data: validProblem.diagram_data,
     };
 
     // Validate against our full schema

@@ -53,6 +53,8 @@ function dbProblemToFrontend(dbProblem: DBProblem): Problem {
     solution_steps: dbProblem.solution_steps,
     hints: dbProblem.hints,
     common_mistakes: dbProblem.common_mistakes || undefined,
+    diagram_type: dbProblem.diagram_type || undefined,
+    diagram_data: dbProblem.diagram_data || undefined,
   };
 }
 

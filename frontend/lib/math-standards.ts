@@ -16,12 +16,15 @@ export interface MathStandard {
 const GRADE_4_STANDARDS: MathStandard[] = [
   { code: '4.OA.A.1', title: 'Multiplicative Comparisons', description: 'Interpret a multiplication equation as a comparison', gradeLevel: 4, domain: 'OA' },
   { code: '4.OA.A.2', title: 'Word Problems with Comparisons', description: 'Multiply or divide to solve word problems involving multiplicative comparison', gradeLevel: 4, domain: 'OA' },
+  { code: '4.OA.A.3', title: 'Multi-step Word Problems', description: 'Solve multi-step word problems with whole numbers using the four operations', gradeLevel: 4, domain: 'OA' },
   { code: '4.OA.B.4', title: 'Factors and Multiples', description: 'Find all factor pairs for whole numbers 1-100, recognize prime and composite', gradeLevel: 4, domain: 'OA' },
   { code: '4.NBT.B.4', title: 'Multi-digit Addition & Subtraction', description: 'Fluently add and subtract multi-digit whole numbers', gradeLevel: 4, domain: 'NBT' },
   { code: '4.NBT.B.5', title: 'Multi-digit Multiplication', description: 'Multiply a whole number up to four digits by a one-digit number', gradeLevel: 4, domain: 'NBT' },
   { code: '4.NF.A.1', title: 'Equivalent Fractions', description: 'Explain why fractions are equivalent using visual models', gradeLevel: 4, domain: 'NF' },
   { code: '4.NF.B.3', title: 'Adding & Subtracting Fractions', description: 'Add and subtract fractions with like denominators', gradeLevel: 4, domain: 'NF' },
   { code: '4.NF.C.6', title: 'Decimals and Fractions', description: 'Use decimal notation for fractions with denominators 10 or 100', gradeLevel: 4, domain: 'NF' },
+  { code: '4.MD.A.3', title: 'Area and Perimeter', description: 'Apply area and perimeter formulas for rectangles', gradeLevel: 4, domain: 'MD' },
+  { code: '4.MD.C.5', title: 'Angles', description: 'Recognize angles as geometric shapes and understand angle measurement', gradeLevel: 4, domain: 'MD' },
 ];
 
 // Grade 5 Standards
@@ -43,9 +46,10 @@ const GRADE_6_STANDARDS: MathStandard[] = [
   { code: '6.RP.A.3', title: 'Ratio & Rate Problems', description: 'Use ratio and rate reasoning to solve problems', gradeLevel: 6, domain: 'RP' },
   { code: '6.NS.A.1', title: 'Dividing Fractions', description: 'Interpret and compute quotients of fractions', gradeLevel: 6, domain: 'NS' },
   { code: '6.NS.B.3', title: 'Decimal Operations', description: 'Fluently add, subtract, multiply, and divide multi-digit decimals', gradeLevel: 6, domain: 'NS' },
-  { code: '6.NS.C.6', title: 'Negative Numbers', description: 'Understand and plot positive and negative numbers', gradeLevel: 6, domain: 'NS' },
+  { code: '6.NS.C.6', title: 'Negative Numbers', description: 'Understand and plot positive and negative numbers on the coordinate plane', gradeLevel: 6, domain: 'NS' },
   { code: '6.EE.A.2', title: 'Writing Expressions', description: 'Write, read, and evaluate expressions with variables', gradeLevel: 6, domain: 'EE' },
   { code: '6.EE.B.7', title: 'One-Step Equations', description: 'Solve one-step equations of the form x + p = q', gradeLevel: 6, domain: 'EE' },
+  { code: '6.G.A.1', title: 'Area of Polygons', description: 'Find area of triangles, quadrilaterals, and polygons', gradeLevel: 6, domain: 'G' },
 ];
 
 // Grade 7 Standards
@@ -99,6 +103,7 @@ export const DOMAIN_NAMES: Record<string, string> = {
   'OA': 'Operations & Algebraic Thinking',
   'NBT': 'Number & Operations in Base Ten',
   'NF': 'Fractions',
+  'MD': 'Measurement & Data',
   'G': 'Geometry',
   'RP': 'Ratios & Proportions',
   'NS': 'The Number System',

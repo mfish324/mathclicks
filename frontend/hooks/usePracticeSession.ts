@@ -71,7 +71,8 @@ export function usePracticeSession() {
 
     const savedSession = getCurrentSession();
     if (savedSession) {
-      setState({
+      setState(prev => ({
+        ...prev,
         sessionId: savedSession.id,
         extraction: savedSession.extraction,
         problems: savedSession.problems,
@@ -83,7 +84,7 @@ export function usePracticeSession() {
         lastFeedback: null,
         isRestored: true,
         isInitialized: true,
-      });
+      }));
     } else {
       // No session found, but we've finished checking
       setState(prev => ({ ...prev, isInitialized: true }));
@@ -122,7 +123,8 @@ export function usePracticeSession() {
     }
 
     setCurrentSessionId(sessionId);
-    setState({
+    setState(prev => ({
+      ...prev,
       sessionId: session.id,
       extraction: session.extraction,
       problems: session.problems,
@@ -134,7 +136,7 @@ export function usePracticeSession() {
       lastFeedback: null,
       isRestored: true,
       isInitialized: true,
-    });
+    }));
 
     return true;
   }, []);
@@ -362,9 +364,11 @@ export function usePracticeSession() {
       const result = data.data as SelectionResult;
 
       // Update state with selected problems
+      // Map the source: "stored" means from database (keep problem's original source),
+      // "ai_generated" means freshly generated
       const problems = result.problems.map(sp => ({
         ...sp.problem,
-        source: sp.source,
+        source: sp.source === "ai_generated" ? "ai_generated" as const : sp.problem.source,
       }));
 
       setState(prev => ({

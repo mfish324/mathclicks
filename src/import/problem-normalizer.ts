@@ -301,6 +301,15 @@ export function normalizeProblem(
     normalized.primary_standard_code = raw.standardCode;
   }
 
+  // Add diagram data if present
+  if (raw.diagramType) {
+    normalized.diagram_type = raw.diagramType;
+  }
+
+  if (raw.diagramData) {
+    normalized.diagram_data = raw.diagramData;
+  }
+
   return normalized;
 }
 

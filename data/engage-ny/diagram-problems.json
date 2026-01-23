@@ -1,0 +1,373 @@
+[
+  {
+    "problem_text": "Plot the points A(2, 3), B(-1, 4), and C(0, -2) on the coordinate plane. What is the y-coordinate of point A?",
+    "answer": "3",
+    "answer_type": "integer",
+    "tier": 2,
+    "standard_code": "6.NS.C.6",
+    "solution_steps": [
+      "Locate point A at coordinates (2, 3)",
+      "The x-coordinate is 2 (horizontal position)",
+      "The y-coordinate is 3 (vertical position)",
+      "Answer: 3"
+    ],
+    "hints": [
+      "Look at the coordinate pair for point A: (2, 3)",
+      "The second number in a coordinate pair is always the y-coordinate"
+    ],
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": { "xMin": -5, "xMax": 5, "yMin": -5, "yMax": 5 },
+      "showGrid": true,
+      "showAxes": true,
+      "points": [
+        { "x": 2, "y": 3, "label": "A", "color": "#3b82f6" },
+        { "x": -1, "y": 4, "label": "B", "color": "#ef4444" },
+        { "x": 0, "y": -2, "label": "C", "color": "#22c55e" }
+      ]
+    }
+  },
+  {
+    "problem_text": "Find the area of the rectangle shown below.",
+    "answer": "24",
+    "answer_type": "integer",
+    "tier": 2,
+    "standard_code": "4.MD.A.3",
+    "solution_steps": [
+      "Identify the length and width of the rectangle",
+      "Length = 8 units",
+      "Width = 3 units",
+      "Area = length × width = 8 × 3 = 24 square units"
+    ],
+    "hints": [
+      "Area of a rectangle = length × width",
+      "Look at the side labels on the rectangle"
+    ],
+    "diagram_type": "geometry",
+    "diagram_data": {
+      "shapes": [
+        {
+          "type": "rectangle",
+          "vertices": [[10, 20], [90, 20], [90, 60], [10, 60]],
+          "sideLabels": ["8", "3", "8", "3"],
+          "fill": "rgba(59, 130, 246, 0.1)",
+          "stroke": "#3b82f6"
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "What number is represented by point P on the number line?",
+    "answer": "2.5",
+    "answer_type": "decimal",
+    "tier": 2,
+    "standard_code": "4.NF.C.6",
+    "solution_steps": [
+      "Look at the number line from 0 to 5",
+      "Point P is between 2 and 3",
+      "Point P is exactly halfway between 2 and 3",
+      "2.5 is halfway between 2 and 3"
+    ],
+    "hints": [
+      "Count the tick marks to find the value",
+      "The point is exactly between two whole numbers"
+    ],
+    "diagram_type": "number_line",
+    "diagram_data": {
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "showTicks": true,
+      "points": [
+        { "value": 2.5, "label": "P", "color": "#ef4444" }
+      ]
+    }
+  },
+  {
+    "problem_text": "Sam has 15 apples. He gives some to his friend and has 9 left. How many apples did Sam give away? Use the bar model to help solve.",
+    "answer": "6",
+    "answer_type": "integer",
+    "tier": 2,
+    "standard_code": "4.OA.A.3",
+    "solution_steps": [
+      "The bar model shows the total (15) split into two parts",
+      "One part is what Sam kept (9)",
+      "The other part is what he gave away (?)",
+      "15 - 9 = 6 apples given away"
+    ],
+    "hints": [
+      "The whole bar represents 15 apples",
+      "One part shows 9 (what Sam kept). What's the other part?"
+    ],
+    "diagram_type": "bar_model",
+    "diagram_data": {
+      "total": 15,
+      "parts": [
+        { "value": 9, "label": "kept", "color": "#22c55e" },
+        { "value": 6, "label": "?", "color": "#3b82f6", "unknown": true }
+      ],
+      "showTotal": true
+    }
+  },
+  {
+    "problem_text": "Use the area model to find 23 × 14. What is the sum of all four sections?",
+    "answer": "322",
+    "answer_type": "integer",
+    "tier": 3,
+    "standard_code": "4.NBT.B.5",
+    "solution_steps": [
+      "Break 23 into 20 + 3",
+      "Break 14 into 10 + 4",
+      "Calculate each section: 20×10=200, 20×4=80, 3×10=30, 3×4=12",
+      "Add all sections: 200 + 80 + 30 + 12 = 322"
+    ],
+    "hints": [
+      "The area model breaks multiplication into smaller parts",
+      "Add up all four rectangles in the model"
+    ],
+    "diagram_type": "area_model",
+    "diagram_data": {
+      "width": 23,
+      "height": 14,
+      "partitionsX": [20, 3],
+      "partitionsY": [10, 4],
+      "labelsTop": ["20", "3"],
+      "labelsSide": ["10", "4"],
+      "cellLabels": [
+        { "row": 0, "col": 0, "label": "200" },
+        { "row": 0, "col": 1, "label": "30" },
+        { "row": 1, "col": 0, "label": "80" },
+        { "row": 1, "col": 1, "label": "12" }
+      ]
+    }
+  },
+  {
+    "problem_text": "The tape diagram shows the number of books read by two students. If Maria read 12 books, how many books did Tom read?",
+    "answer": "18",
+    "answer_type": "integer",
+    "tier": 3,
+    "standard_code": "4.OA.A.2",
+    "solution_steps": [
+      "Maria's tape has 2 equal segments totaling 12 books",
+      "Each segment = 12 ÷ 2 = 6 books",
+      "Tom's tape has 3 equal segments",
+      "Tom read 3 × 6 = 18 books"
+    ],
+    "hints": [
+      "Find the value of one segment in Maria's tape first",
+      "Use that value to find Tom's total"
+    ],
+    "diagram_type": "tape_diagram",
+    "diagram_data": {
+      "tapes": [
+        {
+          "label": "Maria",
+          "segments": [
+            { "value": 6, "label": "6" },
+            { "value": 6, "label": "6" }
+          ]
+        },
+        {
+          "label": "Tom",
+          "segments": [
+            { "value": 6, "label": "?" },
+            { "value": 6, "label": "?" },
+            { "value": 6, "label": "?" }
+          ]
+        }
+      ],
+      "showBraces": true
+    }
+  },
+  {
+    "problem_text": "What is the measure of angle ABC shown in the diagram?",
+    "answer": "45",
+    "answer_type": "integer",
+    "tier": 2,
+    "standard_code": "4.MD.C.5",
+    "solution_steps": [
+      "Look at the angle formed by the two rays",
+      "The arc shows the angle measure",
+      "The angle measures 45 degrees"
+    ],
+    "hints": [
+      "The angle opens from one ray to another",
+      "The number near the arc shows the measure in degrees"
+    ],
+    "diagram_type": "angle",
+    "diagram_data": {
+      "vertex": [50, 50],
+      "rays": [
+        { "angle": 0, "length": 80, "label": "A" },
+        { "angle": 45, "length": 80, "label": "C" }
+      ],
+      "measure": 45,
+      "showArc": true,
+      "label": "B is at the vertex"
+    }
+  },
+  {
+    "problem_text": "The circle graph shows how students in a class travel to school. What fraction of students walk to school?",
+    "answer": "1/4",
+    "answer_type": "fraction",
+    "tier": 3,
+    "standard_code": "5.NF.A.1",
+    "solution_steps": [
+      "Look at the 'Walk' section of the circle graph",
+      "The Walk section shows 25%",
+      "25% = 25/100 = 1/4"
+    ],
+    "hints": [
+      "Find the Walk section in the pie chart",
+      "Convert the percentage to a fraction"
+    ],
+    "diagram_type": "circle_graph",
+    "diagram_data": {
+      "title": "How Students Travel to School",
+      "sections": [
+        { "value": 40, "label": "Bus", "color": "#3b82f6" },
+        { "value": 25, "label": "Walk", "color": "#22c55e" },
+        { "value": 20, "label": "Car", "color": "#f59e0b" },
+        { "value": 15, "label": "Bike", "color": "#8b5cf6" }
+      ],
+      "showPercents": true
+    }
+  },
+  {
+    "problem_text": "Plot the following points and connect them to form a triangle: A(1, 1), B(5, 1), C(3, 4). What is the base of the triangle?",
+    "answer": "4",
+    "answer_type": "integer",
+    "tier": 3,
+    "standard_code": "5.G.A.1",
+    "solution_steps": [
+      "The base is the horizontal segment from A to B",
+      "Point A is at x = 1",
+      "Point B is at x = 5",
+      "Base length = 5 - 1 = 4 units"
+    ],
+    "hints": [
+      "The base of this triangle is the bottom side (from A to B)",
+      "Subtract the x-coordinates to find the horizontal distance"
+    ],
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": { "xMin": 0, "xMax": 6, "yMin": 0, "yMax": 6 },
+      "showGrid": true,
+      "showAxes": true,
+      "points": [
+        { "x": 1, "y": 1, "label": "A" },
+        { "x": 5, "y": 1, "label": "B" },
+        { "x": 3, "y": 4, "label": "C" }
+      ],
+      "polygons": [
+        {
+          "vertices": [[1, 1], [5, 1], [3, 4]],
+          "fill": "rgba(59, 130, 246, 0.15)",
+          "stroke": "#3b82f6"
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "Which integer is located at point X on the number line?",
+    "answer": "-3",
+    "answer_type": "integer",
+    "tier": 2,
+    "standard_code": "6.NS.C.6",
+    "solution_steps": [
+      "The number line shows values from -5 to 5",
+      "Point X is to the left of 0 (negative side)",
+      "Counting from 0: -1, -2, -3",
+      "Point X is at -3"
+    ],
+    "hints": [
+      "Numbers to the left of 0 are negative",
+      "Count the tick marks from 0 to reach point X"
+    ],
+    "diagram_type": "number_line",
+    "diagram_data": {
+      "min": -5,
+      "max": 5,
+      "step": 1,
+      "showTicks": true,
+      "points": [
+        { "value": -3, "label": "X", "color": "#ef4444" }
+      ]
+    }
+  },
+  {
+    "problem_text": "Find the area of the triangle with base 6 cm and height 8 cm.",
+    "answer": "24",
+    "answer_type": "integer",
+    "tier": 3,
+    "standard_code": "6.G.A.1",
+    "solution_steps": [
+      "Area of a triangle = (1/2) × base × height",
+      "Base = 6 cm, Height = 8 cm",
+      "Area = (1/2) × 6 × 8",
+      "Area = (1/2) × 48 = 24 square cm"
+    ],
+    "hints": [
+      "Remember the triangle area formula: A = (1/2)bh",
+      "Multiply base times height, then divide by 2"
+    ],
+    "diagram_type": "geometry",
+    "diagram_data": {
+      "shapes": [
+        {
+          "type": "triangle",
+          "vertices": [[20, 80], [80, 80], [50, 20]],
+          "sideLabels": ["6 cm", "", ""],
+          "fill": "rgba(34, 197, 94, 0.15)",
+          "stroke": "#22c55e"
+        }
+      ],
+      "lines": [
+        {
+          "start": [50, 80],
+          "end": [50, 20],
+          "label": "8 cm",
+          "style": "dashed",
+          "color": "#6b7280"
+        }
+      ],
+      "points": [
+        { "x": 50, "y": 80, "style": "solid", "color": "#374151" }
+      ]
+    }
+  },
+  {
+    "problem_text": "Graph the linear equation y = 2x - 1 and identify the y-intercept.",
+    "answer": "-1",
+    "answer_type": "integer",
+    "tier": 4,
+    "standard_code": "8.F.B.4",
+    "solution_steps": [
+      "The equation is in slope-intercept form: y = mx + b",
+      "The y-intercept (b) is the constant term",
+      "In y = 2x - 1, the y-intercept is -1",
+      "This is where the line crosses the y-axis"
+    ],
+    "hints": [
+      "In y = mx + b, b is the y-intercept",
+      "The y-intercept is where the line crosses the y-axis (when x = 0)"
+    ],
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": { "xMin": -5, "xMax": 5, "yMin": -5, "yMax": 5 },
+      "showGrid": true,
+      "showAxes": true,
+      "lines": [
+        {
+          "start": [-2, -5],
+          "end": [3, 5],
+          "color": "#3b82f6",
+          "label": "y = 2x - 1"
+        }
+      ],
+      "points": [
+        { "x": 0, "y": -1, "label": "(0, -1)", "color": "#ef4444" }
+      ]
+    }
+  }
+]

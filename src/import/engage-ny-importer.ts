@@ -119,7 +119,7 @@ async function insertProblem(
 
   const supabase = getSupabaseAdmin();
 
-  const insertData = {
+  const insertData: Record<string, unknown> = {
     tier: problem.tier,
     problem_text: problem.problem_text,
     problem_latex: problem.problem_latex,
@@ -139,6 +139,14 @@ async function insertProblem(
     is_reviewed: false,
     is_active: true,
   };
+
+  // Add diagram fields if present
+  if (problem.diagram_type) {
+    insertData.diagram_type = problem.diagram_type;
+  }
+  if (problem.diagram_data) {
+    insertData.diagram_data = problem.diagram_data;
+  }
 
   const { data, error } = await supabase
     .from('problems')
@@ -338,6 +346,34 @@ export async function importEngageNYProblems(
 }
 
 /**
+ * Convert JSON problem format to RawProblem
+ * Handles both snake_case and camelCase field names
+ */
+function jsonToRawProblem(json: Record<string, unknown>): RawProblem {
+  return {
+    problemText: (json.problem_text || json.problemText) as string,
+    problemLatex: (json.problem_latex || json.problemLatex) as string | undefined,
+    answer: json.answer as string,
+    answerType: (json.answer_type || json.answerType) as string | undefined,
+    acceptableAnswers: (json.acceptable_answers || json.acceptableAnswers) as string[] | undefined,
+    standardCode: (json.standard_code || json.standardCode) as string | undefined,
+    ccssCode: (json.ccss_code || json.ccssCode) as string | undefined,
+    gradeLevel: (json.grade_level || json.gradeLevel) as number | undefined,
+    difficulty: (json.difficulty || json.tier) as number | undefined,
+    topic: json.topic as string | undefined,
+    solutionSteps: (json.solution_steps || json.solutionSteps) as string[] | undefined,
+    hints: json.hints as string[] | undefined,
+    commonMistakes: (json.common_mistakes || json.commonMistakes) as string[] | undefined,
+    sourceUrl: (json.source_url || json.sourceUrl) as string | undefined,
+    sourceReference: (json.source_reference || json.sourceReference) as string | undefined,
+    license: json.license as string | undefined,
+    attribution: json.attribution as string | undefined,
+    diagramType: (json.diagram_type || json.diagramType) as RawProblem['diagramType'],
+    diagramData: (json.diagram_data || json.diagramData) as RawProblem['diagramData'],
+  };
+}
+
+/**
  * Import from a JSON file containing an array of problems
  */
 export async function importFromJSON(
@@ -345,7 +381,8 @@ export async function importFromJSON(
   config: Partial<ImportConfig> = {}
 ): Promise<ImportBatchSummary> {
   const parsed = JSON.parse(jsonContent);
-  const problems: RawProblem[] = Array.isArray(parsed) ? parsed : [parsed];
+  const jsonArray = Array.isArray(parsed) ? parsed : [parsed];
+  const problems: RawProblem[] = jsonArray.map(jsonToRawProblem);
 
   const fullConfig = { ...DEFAULT_ENGAGE_NY_CONFIG, ...config };
 

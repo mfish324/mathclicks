@@ -42,6 +42,8 @@ export interface Problem {
   common_mistakes?: string[];
   category?: ProblemCategory; // lesson problems vs interleaved math facts
   source?: ProblemSource; // where this problem came from
+  diagram_type?: DiagramType; // type of visual diagram if needed
+  diagram_data?: DiagramData; // structured data for rendering diagram
 }
 
 export interface ProblemSet {
@@ -213,3 +215,137 @@ export interface MathStandard {
   domain: string;
   examples?: string[];
 }
+
+// ============ Diagram Types ============
+
+export type DiagramType =
+  | "coordinate_plane"
+  | "geometry"
+  | "number_line"
+  | "bar_model"
+  | "area_model"
+  | "tape_diagram"
+  | "angle"
+  | "circle_graph";
+
+export interface Point2D {
+  x: number;
+  y: number;
+  label?: string;
+  color?: string;
+  style?: "solid" | "hollow" | "cross";
+}
+
+export interface LineSegment {
+  start: [number, number];
+  end: [number, number];
+  label?: string;
+  color?: string;
+  style?: "solid" | "dashed" | "dotted";
+  showLength?: boolean;
+}
+
+export interface CoordinatePlaneDiagram {
+  gridRange?: { xMin: number; xMax: number; yMin: number; yMax: number };
+  showGrid?: boolean;
+  showAxes?: boolean;
+  points?: Point2D[];
+  lines?: LineSegment[];
+  functions?: Array<{ equation: string; color?: string; domain?: [number, number] }>;
+  vectors?: Array<{ start: [number, number]; end: [number, number]; label?: string; color?: string }>;
+  polygons?: Array<{ vertices: [number, number][]; fill?: string; stroke?: string; label?: string }>;
+}
+
+export interface GeometryShape {
+  type: "triangle" | "rectangle" | "square" | "circle" | "polygon" | "parallelogram" | "trapezoid";
+  vertices?: [number, number][];
+  center?: [number, number];
+  radius?: number;
+  width?: number;
+  height?: number;
+  sideLabels?: string[];
+  angleLabels?: string[];
+  vertexLabels?: string[];
+  showMeasurements?: boolean;
+  fill?: string;
+  stroke?: string;
+}
+
+export interface AngleMarker {
+  vertex: [number, number];
+  ray1End: [number, number];
+  ray2End: [number, number];
+  measure?: number;
+  label?: string;
+  showArc?: boolean;
+}
+
+export interface GeometryDiagram {
+  shapes?: GeometryShape[];
+  angles?: AngleMarker[];
+  lines?: LineSegment[];
+  points?: Point2D[];
+  labels?: Array<{ position: [number, number]; text: string }>;
+}
+
+export interface NumberLineDiagram {
+  min: number;
+  max: number;
+  step?: number;
+  showTicks?: boolean;
+  points?: Array<{ value: number; label?: string; color?: string; style?: "solid" | "hollow" }>;
+  intervals?: Array<{ start: number; end: number; label?: string; color?: string; open?: [boolean, boolean] }>;
+  arrows?: Array<{ from: number; to: number; label?: string; color?: string }>;
+}
+
+export interface BarModelDiagram {
+  total?: number;
+  parts: Array<{ value: number; label?: string; color?: string; unknown?: boolean }>;
+  showTotal?: boolean;
+  orientation?: "horizontal" | "vertical";
+  comparisonBars?: Array<{ parts: Array<{ value: number; label?: string; color?: string }> }>;
+}
+
+export interface AreaModelDiagram {
+  width: number;
+  height: number;
+  partitionsX?: number[];
+  partitionsY?: number[];
+  labelsTop?: string[];
+  labelsSide?: string[];
+  highlightCells?: [number, number][];
+  cellLabels?: Array<{ row: number; col: number; label: string }>;
+}
+
+export interface TapeDiagramDiagram {
+  tapes: Array<{
+    label?: string;
+    segments: Array<{ value: number; label?: string; color?: string; unknown?: boolean }>;
+  }>;
+  showBraces?: boolean;
+}
+
+export interface AngleDiagram {
+  vertex: [number, number];
+  rays: Array<{ angle: number; length: number; label?: string }>;
+  measure?: number;
+  showArc?: boolean;
+  label?: string;
+}
+
+export interface CircleGraphDiagram {
+  sections: Array<{ value: number; label?: string; color?: string }>;
+  showPercents?: boolean;
+  showValues?: boolean;
+  title?: string;
+}
+
+export type DiagramData =
+  | CoordinatePlaneDiagram
+  | GeometryDiagram
+  | NumberLineDiagram
+  | BarModelDiagram
+  | AreaModelDiagram
+  | TapeDiagramDiagram
+  | AngleDiagram
+  | CircleGraphDiagram;

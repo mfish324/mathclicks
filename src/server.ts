@@ -49,6 +49,7 @@ function getPipeline(): MathClicksPipeline {
       throw new Error('ANTHROPIC_API_KEY environment variable is not set');
     }
     pipeline = createPipeline(apiKey, process.env.NODE_ENV === 'development');
+    pipeline.initialize();
   }
   return pipeline;
 }
@@ -263,6 +264,9 @@ app.post('/api/generate-from-standard', async (req: Request, res: Response) => {
       res.status(400).json({ success: false, error: 'Missing required field: standardCode' });
       return;
     }
+
+    // Ensure pipeline/client is initialized
+    getPipeline();
 
     // Look up the standard
     const standard = getStandardByCode(standardCode);
@@ -693,6 +697,9 @@ app.post('/api/problems/select', async (req: Request, res: Response) => {
       res.status(400).json({ success: false, error: 'Missing required field: standardCode' });
       return;
     }
+
+    // Ensure pipeline/client is initialized for AI fallback
+    getPipeline();
 
     const { selectProblems } = await import('./lib/problem-selection');
     const result = await selectProblems({

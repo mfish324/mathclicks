@@ -3,7 +3,7 @@
  * Interfaces for importing problems from external sources
  */
 
-import type { AnswerType, LicenseType, ProblemSource } from '../types/database';
+import type { AnswerType, LicenseType, ProblemSource, DiagramType, DiagramData } from '../types/database';
 
 /**
  * Raw problem format from external sources before normalization
@@ -36,6 +36,10 @@ export interface RawProblem {
   // Licensing
   license?: string;
   attribution?: string;
+
+  // Diagram data
+  diagramType?: DiagramType;
+  diagramData?: DiagramData;
 }
 
 /**
@@ -58,6 +62,8 @@ export interface NormalizedProblem {
   license: LicenseType;
   attribution?: string;
   primary_standard_code?: string; // Will be resolved to ID during import
+  diagram_type?: DiagramType;
+  diagram_data?: DiagramData;
 }
 
 /**

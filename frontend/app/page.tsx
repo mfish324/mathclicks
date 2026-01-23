@@ -151,31 +151,51 @@ export default function HomePage() {
     setError(null);
 
     try {
-      const response = await fetch("/api/generate-from-standard", {
+      // Try to fetch stored problems first (with AI fallback)
+      const response = await fetch("/api/problems/select", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ standardCode: standard.code, count: 10 }),
+        body: JSON.stringify({
+          standardCode: standard.code,
+          count: 10,
+          preferStored: true,
+        }),
       });
 
       const data = await response.json();
 
       if (data.success && data.data) {
+        // Extract problems from the selection result
+        const problems = data.data.problems.map((p: { problem: object }) => p.problem);
+
+        // Create a synthetic extraction for the session
+        const extraction = {
+          topic: standard.title,
+          subtopics: [standard.description],
+          grade_level: standard.gradeLevel,
+          standards: [standard.code],
+          extracted_content: {
+            concepts: [standard.description],
+          },
+          difficulty_baseline: 3,
+        };
+
         // Store session data and navigate to practice
         sessionStorage.setItem("mathclicks-session", JSON.stringify({
-          extraction: data.data.extraction,
+          extraction,
           problems: {
-            topic: data.data.extraction.topic,
-            problems: data.data.problems.problems,
+            topic: standard.title,
+            problems,
             generated_at: new Date().toISOString(),
           },
         }));
         setShowStandardSelector(false);
         router.push("/practice");
       } else {
-        throw new Error(data.error || "Failed to generate problems");
+        throw new Error(data.error || "Failed to load problems");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to generate problems from standard");
+      setError(err instanceof Error ? err.message : "Failed to load problems from standard");
       setIsGeneratingFromStandard(false);
     }
   };

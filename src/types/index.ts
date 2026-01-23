@@ -68,6 +68,17 @@ export const AnswerTypeSchema = z.enum([
   'true_false',
 ]);
 
+export const DiagramTypeSchema = z.enum([
+  'coordinate_plane',
+  'geometry',
+  'number_line',
+  'bar_model',
+  'area_model',
+  'tape_diagram',
+  'angle',
+  'circle_graph',
+]);
+
 export const ProblemSchema = z.object({
   id: z.string(),
   tier: z.number().min(1).max(5),
@@ -79,7 +90,11 @@ export const ProblemSchema = z.object({
   solution_steps: z.array(z.string()),
   hints: z.array(z.string()).min(1).max(3),
   common_mistakes: z.array(z.string()).optional(),
+  diagram_type: DiagramTypeSchema.optional(),
+  diagram_data: z.any().optional(), // Flexible JSON structure for diagram rendering
 });
+
+export type DiagramType = z.infer<typeof DiagramTypeSchema>;
 
 // Extended problem schema with source/license tracking (for database storage)
 export const ProblemSourceSchema = z.enum([
