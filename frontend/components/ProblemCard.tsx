@@ -49,7 +49,7 @@ export function ProblemCard({ problem, children }: ProblemCardProps) {
         {hasDiagram ? (
           <>
             {/* For problems with diagrams, show clean text + diagram */}
-            <p className="text-lg text-gray-700 leading-relaxed mb-6">
+            <p className="text-xl text-gray-800 font-semibold leading-relaxed mb-6 text-center">
               {problem.problem_text}
             </p>
             <div className="flex justify-center">

@@ -121,10 +121,11 @@ function CoordinatePlaneRenderer({
             <text
               key={`xlabel-${x}`}
               x={scaleX(x)}
-              y={scaleY(0) + 15}
+              y={scaleY(0) + 18}
               textAnchor="middle"
-              fontSize={10}
-              fill="#6b7280"
+              fontSize={14}
+              fontWeight="600"
+              fill="#374151"
             >
               {x}
             </text>
@@ -135,10 +136,11 @@ function CoordinatePlaneRenderer({
             <text
               key={`ylabel-${y}`}
               x={scaleX(0) - 10}
-              y={scaleY(y) + 4}
+              y={scaleY(y) + 5}
               textAnchor="end"
-              fontSize={10}
-              fill="#6b7280"
+              fontSize={14}
+              fontWeight="600"
+              fill="#374151"
             >
               {y}
             </text>
@@ -178,9 +180,10 @@ function CoordinatePlaneRenderer({
           {line.label && (
             <text
               x={(scaleX(line.start[0]) + scaleX(line.end[0])) / 2}
-              y={(scaleY(line.start[1]) + scaleY(line.end[1])) / 2 - 8}
+              y={(scaleY(line.start[1]) + scaleY(line.end[1])) / 2 - 10}
               textAnchor="middle"
-              fontSize={12}
+              fontSize={16}
+              fontWeight="bold"
               fill="#374151"
             >
               {line.label}
@@ -218,7 +221,8 @@ function CoordinatePlaneRenderer({
               <text
                 x={(scaleX(vec.start[0]) + scaleX(vec.end[0])) / 2 + 10}
                 y={(scaleY(vec.start[1]) + scaleY(vec.end[1])) / 2}
-                fontSize={12}
+                fontSize={16}
+                fontWeight="bold"
                 fill={vec.color || "#ef4444"}
               >
                 {vec.label}
@@ -269,9 +273,10 @@ function CoordinatePlaneRenderer({
           )}
           {point.label && (
             <text
-              x={scaleX(point.x) + 8}
-              y={scaleY(point.y) - 8}
-              fontSize={12}
+              x={scaleX(point.x) + 10}
+              y={scaleY(point.y) - 10}
+              fontSize={16}
+              fontWeight="bold"
               fill="#374151"
             >
               {point.label}
@@ -329,9 +334,9 @@ function GeometryRenderer({
               <text
                 key={`vlabel-${i}`}
                 x={scaleX(x)}
-                y={scaleY(y) - 8}
+                y={scaleY(y) - 10}
                 textAnchor="middle"
-                fontSize={14}
+                fontSize={18}
                 fontWeight="bold"
                 fill="#374151"
               >
@@ -349,9 +354,10 @@ function GeometryRenderer({
               <text
                 key={`slabel-${i}`}
                 x={midX}
-                y={midY - 8}
+                y={midY - 10}
                 textAnchor="middle"
-                fontSize={12}
+                fontSize={18}
+                fontWeight="bold"
                 fill="#374151"
               >
                 {label}
@@ -394,9 +400,10 @@ function GeometryRenderer({
           />
           {point.label && (
             <text
-              x={scaleX(point.x) + 8}
-              y={scaleY(point.y) + 4}
-              fontSize={12}
+              x={scaleX(point.x) + 10}
+              y={scaleY(point.y) + 5}
+              fontSize={16}
+              fontWeight="bold"
               fill="#374151"
             >
               {point.label}
@@ -412,7 +419,8 @@ function GeometryRenderer({
           x={scaleX(label.position[0])}
           y={scaleY(label.position[1])}
           textAnchor="middle"
-          fontSize={12}
+          fontSize={16}
+          fontWeight="bold"
           fill="#374151"
         >
           {label.text}
@@ -449,9 +457,10 @@ function GeometryRenderer({
               />
               {angle.label && (
                 <text
-                  x={scaleX(vx) + 25 * Math.cos((angle1 + angle2) / 2)}
-                  y={scaleY(vy) + 25 * Math.sin((angle1 + angle2) / 2)}
-                  fontSize={11}
+                  x={scaleX(vx) + 30 * Math.cos((angle1 + angle2) / 2)}
+                  y={scaleY(vy) + 30 * Math.sin((angle1 + angle2) / 2)}
+                  fontSize={16}
+                  fontWeight="bold"
                   fill="#ef4444"
                 >
                   {angle.measure ? `${angle.measure}°` : angle.label}
@@ -520,9 +529,10 @@ function NumberLineRenderer({
             />
             <text
               x={scaleX(v)}
-              y={lineY + tickHeight + 15}
+              y={lineY + tickHeight + 18}
               textAnchor="middle"
-              fontSize={12}
+              fontSize={16}
+              fontWeight="600"
               fill="#374151"
             >
               {v}
@@ -564,9 +574,10 @@ function NumberLineRenderer({
             {interval.label && (
               <text
                 x={(x1 + x2) / 2}
-                y={lineY - 15}
+                y={lineY - 18}
                 textAnchor="middle"
-                fontSize={12}
+                fontSize={16}
+                fontWeight="bold"
                 fill={interval.color || "#3b82f6"}
               >
                 {interval.label}
@@ -590,9 +601,9 @@ function NumberLineRenderer({
           {point.label && (
             <text
               x={scaleX(point.value)}
-              y={lineY - 15}
+              y={lineY - 18}
               textAnchor="middle"
-              fontSize={12}
+              fontSize={16}
               fontWeight="bold"
               fill={point.color || "#ef4444"}
             >
@@ -623,9 +634,10 @@ function NumberLineRenderer({
             {arrow.label && (
               <text
                 x={midX}
-                y={lineY - arcHeight - 12}
+                y={lineY - arcHeight - 15}
                 textAnchor="middle"
-                fontSize={11}
+                fontSize={14}
+                fontWeight="bold"
                 fill={arrow.color || "#22c55e"}
               >
                 {arrow.label}
@@ -680,10 +692,10 @@ function BarModelRenderer({
               />
               <text
                 x={padding + barWidth / 2}
-                y={segY + segHeight / 2 + 5}
+                y={segY + segHeight / 2 + 6}
                 textAnchor="middle"
-                fontSize={14}
-                fill={part.unknown ? "#6b7280" : "white"}
+                fontSize={18}
+                fill={part.unknown ? "#374151" : "white"}
                 fontWeight="bold"
               >
                 {part.unknown ? "?" : part.label || part.value}
@@ -696,7 +708,8 @@ function BarModelRenderer({
             x={padding + barWidth / 2}
             y={height - 5}
             textAnchor="middle"
-            fontSize={12}
+            fontSize={16}
+            fontWeight="bold"
             fill="#374151"
           >
             Total: {total}
@@ -729,10 +742,10 @@ function BarModelRenderer({
             />
             <text
               x={segX + segWidth / 2}
-              y={barTop + barHeight / 2 + 5}
+              y={barTop + barHeight / 2 + 6}
               textAnchor="middle"
-              fontSize={14}
-              fill={part.unknown ? "#6b7280" : "white"}
+              fontSize={18}
+              fill={part.unknown ? "#374151" : "white"}
               fontWeight="bold"
             >
               {part.unknown ? "?" : part.label || part.value}
@@ -752,9 +765,10 @@ function BarModelRenderer({
           />
           <text
             x={padding + barWidth / 2}
-            y={barTop + barHeight + 25}
+            y={barTop + barHeight + 28}
             textAnchor="middle"
-            fontSize={12}
+            fontSize={16}
+            fontWeight="bold"
             fill="#374151"
           >
             {total}
@@ -828,9 +842,10 @@ function AreaModelRenderer({
         <text
           key={`top-${i}`}
           x={cols[i].x + cols[i].width / 2}
-          y={padding - 10}
+          y={padding - 12}
           textAnchor="middle"
-          fontSize={14}
+          fontSize={18}
+          fontWeight="bold"
           fill="#374151"
         >
           {label}
@@ -841,10 +856,11 @@ function AreaModelRenderer({
       {data.labelsSide?.map((label, i) => (
         <text
           key={`side-${i}`}
-          x={padding - 10}
-          y={rows[i].y + rows[i].height / 2 + 5}
+          x={padding - 12}
+          y={rows[i].y + rows[i].height / 2 + 6}
           textAnchor="end"
-          fontSize={14}
+          fontSize={18}
+          fontWeight="bold"
           fill="#374151"
         >
           {label}
@@ -856,9 +872,10 @@ function AreaModelRenderer({
         <text
           key={`clabel-${i}`}
           x={cols[cell.col].x + cols[cell.col].width / 2}
-          y={rows[cell.row].y + rows[cell.row].height / 2 + 5}
+          y={rows[cell.row].y + rows[cell.row].height / 2 + 6}
           textAnchor="middle"
-          fontSize={14}
+          fontSize={18}
+          fontWeight="bold"
           fill="#374151"
         >
           {cell.label}
@@ -901,9 +918,10 @@ function TapeDiagramRenderer({
             {tape.label && (
               <text
                 x={padding + labelWidth - 10}
-                y={tapeY + tapeHeight / 2 + 5}
+                y={tapeY + tapeHeight / 2 + 6}
                 textAnchor="end"
-                fontSize={14}
+                fontSize={18}
+                fontWeight="bold"
                 fill="#374151"
               >
                 {tape.label}
@@ -928,10 +946,10 @@ function TapeDiagramRenderer({
                   />
                   <text
                     x={x + segWidth / 2}
-                    y={tapeY + tapeHeight / 2 + 5}
+                    y={tapeY + tapeHeight / 2 + 6}
                     textAnchor="middle"
-                    fontSize={13}
-                    fill={seg.unknown ? "#6b7280" : "white"}
+                    fontSize={18}
+                    fill={seg.unknown ? "#374151" : "white"}
                     fontWeight="bold"
                   >
                     {seg.unknown ? "?" : seg.label || seg.value}
@@ -991,9 +1009,10 @@ function AngleRenderer({
             />
             {ray.label && (
               <text
-                x={endX + 10 * Math.cos(rad)}
-                y={endY - 10 * Math.sin(rad)}
-                fontSize={12}
+                x={endX + 12 * Math.cos(rad)}
+                y={endY - 12 * Math.sin(rad)}
+                fontSize={16}
+                fontWeight="bold"
                 fill="#374151"
               >
                 {ray.label}
@@ -1026,9 +1045,9 @@ function AngleRenderer({
       {/* Angle measure label */}
       {data.measure && (
         <text
-          x={cx + 45}
-          y={cy - 15}
-          fontSize={14}
+          x={cx + 50}
+          y={cy - 18}
+          fontSize={18}
           fill="#ef4444"
           fontWeight="bold"
         >
@@ -1045,7 +1064,8 @@ function AngleRenderer({
           x={cx}
           y={height - 15}
           textAnchor="middle"
-          fontSize={14}
+          fontSize={18}
+          fontWeight="bold"
           fill="#374151"
         >
           {data.label}
@@ -1110,9 +1130,9 @@ function CircleGraphRenderer({
       {data.title && (
         <text
           x={cx}
-          y={25}
+          y={28}
           textAnchor="middle"
-          fontSize={16}
+          fontSize={20}
           fontWeight="bold"
           fill="#374151"
         >
@@ -1130,7 +1150,7 @@ function CircleGraphRenderer({
               x={section.labelX}
               y={section.labelY}
               textAnchor="middle"
-              fontSize={11}
+              fontSize={14}
               fill="white"
               fontWeight="bold"
             >
@@ -1146,11 +1166,11 @@ function CircleGraphRenderer({
 
       {/* Legend */}
       {sections.some((s) => s.label) && (
-        <g transform={`translate(${width - 100}, ${cy - sections.length * 10})`}>
+        <g transform={`translate(${width - 110}, ${cy - sections.length * 12})`}>
           {sections.map((section, i) => (
-            <g key={`legend-${i}`} transform={`translate(0, ${i * 20})`}>
-              <rect width={12} height={12} fill={section.color} />
-              <text x={16} y={10} fontSize={11} fill="#374151">
+            <g key={`legend-${i}`} transform={`translate(0, ${i * 24})`}>
+              <rect width={14} height={14} fill={section.color} />
+              <text x={18} y={12} fontSize={14} fontWeight="600" fill="#374151">
                 {section.label}
               </text>
             </g>
@@ -1225,7 +1245,7 @@ export function DiagramRenderer({
   };
 
   return (
-    <div className={`diagram-container ${className}`}>
+    <div className={`diagram-container inline-block ${className}`}>
       {rendererMap[type] || (
         <div className="text-red-500">Unknown diagram type: {type}</div>
       )}
