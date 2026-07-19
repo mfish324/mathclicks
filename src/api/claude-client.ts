@@ -5,8 +5,8 @@ let clientInstance: Anthropic | null = null;
 let currentConfig: PipelineConfig | null = null;
 
 // Model configuration with fallback chain
-const PRIMARY_MODEL = 'claude-opus-4-5-20251101';
-const FALLBACK_MODEL = 'claude-sonnet-4-20250514';
+const PRIMARY_MODEL = 'claude-opus-4-8';
+const FALLBACK_MODEL = 'claude-sonnet-5';
 
 // Retry configuration
 const MAX_RETRIES = 3;

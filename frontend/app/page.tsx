@@ -40,6 +40,7 @@ export default function HomePage() {
   const [apiComplete, setApiComplete] = useState(false);
   const [pendingExtraction, setPendingExtraction] = useState<ImageExtractionResult | null>(null);
   const [pendingProblems, setPendingProblems] = useState<ProblemSet | null>(null);
+  const [isRegenerating, setIsRegenerating] = useState(false);
   const pendingFileRef = useRef<File | null>(null);
 
   // Load saved sessions on mount
@@ -85,16 +86,41 @@ export default function HomePage() {
     setFlowState("verifying");
   };
 
-  // Called when user confirms the extraction
-  const handleVerificationConfirm = () => {
-    if (pendingExtraction && pendingProblems) {
-      sessionStorage.setItem("mathclicks-session", JSON.stringify({
-        extraction: pendingExtraction,
-        problems: pendingProblems,
-      }));
-      setFlowState("navigating");
-      router.push("/practice");
+  // Called when user confirms the extraction (possibly with corrections)
+  const handleVerificationConfirm = async (confirmedExtraction: ImageExtractionResult) => {
+    if (!pendingExtraction || !pendingProblems) return;
+
+    // If the user corrected any equations or word problems, the pre-generated
+    // problems were built from the misread content — regenerate from the fix.
+    const contentChanged =
+      JSON.stringify(confirmedExtraction.extracted_content) !==
+      JSON.stringify(pendingExtraction.extracted_content);
+
+    let problems = pendingProblems;
+    if (contentChanged) {
+      setIsRegenerating(true);
+      try {
+        const response = await fetch("/api/generate-more", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ extraction: confirmedExtraction, count: 3 }),
+        });
+        const data = await response.json();
+        if (data.success && data.data?.problems) {
+          problems = data.data.problems;
+        }
+      } catch {
+        // Regeneration failed — fall back to the originally generated problems
+      }
+      setIsRegenerating(false);
     }
+
+    sessionStorage.setItem("mathclicks-session", JSON.stringify({
+      extraction: confirmedExtraction,
+      problems,
+    }));
+    setFlowState("navigating");
+    router.push("/practice");
   };
 
   // Called when user wants to try a different image
@@ -418,6 +444,7 @@ export default function HomePage() {
           extraction={pendingExtraction}
           onConfirm={handleVerificationConfirm}
           onRetry={handleVerificationRetry}
+          isConfirming={isRegenerating}
         />
       )}
 
