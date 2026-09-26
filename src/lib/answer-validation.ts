@@ -507,8 +507,15 @@ function answersMatch(
     }
 
     case 'expression': {
+      // Inequalities only match exactly or via acceptable answers; the
+      // algebraic checker ignores the direction of < and >
+      if (/[<>≤≥]/.test(studentAnswer + correctAnswer)) {
+        break;
+      }
+      // Strip a leading "y =" style prefix so reordered equations still match
+      const stripPrefix = (s: string) => s.trim().replace(/^[a-z]\s*=\s*/i, '');
       // Use algebraic equivalence checking with numerical verification fallback
-      if (expressionsEquivalent(studentAnswer, correctAnswer)) {
+      if (expressionsEquivalent(stripPrefix(studentAnswer), stripPrefix(correctAnswer))) {
         return true;
       }
       break;

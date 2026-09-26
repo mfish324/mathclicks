@@ -287,6 +287,20 @@ describe('Answer Validation', () => {
         expect(validateAnswer(problem, '2x').correct).toBe(false);
       });
     });
+
+    describe('equations and inequalities', () => {
+      it('accepts reordered equations with a y = prefix', () => {
+        const problem = createProblem('y = 2x + 3', 'expression');
+        expect(validateAnswer(problem, 'y = 3 + 2x').correct).toBe(true);
+        expect(validateAnswer(problem, '2x + 3').correct).toBe(true);
+      });
+
+      it('rejects an inequality with the wrong direction', () => {
+        const problem = createProblem('x > -3', 'expression');
+        expect(validateAnswer(problem, 'x > -3').correct).toBe(true);
+        expect(validateAnswer(problem, 'x < -3').correct).toBe(false);
+      });
+    });
   });
 
   describe('Multiple choice answers', () => {

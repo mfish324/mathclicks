@@ -1,0 +1,1363 @@
+[
+  {
+    "problem_text": "Solve: x + 8 = 15",
+    "answer": "7",
+    "answer_type": "integer",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "A.REI.B.3",
+    "topic": "Linear Equations & Inequalities",
+    "hints": [
+      "Undo the + 8",
+      "Subtract 8 from both sides"
+    ],
+    "solution_steps": [
+      "x + 8 = 15",
+      "x = 15 - 8",
+      "x = 7"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Solve: 3x + 7 = 22",
+    "answer": "5",
+    "answer_type": "integer",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "A.REI.B.3",
+    "topic": "Linear Equations & Inequalities",
+    "hints": [
+      "Subtract 7 first",
+      "Then divide by 3"
+    ],
+    "solution_steps": [
+      "3x + 7 = 22",
+      "3x = 15",
+      "x = 5"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Solve: 5(x - 2) = 2x + 11",
+    "answer": "7",
+    "answer_type": "integer",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "A.REI.B.3",
+    "topic": "Linear Equations & Inequalities",
+    "hints": [
+      "Distribute the 5",
+      "Get the x terms on one side"
+    ],
+    "solution_steps": [
+      "5x - 10 = 2x + 11",
+      "3x = 21",
+      "x = 7"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Solve the inequality: -2x + 5 < 11",
+    "answer": "x > -3",
+    "answer_type": "expression",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "A.REI.B.3",
+    "topic": "Linear Equations & Inequalities",
+    "hints": [
+      "Subtract 5 from both sides",
+      "Dividing by a negative flips the inequality"
+    ],
+    "solution_steps": [
+      "-2x + 5 < 11",
+      "-2x < 6",
+      "Divide by -2 and flip: x > -3"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "x>-3",
+      "-3<x"
+    ]
+  },
+  {
+    "problem_text": "Solve: (2x + 1)/3 - (x - 2)/4 = 2",
+    "answer": "14/5",
+    "answer_type": "fraction",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "A.REI.B.3",
+    "topic": "Linear Equations & Inequalities",
+    "hints": [
+      "Multiply every term by 12 to clear the fractions",
+      "Be careful distributing the negative"
+    ],
+    "solution_steps": [
+      "Multiply by 12: 4(2x + 1) - 3(x - 2) = 24",
+      "8x + 4 - 3x + 6 = 24",
+      "5x + 10 = 24",
+      "5x = 14",
+      "x = 14/5"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "2.8",
+      "2 4/5"
+    ]
+  },
+  {
+    "problem_text": "If x = 3 and x + y = 10, what is y?",
+    "answer": "7",
+    "answer_type": "integer",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "A.REI.C.6",
+    "topic": "Systems of Linear Equations",
+    "hints": [
+      "Substitute 3 for x",
+      "3 + y = 10"
+    ],
+    "solution_steps": [
+      "3 + y = 10",
+      "y = 7"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Solve the system: y = 2x + 1 and y = -x + 7. Give your answer as (x, y).",
+    "answer": "(2, 5)",
+    "answer_type": "coordinate",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "A.REI.C.6",
+    "topic": "Systems of Linear Equations",
+    "hints": [
+      "Both equal y, so set them equal",
+      "2x + 1 = -x + 7"
+    ],
+    "solution_steps": [
+      "2x + 1 = -x + 7",
+      "3x = 6, so x = 2",
+      "y = 2(2) + 1 = 5",
+      "Solution: (2, 5)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Solve the system: x + y = 10 and x - y = 4. Give your answer as (x, y).",
+    "answer": "(7, 3)",
+    "answer_type": "coordinate",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "A.REI.C.6",
+    "topic": "Systems of Linear Equations",
+    "hints": [
+      "Add the two equations to eliminate y",
+      "Then substitute back to find y"
+    ],
+    "solution_steps": [
+      "Add: 2x = 14, so x = 7",
+      "7 + y = 10, so y = 3",
+      "Solution: (7, 3)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Solve the system: 2x + 3y = 12 and 4x - y = 10. Give your answer as (x, y).",
+    "answer": "(3, 2)",
+    "answer_type": "coordinate",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "A.REI.C.6",
+    "topic": "Systems of Linear Equations",
+    "hints": [
+      "Solve the second equation for y",
+      "Substitute y = 4x - 10 into the first equation"
+    ],
+    "solution_steps": [
+      "y = 4x - 10",
+      "2x + 3(4x - 10) = 12",
+      "14x - 30 = 12, so x = 3",
+      "y = 4(3) - 10 = 2",
+      "Solution: (3, 2)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "A school play sold 120 tickets for $765. Adult tickets cost $8 and student tickets cost $5. How many adult tickets were sold?",
+    "answer": "55",
+    "answer_type": "integer",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "A.REI.C.6",
+    "topic": "Systems of Linear Equations",
+    "hints": [
+      "Let a = adult tickets and s = student tickets",
+      "Write one equation for the number of tickets and one for the money"
+    ],
+    "solution_steps": [
+      "a + s = 120 and 8a + 5s = 765",
+      "s = 120 - a",
+      "8a + 5(120 - a) = 765",
+      "3a + 600 = 765",
+      "3a = 165, so a = 55"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Simplify: (3x + 4) + (2x - 1)",
+    "answer": "5x + 3",
+    "answer_type": "expression",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "A.APR.A.1",
+    "topic": "Polynomial Operations",
+    "hints": [
+      "Combine the x terms",
+      "Combine the constants"
+    ],
+    "solution_steps": [
+      "3x + 2x = 5x",
+      "4 - 1 = 3",
+      "5x + 3"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Simplify: (3x² + 2x - 5) - (x² - 4x + 2)",
+    "answer": "2x^2 + 6x - 7",
+    "answer_type": "expression",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "A.APR.A.1",
+    "topic": "Polynomial Operations",
+    "hints": [
+      "Distribute the negative to every term in the second polynomial",
+      "Then combine like terms"
+    ],
+    "solution_steps": [
+      "3x² + 2x - 5 - x² + 4x - 2",
+      "3x² - x² = 2x²",
+      "2x + 4x = 6x",
+      "-5 - 2 = -7",
+      "2x² + 6x - 7"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "2x²+6x-7"
+    ]
+  },
+  {
+    "problem_text": "Multiply: (x + 3)(x - 5)",
+    "answer": "x^2 - 2x - 15",
+    "answer_type": "expression",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "A.APR.A.1",
+    "topic": "Polynomial Operations",
+    "hints": [
+      "Use FOIL: First, Outer, Inner, Last",
+      "Combine the middle terms"
+    ],
+    "solution_steps": [
+      "x·x = x²",
+      "x·(-5) + 3·x = -2x",
+      "3·(-5) = -15",
+      "x² - 2x - 15"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "x²-2x-15"
+    ]
+  },
+  {
+    "problem_text": "Multiply: (2x - 3)²",
+    "answer": "4x^2 - 12x + 9",
+    "answer_type": "expression",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "A.APR.A.1",
+    "topic": "Polynomial Operations",
+    "hints": [
+      "(2x - 3)² means (2x - 3)(2x - 3)",
+      "The middle term is not zero"
+    ],
+    "solution_steps": [
+      "(2x - 3)(2x - 3)",
+      "4x² - 6x - 6x + 9",
+      "4x² - 12x + 9"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "4x²-12x+9"
+    ]
+  },
+  {
+    "problem_text": "Multiply: (x + 2)(x² - 3x + 4)",
+    "answer": "x^3 - x^2 - 2x + 8",
+    "answer_type": "expression",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "A.APR.A.1",
+    "topic": "Polynomial Operations",
+    "hints": [
+      "Multiply x by every term, then 2 by every term",
+      "Line up like terms before combining"
+    ],
+    "solution_steps": [
+      "x(x² - 3x + 4) = x³ - 3x² + 4x",
+      "2(x² - 3x + 4) = 2x² - 6x + 8",
+      "x³ - x² - 2x + 8"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "x³-x²-2x+8"
+    ]
+  },
+  {
+    "problem_text": "Evaluate: 25^(1/2)",
+    "answer": "5",
+    "answer_type": "integer",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "N.RN.A.2",
+    "topic": "Radicals & Rational Exponents",
+    "hints": [
+      "A power of 1/2 means square root",
+      "What number squared is 25?"
+    ],
+    "solution_steps": [
+      "25^(1/2) = √25",
+      "= 5"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Evaluate: 8^(2/3)",
+    "answer": "4",
+    "answer_type": "integer",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "N.RN.A.2",
+    "topic": "Radicals & Rational Exponents",
+    "hints": [
+      "The denominator 3 means cube root",
+      "Take the cube root first, then square"
+    ],
+    "solution_steps": [
+      "8^(2/3) = (∛8)²",
+      "= 2²",
+      "= 4"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Simplify: √50",
+    "answer": "5√2",
+    "answer_type": "expression",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "N.RN.A.2",
+    "topic": "Radicals & Rational Exponents",
+    "hints": [
+      "Look for a perfect square factor of 50",
+      "50 = 25 × 2"
+    ],
+    "solution_steps": [
+      "√50 = √(25 × 2)",
+      "= √25 × √2",
+      "= 5√2"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "5sqrt(2)",
+      "5*sqrt(2)",
+      "5*√2"
+    ]
+  },
+  {
+    "problem_text": "Evaluate: 16^(-3/4)",
+    "answer": "1/8",
+    "answer_type": "fraction",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "N.RN.A.2",
+    "topic": "Radicals & Rational Exponents",
+    "hints": [
+      "A negative exponent means take the reciprocal",
+      "16^(1/4) = 2"
+    ],
+    "solution_steps": [
+      "16^(-3/4) = 1 / 16^(3/4)",
+      "16^(3/4) = (⁴√16)³ = 2³ = 8",
+      "= 1/8"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "0.125"
+    ]
+  },
+  {
+    "problem_text": "Simplify: (x^(1/2) · x^(1/3))^6",
+    "answer": "x^5",
+    "answer_type": "expression",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "N.RN.A.2",
+    "topic": "Radicals & Rational Exponents",
+    "hints": [
+      "When multiplying powers with the same base, add the exponents",
+      "1/2 + 1/3 = 5/6"
+    ],
+    "solution_steps": [
+      "x^(1/2) · x^(1/3) = x^(5/6)",
+      "(x^(5/6))^6 = x^(5/6 · 6)",
+      "= x^5"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "x⁵"
+    ]
+  },
+  {
+    "problem_text": "If f(x) = 3x - 2, find f(4).",
+    "answer": "10",
+    "answer_type": "integer",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "F.IF.A.2",
+    "topic": "Function Notation",
+    "hints": [
+      "Replace x with 4",
+      "3(4) - 2"
+    ],
+    "solution_steps": [
+      "f(4) = 3(4) - 2",
+      "= 12 - 2",
+      "= 10"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "If f(x) = x² - 3x + 1, find f(-2).",
+    "answer": "11",
+    "answer_type": "integer",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "F.IF.A.2",
+    "topic": "Function Notation",
+    "hints": [
+      "Replace every x with (-2)",
+      "(-2)² is positive"
+    ],
+    "solution_steps": [
+      "f(-2) = (-2)² - 3(-2) + 1",
+      "= 4 + 6 + 1",
+      "= 11"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "If f(x) = 2x + 1 and f(a) = 9, what is a?",
+    "answer": "4",
+    "answer_type": "integer",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "F.IF.A.2",
+    "topic": "Function Notation",
+    "hints": [
+      "f(a) = 9 means 2a + 1 = 9",
+      "Solve for a"
+    ],
+    "solution_steps": [
+      "2a + 1 = 9",
+      "2a = 8",
+      "a = 4"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "If f(x) = x² + 1 and g(x) = 3x - 4, find f(g(2)).",
+    "answer": "5",
+    "answer_type": "integer",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "F.IF.A.2",
+    "topic": "Function Notation",
+    "hints": [
+      "Work from the inside out: find g(2) first",
+      "Then plug that result into f"
+    ],
+    "solution_steps": [
+      "g(2) = 3(2) - 4 = 2",
+      "f(2) = 2² + 1",
+      "= 5"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "A ball's height in feet after t seconds is h(t) = -16t² + 64t. At what time t > 0 does the ball hit the ground?",
+    "answer": "4",
+    "answer_type": "integer",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "F.IF.A.2",
+    "topic": "Function Notation",
+    "hints": [
+      "The ball hits the ground when h(t) = 0",
+      "Factor out -16t"
+    ],
+    "solution_steps": [
+      "-16t² + 64t = 0",
+      "-16t(t - 4) = 0",
+      "t = 0 or t = 4",
+      "The ball lands at t = 4 seconds"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "A car travels 150 miles in 3 hours. What is its average speed in miles per hour?",
+    "answer": "50",
+    "answer_type": "integer",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "F.IF.B.6",
+    "topic": "Average Rate of Change",
+    "hints": [
+      "Rate = distance ÷ time",
+      "150 ÷ 3"
+    ],
+    "solution_steps": [
+      "150 ÷ 3 = 50",
+      "50 miles per hour"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Find the average rate of change of f(x) = 4x + 1 from x = 0 to x = 5.",
+    "answer": "4",
+    "answer_type": "integer",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "F.IF.B.6",
+    "topic": "Average Rate of Change",
+    "hints": [
+      "Rate of change = (f(5) - f(0)) / (5 - 0)",
+      "For a line, it equals the slope"
+    ],
+    "solution_steps": [
+      "f(5) = 21, f(0) = 1",
+      "(21 - 1) / (5 - 0) = 20/5",
+      "= 4"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Find the average rate of change of f(x) = x² from x = 1 to x = 3.",
+    "answer": "4",
+    "answer_type": "integer",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "F.IF.B.6",
+    "topic": "Average Rate of Change",
+    "hints": [
+      "Find f(3) and f(1)",
+      "Divide the change in f by the change in x"
+    ],
+    "solution_steps": [
+      "f(3) = 9, f(1) = 1",
+      "(9 - 1) / (3 - 1) = 8/2",
+      "= 4"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Find the average rate of change of f(x) = x² - 2x from x = -1 to x = 4.",
+    "answer": "1",
+    "answer_type": "integer",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "F.IF.B.6",
+    "topic": "Average Rate of Change",
+    "hints": [
+      "Find f(4) and f(-1) carefully",
+      "The change in x is 4 - (-1) = 5"
+    ],
+    "solution_steps": [
+      "f(4) = 16 - 8 = 8",
+      "f(-1) = 1 + 2 = 3",
+      "(8 - 3) / 5 = 1"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Find the average rate of change of f(x) = 2^x from x = 1 to x = 4.",
+    "answer": "14/3",
+    "answer_type": "fraction",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "F.IF.B.6",
+    "topic": "Average Rate of Change",
+    "hints": [
+      "Find f(4) and f(1)",
+      "Leave the answer as a fraction"
+    ],
+    "solution_steps": [
+      "f(4) = 16, f(1) = 2",
+      "(16 - 2) / (4 - 1) = 14/3"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "4 2/3",
+      "4.67"
+    ]
+  },
+  {
+    "problem_text": "Write the equation of the line with slope 2 and y-intercept 3.",
+    "answer": "y = 2x + 3",
+    "answer_type": "expression",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "F.LE.A.2",
+    "topic": "Linear & Exponential Models",
+    "hints": [
+      "Use y = mx + b",
+      "m is the slope, b is the y-intercept"
+    ],
+    "solution_steps": [
+      "m = 2, b = 3",
+      "y = 2x + 3"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "2x+3"
+    ]
+  },
+  {
+    "problem_text": "Write the equation of the line through (1, 5) and (3, 11).",
+    "answer": "y = 3x + 2",
+    "answer_type": "expression",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "F.LE.A.2",
+    "topic": "Linear & Exponential Models",
+    "hints": [
+      "Slope = (11 - 5) / (3 - 1)",
+      "Substitute a point to find b"
+    ],
+    "solution_steps": [
+      "m = 6/2 = 3",
+      "5 = 3(1) + b, so b = 2",
+      "y = 3x + 2"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "3x+2"
+    ]
+  },
+  {
+    "problem_text": "A population starts at 50 and doubles every year. Write an equation for the population y after x years.",
+    "answer": "y = 50(2)^x",
+    "answer_type": "expression",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "F.LE.A.2",
+    "topic": "Linear & Exponential Models",
+    "hints": [
+      "Exponential form: y = a·b^x",
+      "a is the starting value, b is the growth factor"
+    ],
+    "solution_steps": [
+      "Starting value a = 50",
+      "Doubling means b = 2",
+      "y = 50(2)^x"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "50(2)^x",
+      "y=50*2^x",
+      "50*2^x",
+      "y=50·2^x",
+      "50·2^x"
+    ]
+  },
+  {
+    "problem_text": "An exponential function passes through (0, 3) and (2, 48). Write its equation in the form y = a·b^x.",
+    "answer": "y = 3(4)^x",
+    "answer_type": "expression",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "F.LE.A.2",
+    "topic": "Linear & Exponential Models",
+    "hints": [
+      "The point (0, 3) gives a directly",
+      "Use (2, 48) to find b: 3·b² = 48"
+    ],
+    "solution_steps": [
+      "a = 3",
+      "3b² = 48, so b² = 16",
+      "b = 4",
+      "y = 3(4)^x"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "3(4)^x",
+      "y=3*4^x",
+      "3*4^x",
+      "y=3·4^x",
+      "3·4^x"
+    ]
+  },
+  {
+    "problem_text": "An exponential function passes through (1, 6) and (3, 54). Write its equation in the form y = a·b^x.",
+    "answer": "y = 2(3)^x",
+    "answer_type": "expression",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "F.LE.A.2",
+    "topic": "Linear & Exponential Models",
+    "hints": [
+      "Divide the two outputs: 54 ÷ 6 = b²",
+      "Once you know b, use (1, 6) to find a"
+    ],
+    "solution_steps": [
+      "a·b³ ÷ (a·b) = 54 ÷ 6, so b² = 9",
+      "b = 3",
+      "a·3 = 6, so a = 2",
+      "y = 2(3)^x"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "2(3)^x",
+      "y=2*3^x",
+      "2*3^x",
+      "y=2·3^x",
+      "2·3^x"
+    ]
+  },
+  {
+    "problem_text": "A plumber's cost is modeled by C = 15h + 40, where h is hours worked. What is the cost if the plumber works 0 hours (the fixed fee)?",
+    "answer": "40",
+    "answer_type": "integer",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "S.ID.C.7",
+    "topic": "Interpreting Linear Models",
+    "hints": [
+      "Substitute h = 0",
+      "The y-intercept is the starting amount"
+    ],
+    "solution_steps": [
+      "C = 15(0) + 40",
+      "C = 40"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "In the model C = 15h + 40, how many dollars does each additional hour of work add to the cost?",
+    "answer": "15",
+    "answer_type": "integer",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "S.ID.C.7",
+    "topic": "Interpreting Linear Models",
+    "hints": [
+      "The slope is the rate of change",
+      "It is the number multiplied by h"
+    ],
+    "solution_steps": [
+      "The slope is 15",
+      "Each hour adds $15"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "A plant's height is modeled by h = 0.5w + 4, where h is in cm and w is weeks. How many weeks does it take the plant to grow 3 cm?",
+    "answer": "6",
+    "answer_type": "integer",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "S.ID.C.7",
+    "topic": "Interpreting Linear Models",
+    "hints": [
+      "The slope tells you how much it grows each week",
+      "3 ÷ 0.5"
+    ],
+    "solution_steps": [
+      "Growth per week = 0.5 cm",
+      "3 ÷ 0.5 = 6",
+      "6 weeks"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "A line of best fit for test score vs. hours studied passes through (2, 65) and (6, 85). What is the slope, in points per hour?",
+    "answer": "5",
+    "answer_type": "integer",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "S.ID.C.7",
+    "topic": "Interpreting Linear Models",
+    "hints": [
+      "Slope = change in score ÷ change in hours",
+      "(85 - 65) / (6 - 2)"
+    ],
+    "solution_steps": [
+      "(85 - 65) / (6 - 2) = 20/4",
+      "= 5 points per hour"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "A line of best fit for test score vs. hours studied passes through (2, 65) and (6, 85). What score does the model predict for a student who studied 0 hours?",
+    "answer": "55",
+    "answer_type": "integer",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "S.ID.C.7",
+    "topic": "Interpreting Linear Models",
+    "hints": [
+      "Find the slope first",
+      "Work backward from (2, 65) to x = 0"
+    ],
+    "solution_steps": [
+      "Slope = 20/4 = 5",
+      "65 = 5(2) + b",
+      "b = 55",
+      "Predicted score: 55"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "What common factor appears in both terms of 2x(x - 5) + 3(x - 5)?",
+    "answer": "x - 5",
+    "answer_type": "expression",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "A.SSE.A.1",
+    "topic": "Interpreting Expressions",
+    "hints": [
+      "Look at what each term is multiplied by",
+      "Both terms contain the same binomial"
+    ],
+    "solution_steps": [
+      "Term 1: 2x · (x - 5)",
+      "Term 2: 3 · (x - 5)",
+      "Common factor: (x - 5)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "(x-5)"
+    ]
+  },
+  {
+    "problem_text": "The expression 1000(1.04)^t gives the value of a savings account after t years. By what percent does the account grow each year?",
+    "answer": "4",
+    "answer_type": "integer",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "A.SSE.A.1",
+    "topic": "Interpreting Expressions",
+    "hints": [
+      "The growth factor is 1.04",
+      "1.04 = 1 + 0.04"
+    ],
+    "solution_steps": [
+      "Growth factor = 1.04 = 1 + 0.04",
+      "0.04 = 4%",
+      "The account grows 4% per year"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "4%"
+    ]
+  },
+  {
+    "problem_text": "What is the smallest possible value of 3(x - 2)² + 5?",
+    "answer": "5",
+    "answer_type": "integer",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "A.SSE.A.1",
+    "topic": "Interpreting Expressions",
+    "hints": [
+      "A squared quantity can never be negative",
+      "What is the smallest (x - 2)² can be?"
+    ],
+    "solution_steps": [
+      "(x - 2)² ≥ 0",
+      "Smallest when x = 2: 3(0) + 5",
+      "Minimum value = 5"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Factor out the greatest common factor: 6x + 9",
+    "answer": "3(2x + 3)",
+    "answer_type": "expression",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "A.SSE.A.2",
+    "topic": "Expression Structure",
+    "hints": [
+      "What is the largest number that divides 6 and 9?",
+      "Divide each term by 3"
+    ],
+    "solution_steps": [
+      "GCF of 6 and 9 is 3",
+      "6x ÷ 3 = 2x, 9 ÷ 3 = 3",
+      "3(2x + 3)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "3*(2x+3)"
+    ]
+  },
+  {
+    "problem_text": "Factor: 4x² - 25",
+    "answer": "(2x + 5)(2x - 5)",
+    "answer_type": "expression",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "A.SSE.A.2",
+    "topic": "Expression Structure",
+    "hints": [
+      "Both terms are perfect squares",
+      "4x² = (2x)² and 25 = 5²"
+    ],
+    "solution_steps": [
+      "4x² - 25 = (2x)² - 5²",
+      "Difference of squares: (a + b)(a - b)",
+      "(2x + 5)(2x - 5)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "(2x-5)(2x+5)"
+    ]
+  },
+  {
+    "problem_text": "Factor completely: x⁴ - 16",
+    "answer": "(x^2 + 4)(x + 2)(x - 2)",
+    "answer_type": "expression",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "A.SSE.A.2",
+    "topic": "Expression Structure",
+    "hints": [
+      "See x⁴ - 16 as (x²)² - 4²",
+      "One of the factors can be factored again"
+    ],
+    "solution_steps": [
+      "x⁴ - 16 = (x² + 4)(x² - 4)",
+      "x² - 4 = (x + 2)(x - 2)",
+      "(x² + 4)(x + 2)(x - 2)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "(x²+4)(x+2)(x-2)",
+      "(x^2+4)(x-2)(x+2)",
+      "(x²+4)(x-2)(x+2)"
+    ]
+  },
+  {
+    "problem_text": "Without a calculator, use the structure of the expression to find 51² - 49².",
+    "answer": "200",
+    "answer_type": "integer",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "A.SSE.A.2",
+    "topic": "Expression Structure",
+    "hints": [
+      "This is a difference of squares",
+      "a² - b² = (a + b)(a - b)"
+    ],
+    "solution_steps": [
+      "51² - 49² = (51 + 49)(51 - 49)",
+      "= 100 × 2",
+      "= 200"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Factor out the greatest common factor: x² + 5x",
+    "answer": "x(x + 5)",
+    "answer_type": "expression",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "A.SSE.B.3",
+    "topic": "Factoring Quadratics",
+    "hints": [
+      "Both terms contain x",
+      "Divide each term by x"
+    ],
+    "solution_steps": [
+      "x² ÷ x = x, 5x ÷ x = 5",
+      "x(x + 5)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Factor: 2x² + 7x + 3",
+    "answer": "(2x + 1)(x + 3)",
+    "answer_type": "expression",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "A.SSE.B.3",
+    "topic": "Factoring Quadratics",
+    "hints": [
+      "Find two numbers that multiply to 2 × 3 = 6 and add to 7",
+      "Split the middle term: 2x² + 6x + x + 3"
+    ],
+    "solution_steps": [
+      "2x² + 6x + x + 3",
+      "2x(x + 3) + 1(x + 3)",
+      "(2x + 1)(x + 3)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "(x+3)(2x+1)"
+    ]
+  },
+  {
+    "problem_text": "Complete the square to find the minimum value of x² + 6x + 5.",
+    "answer": "-4",
+    "answer_type": "integer",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "A.SSE.B.3",
+    "topic": "Factoring Quadratics",
+    "hints": [
+      "Half of 6 is 3, and 3² = 9",
+      "Rewrite as (x + 3)² plus a constant"
+    ],
+    "solution_steps": [
+      "x² + 6x + 9 - 9 + 5",
+      "= (x + 3)² - 4",
+      "(x + 3)² ≥ 0, so the minimum is -4"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "What is the positive solution of x² = 49?",
+    "answer": "7",
+    "answer_type": "integer",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "A.REI.B.4",
+    "topic": "Solving Quadratics",
+    "hints": [
+      "What number squared is 49?",
+      "Take the square root of both sides"
+    ],
+    "solution_steps": [
+      "x² = 49",
+      "x = ±7",
+      "Positive solution: 7"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "Solve: 2x² - 3x - 2 = 0",
+    "answer": "x = 2 or x = -1/2",
+    "answer_type": "expression",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "A.REI.B.4",
+    "topic": "Solving Quadratics",
+    "hints": [
+      "Look for factors of 2x² - 3x - 2",
+      "Try (2x + 1)(x - 2)"
+    ],
+    "solution_steps": [
+      "(2x + 1)(x - 2) = 0",
+      "2x + 1 = 0 gives x = -1/2",
+      "x - 2 = 0 gives x = 2"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "2 or -1/2",
+      "-1/2 or 2",
+      "x=-1/2 or x=2",
+      "x = 2, x = -1/2",
+      "2, -1/2",
+      "-1/2, 2",
+      "x=2 or x=-0.5",
+      "2 or -0.5"
+    ]
+  },
+  {
+    "problem_text": "Solve by completing the square: x² + 4x - 1 = 0",
+    "answer": "x = -2 ± √5",
+    "answer_type": "expression",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "A.REI.B.4",
+    "topic": "Solving Quadratics",
+    "hints": [
+      "Move the constant: x² + 4x = 1",
+      "Add (4/2)² = 4 to both sides"
+    ],
+    "solution_steps": [
+      "x² + 4x = 1",
+      "x² + 4x + 4 = 5",
+      "(x + 2)² = 5",
+      "x + 2 = ±√5",
+      "x = -2 ± √5"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "-2±√5",
+      "-2+√5 or -2-√5",
+      "x=-2+√5 or x=-2-√5",
+      "-2±sqrt(5)",
+      "x=-2±sqrt(5)"
+    ]
+  },
+  {
+    "problem_text": "A number plus 6 equals 20. What is the number?",
+    "answer": "14",
+    "answer_type": "integer",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "A.CED.A.1",
+    "topic": "Creating Equations",
+    "hints": [
+      "Write it as x + 6 = 20",
+      "Subtract 6"
+    ],
+    "solution_steps": [
+      "x + 6 = 20",
+      "x = 14"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "A rectangle's length is 3 cm more than its width, and its area is 40 cm². What is the width?",
+    "answer": "5",
+    "answer_type": "integer",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "A.CED.A.1",
+    "topic": "Creating Equations",
+    "hints": [
+      "Let w = width, so length = w + 3",
+      "Area: w(w + 3) = 40"
+    ],
+    "solution_steps": [
+      "w(w + 3) = 40",
+      "w² + 3w - 40 = 0",
+      "(w + 8)(w - 5) = 0",
+      "A width can't be negative, so w = 5"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "A $2,000 investment doubles every 8 years. After how many years will it be worth $16,000?",
+    "answer": "24",
+    "answer_type": "integer",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "A.CED.A.1",
+    "topic": "Creating Equations",
+    "hints": [
+      "How many times must 2,000 double to reach 16,000?",
+      "16,000 ÷ 2,000 = 8 = 2³"
+    ],
+    "solution_steps": [
+      "2000 · 2^(t/8) = 16000",
+      "2^(t/8) = 8 = 2³",
+      "t/8 = 3",
+      "t = 24 years"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "What is the vertex of y = x² - 6x + 5?",
+    "answer": "(3, -4)",
+    "answer_type": "coordinate",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "F.IF.C.7a",
+    "topic": "Graphing Quadratic Functions",
+    "hints": [
+      "The x-coordinate of the vertex is -b/(2a)",
+      "Substitute that x to find y"
+    ],
+    "solution_steps": [
+      "x = -(-6)/(2·1) = 3",
+      "y = 9 - 18 + 5 = -4",
+      "Vertex: (3, -4)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "What is the maximum value of y = -2x² + 8x - 3?",
+    "answer": "5",
+    "answer_type": "integer",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "F.IF.C.7a",
+    "topic": "Graphing Quadratic Functions",
+    "hints": [
+      "The parabola opens down, so the vertex is the maximum",
+      "x = -b/(2a) = -8/(-4)"
+    ],
+    "solution_steps": [
+      "x = 2",
+      "y = -2(4) + 8(2) - 3",
+      "= -8 + 16 - 3 = 5",
+      "Maximum value: 5"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "For y = 2x² - 4x - 6, find the zeros and the vertex. What is the y-coordinate of the vertex?",
+    "answer": "-8",
+    "answer_type": "integer",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "F.IF.C.7a",
+    "topic": "Graphing Quadratic Functions",
+    "hints": [
+      "Factor out 2: 2(x² - 2x - 3)",
+      "The vertex is halfway between the zeros"
+    ],
+    "solution_steps": [
+      "2(x - 3)(x + 1) = 0, zeros at x = 3 and x = -1",
+      "Vertex x = (3 + (-1))/2 = 1",
+      "y = 2(1) - 4(1) - 6 = -8"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  },
+  {
+    "problem_text": "A gym charges a $25 sign-up fee plus $30 per month. Write an equation for the total cost y after x months.",
+    "answer": "y = 30x + 25",
+    "answer_type": "expression",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "F.BF.A.1",
+    "topic": "Building Functions",
+    "hints": [
+      "The monthly charge is the rate of change",
+      "The sign-up fee is the starting amount"
+    ],
+    "solution_steps": [
+      "Rate: $30 per month, so 30x",
+      "Starting amount: 25",
+      "y = 30x + 25"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "30x+25",
+      "25+30x",
+      "y=25+30x"
+    ]
+  },
+  {
+    "problem_text": "A car worth $24,000 loses 15% of its value each year. Write an equation for its value y after x years.",
+    "answer": "y = 24000(0.85)^x",
+    "answer_type": "expression",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "F.BF.A.1",
+    "topic": "Building Functions",
+    "hints": [
+      "Losing 15% means keeping 85%",
+      "Use y = a·b^x"
+    ],
+    "solution_steps": [
+      "a = 24000",
+      "b = 1 - 0.15 = 0.85",
+      "y = 24000(0.85)^x"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "acceptable_answers": [
+      "24000(0.85)^x",
+      "y=24000*0.85^x",
+      "24000*0.85^x",
+      "y=24000·0.85^x",
+      "24000·0.85^x"
+    ]
+  },
+  {
+    "problem_text": "An open box is made from a 20 cm × 20 cm sheet by cutting an x cm square from each corner and folding up the sides. Write the volume V(x), then find V(2).",
+    "answer": "512",
+    "answer_type": "integer",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "F.BF.A.1",
+    "topic": "Building Functions",
+    "hints": [
+      "After cutting, the base is (20 - 2x) by (20 - 2x)",
+      "The height is x"
+    ],
+    "solution_steps": [
+      "V(x) = x(20 - 2x)²",
+      "V(2) = 2(20 - 4)²",
+      "= 2(256)",
+      "= 512 cm³"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain"
+  }
+]
