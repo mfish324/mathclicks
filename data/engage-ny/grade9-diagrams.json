@@ -1,0 +1,1001 @@
+[
+  {
+    "problem_text": "The shaded region shows the solutions to y > x + 1. Which point, A, B, or C, is in the shaded region? Give its coordinates.",
+    "answer": "(1, 3)",
+    "answer_type": "coordinate",
+    "tier": 1,
+    "grade_level": 9,
+    "standard_code": "A.REI.D.12",
+    "topic": "Graphing Linear Inequalities",
+    "hints": [
+      "Points in the shaded region make the inequality true",
+      "Test each point: is y greater than x + 1?"
+    ],
+    "solution_steps": [
+      "A(0, 0): 0 > 1? No",
+      "B(1, 3): 3 > 2? Yes",
+      "C(3, 1): 1 > 4? No",
+      "Point B (1, 3) is in the shaded region"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -5,
+        "xMax": 5,
+        "yMin": -5,
+        "yMax": 5
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "polygons": [
+        {
+          "vertices": [
+            [
+              4.0,
+              5.0
+            ],
+            [
+              -5,
+              5
+            ],
+            [
+              -5.0,
+              -4.0
+            ]
+          ],
+          "fill": "rgba(59, 130, 246, 0.2)",
+          "stroke": "none"
+        }
+      ],
+      "lines": [
+        {
+          "start": [
+            -5,
+            -4
+          ],
+          "end": [
+            4.0,
+            5.0
+          ],
+          "color": "#3b82f6",
+          "style": "dashed"
+        }
+      ],
+      "points": [
+        {
+          "x": 0,
+          "y": 0,
+          "label": "A",
+          "color": "#ef4444"
+        },
+        {
+          "x": 1,
+          "y": 3,
+          "label": "B",
+          "color": "#22c55e"
+        },
+        {
+          "x": 3,
+          "y": 1,
+          "label": "C",
+          "color": "#f59e0b"
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "The graph shows a solid boundary line through (0, -1) and (1, 1), with the region below it shaded. Write the inequality the graph shows.",
+    "answer": "y ≤ 2x - 1",
+    "answer_type": "expression",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "A.REI.D.12",
+    "topic": "Graphing Linear Inequalities",
+    "hints": [
+      "Find the slope and y-intercept of the boundary line",
+      "A solid line means the line is included (≤ or ≥); shading below means y is less"
+    ],
+    "solution_steps": [
+      "Slope = (1 - (-1)) / (1 - 0) = 2",
+      "y-intercept = -1",
+      "Solid line and shading below: ≤",
+      "y ≤ 2x - 1"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -5,
+        "xMax": 5,
+        "yMin": -5,
+        "yMax": 5
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "polygons": [
+        {
+          "vertices": [
+            [
+              -2.0,
+              -5.0
+            ],
+            [
+              5,
+              -5
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              3.0,
+              5.0
+            ]
+          ],
+          "fill": "rgba(59, 130, 246, 0.2)",
+          "stroke": "none"
+        }
+      ],
+      "lines": [
+        {
+          "start": [
+            -2.0,
+            -5.0
+          ],
+          "end": [
+            3.0,
+            5.0
+          ],
+          "color": "#3b82f6",
+          "style": "solid"
+        }
+      ],
+      "points": [
+        {
+          "x": 0,
+          "y": -1
+        },
+        {
+          "x": 1,
+          "y": 1
+        }
+      ]
+    },
+    "acceptable_answers": [
+      "y<=2x-1",
+      "y≤2x-1",
+      "y≤-1+2x",
+      "y<=-1+2x",
+      "2x-1≥y",
+      "2x-1>=y"
+    ]
+  },
+  {
+    "problem_text": "The graph shows a dashed boundary line through (0, 3) and (3, 0), with the region above it shaded. Write the inequality the graph shows.",
+    "answer": "y > -x + 3",
+    "answer_type": "expression",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "A.REI.D.12",
+    "topic": "Graphing Linear Inequalities",
+    "hints": [
+      "Find the slope and y-intercept of the boundary line",
+      "A dashed line means the line is not included (< or >)"
+    ],
+    "solution_steps": [
+      "Slope = (0 - 3) / (3 - 0) = -1",
+      "y-intercept = 3",
+      "Dashed line and shading above: >",
+      "y > -x + 3"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -5,
+        "xMax": 5,
+        "yMin": -5,
+        "yMax": 5
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "polygons": [
+        {
+          "vertices": [
+            [
+              5.0,
+              -2.0
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              -2.0,
+              5.0
+            ]
+          ],
+          "fill": "rgba(59, 130, 246, 0.2)",
+          "stroke": "none"
+        }
+      ],
+      "lines": [
+        {
+          "start": [
+            -2.0,
+            5.0
+          ],
+          "end": [
+            5,
+            -2
+          ],
+          "color": "#3b82f6",
+          "style": "dashed"
+        }
+      ],
+      "points": [
+        {
+          "x": 0,
+          "y": 3
+        },
+        {
+          "x": 3,
+          "y": 0
+        }
+      ]
+    },
+    "acceptable_answers": [
+      "y>-x+3",
+      "y>3-x",
+      "x+y>3",
+      "y+x>3"
+    ]
+  },
+  {
+    "problem_text": "The graph shows the system y ≥ x - 2 (blue, solid) and y < -x + 4 (red, dashed). The solutions are where the shading overlaps. Which point, A, B, or C, is a solution to both inequalities? Give its coordinates.",
+    "answer": "(0, 0)",
+    "answer_type": "coordinate",
+    "tier": 4,
+    "grade_level": 9,
+    "standard_code": "A.REI.D.12",
+    "topic": "Graphing Linear Inequalities",
+    "hints": [
+      "A solution must make both inequalities true",
+      "Test each point in both inequalities"
+    ],
+    "solution_steps": [
+      "A(0, 0): 0 ≥ -2 yes, 0 < 4 yes",
+      "B(4, 0): 0 ≥ 2 no",
+      "C(1, 5): 5 ≥ -1 yes, 5 < 3 no",
+      "Only A (0, 0) works for both"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -5,
+        "xMax": 5,
+        "yMin": -5,
+        "yMax": 5
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "polygons": [
+        {
+          "vertices": [
+            [
+              -5,
+              -5
+            ],
+            [
+              -3.0,
+              -5.0
+            ],
+            [
+              5.0,
+              3.0
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              -5,
+              5
+            ]
+          ],
+          "fill": "rgba(59, 130, 246, 0.2)",
+          "stroke": "none"
+        },
+        {
+          "vertices": [
+            [
+              -5,
+              -5
+            ],
+            [
+              5,
+              -5
+            ],
+            [
+              5.0,
+              -1.0
+            ],
+            [
+              -1.0,
+              5.0
+            ],
+            [
+              -5,
+              5
+            ]
+          ],
+          "fill": "rgba(239, 68, 68, 0.2)",
+          "stroke": "none"
+        }
+      ],
+      "lines": [
+        {
+          "start": [
+            -3.0,
+            -5.0
+          ],
+          "end": [
+            5,
+            3
+          ],
+          "color": "#3b82f6",
+          "style": "solid"
+        },
+        {
+          "start": [
+            -1.0,
+            5.0
+          ],
+          "end": [
+            5,
+            -1
+          ],
+          "color": "#ef4444",
+          "style": "dashed"
+        }
+      ],
+      "points": [
+        {
+          "x": 0,
+          "y": 0,
+          "label": "A",
+          "color": "#22c55e"
+        },
+        {
+          "x": 4,
+          "y": 0,
+          "label": "B",
+          "color": "#f59e0b"
+        },
+        {
+          "x": 1,
+          "y": 5,
+          "label": "C",
+          "color": "#f59e0b"
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "The graph shows the system y ≥ x - 2 (blue, solid) and y < -x + 4 (red, dashed). How many points with whole-number coordinates, where x ≥ 0 and y ≥ 0, are solutions to the system?",
+    "answer": "9",
+    "answer_type": "integer",
+    "tier": 5,
+    "grade_level": 9,
+    "standard_code": "A.REI.D.12",
+    "topic": "Graphing Linear Inequalities",
+    "hints": [
+      "Check one column at a time: x = 0, x = 1, x = 2, ...",
+      "Points on the solid line count; points on the dashed line do not"
+    ],
+    "solution_steps": [
+      "x = 0: y = 0, 1, 2, 3 (4 points)",
+      "x = 1: y = 0, 1, 2 (3 points)",
+      "x = 2: y = 0, 1 (2 points)",
+      "x = 3: need y ≥ 1 and y < 1, so none",
+      "4 + 3 + 2 = 9"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -5,
+        "xMax": 5,
+        "yMin": -5,
+        "yMax": 5
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "polygons": [
+        {
+          "vertices": [
+            [
+              -5,
+              -5
+            ],
+            [
+              -3.0,
+              -5.0
+            ],
+            [
+              5.0,
+              3.0
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              -5,
+              5
+            ]
+          ],
+          "fill": "rgba(59, 130, 246, 0.2)",
+          "stroke": "none"
+        },
+        {
+          "vertices": [
+            [
+              -5,
+              -5
+            ],
+            [
+              5,
+              -5
+            ],
+            [
+              5.0,
+              -1.0
+            ],
+            [
+              -1.0,
+              5.0
+            ],
+            [
+              -5,
+              5
+            ]
+          ],
+          "fill": "rgba(239, 68, 68, 0.2)",
+          "stroke": "none"
+        }
+      ],
+      "lines": [
+        {
+          "start": [
+            -3.0,
+            -5.0
+          ],
+          "end": [
+            5,
+            3
+          ],
+          "color": "#3b82f6",
+          "style": "solid"
+        },
+        {
+          "start": [
+            -1.0,
+            5.0
+          ],
+          "end": [
+            5,
+            -1
+          ],
+          "color": "#ef4444",
+          "style": "dashed"
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "The graph shows y = x + 1 (blue) and y = -2x + 7 (red). Where do the lines intersect? Give your answer as (x, y).",
+    "answer": "(2, 3)",
+    "answer_type": "coordinate",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "A.REI.C.6",
+    "topic": "Systems of Linear Equations",
+    "hints": [
+      "The solution to the system is where the lines cross",
+      "Check your point in both equations"
+    ],
+    "solution_steps": [
+      "The lines cross at (2, 3)",
+      "Check: 3 = 2 + 1 ✓",
+      "Check: 3 = -2(2) + 7 ✓"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -2,
+        "xMax": 6,
+        "yMin": -2,
+        "yMax": 8
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "functions": [
+        {
+          "equation": "y = x + 1",
+          "color": "#3b82f6"
+        },
+        {
+          "equation": "y = -2x + 7",
+          "color": "#ef4444"
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "The graph shows y = 2x - 1 (blue) and y = 2x + 2 (red). How many solutions does this system have?",
+    "answer": "0",
+    "answer_type": "integer",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "A.REI.C.6",
+    "topic": "Systems of Linear Equations",
+    "hints": [
+      "Look at the slopes of the two lines",
+      "Parallel lines never cross"
+    ],
+    "solution_steps": [
+      "Both lines have slope 2",
+      "They have different y-intercepts (-1 and 2)",
+      "The lines are parallel, so they never intersect",
+      "0 solutions"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -5,
+        "xMax": 5,
+        "yMin": -5,
+        "yMax": 5
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "functions": [
+        {
+          "equation": "y = 2x - 1",
+          "color": "#3b82f6"
+        },
+        {
+          "equation": "y = 2x + 2",
+          "color": "#ef4444"
+        }
+      ]
+    },
+    "acceptable_answers": [
+      "none",
+      "no solution",
+      "no solutions"
+    ]
+  },
+  {
+    "problem_text": "The graph shows y = x² - 2x - 3. What is the vertex of the parabola? Give your answer as (x, y).",
+    "answer": "(1, -4)",
+    "answer_type": "coordinate",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "F.IF.C.7a",
+    "topic": "Graphing Quadratic Functions",
+    "hints": [
+      "The vertex is the lowest point on this parabola",
+      "It sits halfway between the zeros at x = -1 and x = 3"
+    ],
+    "solution_steps": [
+      "Zeros are at x = -1 and x = 3",
+      "Halfway: x = 1",
+      "y = 1 - 2 - 3 = -4",
+      "Vertex: (1, -4)"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -5,
+        "xMax": 5,
+        "yMin": -5,
+        "yMax": 5
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "functions": [
+        {
+          "equation": "y = x^2 - 2x - 3",
+          "color": "#3b82f6"
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "The graph shows y = -x² + 2x + 3. What is the maximum value of the function?",
+    "answer": "4",
+    "answer_type": "integer",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "F.IF.C.7a",
+    "topic": "Graphing Quadratic Functions",
+    "hints": [
+      "The parabola opens down, so its highest point is the maximum",
+      "The maximum value is the y-coordinate of the vertex"
+    ],
+    "solution_steps": [
+      "Vertex x = -b/(2a) = -2/(-2) = 1",
+      "y = -1 + 2 + 3 = 4",
+      "Maximum value: 4"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -5,
+        "xMax": 5,
+        "yMin": -5,
+        "yMax": 5
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "functions": [
+        {
+          "equation": "y = -x^2 + 2x + 3",
+          "color": "#3b82f6"
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "The graph shows y = x² with points at x = 1 and x = 3. What is the average rate of change from x = 1 to x = 3?",
+    "answer": "4",
+    "answer_type": "integer",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "F.IF.B.6",
+    "topic": "Average Rate of Change",
+    "hints": [
+      "Read the y-values at the two points",
+      "Average rate of change = change in y ÷ change in x"
+    ],
+    "solution_steps": [
+      "Points: (1, 1) and (3, 9)",
+      "(9 - 1) / (3 - 1) = 8/2",
+      "= 4"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -1,
+        "xMax": 4,
+        "yMin": -1,
+        "yMax": 10
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "functions": [
+        {
+          "equation": "y = x^2",
+          "color": "#3b82f6"
+        }
+      ],
+      "points": [
+        {
+          "x": 1,
+          "y": 1,
+          "label": "A",
+          "color": "#ef4444"
+        },
+        {
+          "x": 3,
+          "y": 9,
+          "label": "B",
+          "color": "#ef4444"
+        }
+      ],
+      "lines": [
+        {
+          "start": [
+            1,
+            1
+          ],
+          "end": [
+            3,
+            9
+          ],
+          "color": "#ef4444",
+          "style": "dashed"
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "The graph shows an exponential function through (0, 1), (1, 2), (2, 4), and (3, 8). By what factor does y multiply each time x increases by 1?",
+    "answer": "2",
+    "answer_type": "integer",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "F.LE.A.2",
+    "topic": "Linear & Exponential Models",
+    "hints": [
+      "Divide each y-value by the one before it",
+      "2 ÷ 1, 4 ÷ 2, 8 ÷ 4"
+    ],
+    "solution_steps": [
+      "2 ÷ 1 = 2",
+      "4 ÷ 2 = 2",
+      "8 ÷ 4 = 2",
+      "The growth factor is 2"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -2,
+        "xMax": 4,
+        "yMin": -1,
+        "yMax": 9
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "functions": [
+        {
+          "equation": "y = 2^x",
+          "color": "#3b82f6"
+        }
+      ],
+      "points": [
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 2,
+          "y": 4
+        },
+        {
+          "x": 3,
+          "y": 8
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "The graph shows an exponential function through (0, 3) and (1, 6). Write its equation in the form y = a·b^x.",
+    "answer": "y = 3(2)^x",
+    "answer_type": "expression",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "F.LE.A.2",
+    "topic": "Linear & Exponential Models",
+    "hints": [
+      "The y-intercept (0, 3) gives a",
+      "From x = 0 to x = 1, y is multiplied by b"
+    ],
+    "solution_steps": [
+      "a = 3",
+      "b = 6 ÷ 3 = 2",
+      "y = 3(2)^x"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": -2,
+        "xMax": 2,
+        "yMin": -1,
+        "yMax": 12
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "functions": [
+        {
+          "equation": "y = 3(2)^x",
+          "color": "#3b82f6"
+        }
+      ],
+      "points": [
+        {
+          "x": 0,
+          "y": 3
+        },
+        {
+          "x": 1,
+          "y": 6
+        }
+      ]
+    },
+    "acceptable_answers": [
+      "3(2)^x",
+      "y=3*2^x",
+      "3*2^x",
+      "y=3·2^x",
+      "3·2^x"
+    ]
+  },
+  {
+    "problem_text": "The scatter plot shows minutes of practice (x) and free throws made (y), with the line of best fit y = 0.5x + 2. According to the model, how many free throws does a player make with 0 minutes of practice?",
+    "answer": "2",
+    "answer_type": "integer",
+    "tier": 2,
+    "grade_level": 9,
+    "standard_code": "S.ID.C.7",
+    "topic": "Interpreting Linear Models",
+    "hints": [
+      "0 minutes of practice means x = 0",
+      "That's where the line crosses the y-axis"
+    ],
+    "solution_steps": [
+      "y = 0.5(0) + 2",
+      "y = 2",
+      "The model predicts 2 free throws"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": 0,
+        "xMax": 9,
+        "yMin": 0,
+        "yMax": 7
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "functions": [
+        {
+          "equation": "y = 0.5x + 2",
+          "color": "#ef4444"
+        }
+      ],
+      "points": [
+        {
+          "x": 1,
+          "y": 2.4,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 2,
+          "y": 3.2,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 3,
+          "y": 3.3,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 4,
+          "y": 4.1,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 5,
+          "y": 4.4,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 6,
+          "y": 5.2,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 7,
+          "y": 5.4,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 8,
+          "y": 6.1,
+          "color": "#3b82f6"
+        }
+      ]
+    }
+  },
+  {
+    "problem_text": "The scatter plot shows minutes of practice (x) and free throws made (y), with the line of best fit y = 0.5x + 2. According to the model, how many more free throws does a player make for each extra minute of practice?",
+    "answer": "0.5",
+    "answer_type": "decimal",
+    "tier": 3,
+    "grade_level": 9,
+    "standard_code": "S.ID.C.7",
+    "topic": "Interpreting Linear Models",
+    "hints": [
+      "The slope is the change in y for each 1-unit increase in x",
+      "Look at the number multiplied by x"
+    ],
+    "solution_steps": [
+      "The slope is 0.5",
+      "Each extra minute adds 0.5 free throws"
+    ],
+    "source_reference": "MathClicks original",
+    "license": "public_domain",
+    "diagram_type": "coordinate_plane",
+    "diagram_data": {
+      "gridRange": {
+        "xMin": 0,
+        "xMax": 9,
+        "yMin": 0,
+        "yMax": 7
+      },
+      "showGrid": true,
+      "showAxes": true,
+      "functions": [
+        {
+          "equation": "y = 0.5x + 2",
+          "color": "#ef4444"
+        }
+      ],
+      "points": [
+        {
+          "x": 1,
+          "y": 2.4,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 2,
+          "y": 3.2,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 3,
+          "y": 3.3,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 4,
+          "y": 4.1,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 5,
+          "y": 4.4,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 6,
+          "y": 5.2,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 7,
+          "y": 5.4,
+          "color": "#3b82f6"
+        },
+        {
+          "x": 8,
+          "y": 6.1,
+          "color": "#3b82f6"
+        }
+      ]
+    },
+    "acceptable_answers": [
+      "1/2"
+    ]
+  }
+]

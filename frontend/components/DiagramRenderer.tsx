@@ -40,6 +40,27 @@ function getColor(index: number, customColor?: string): string {
   return customColor || DEFAULT_COLORS[index % DEFAULT_COLORS.length];
 }
 
+// Compile an equation like "y = x^2 - 4x + 3" or "2^x" into f(x).
+// Only x, numbers, arithmetic and parentheses are allowed.
+function compileFunction(equation: string): ((x: number) => number) | null {
+  let expr = equation.replace(/\s+/g, "").replace(/^(y|f\(x\))=/i, "");
+  expr = expr.replace(/²/g, "^2").replace(/³/g, "^3").replace(/·/g, "*");
+  // Implicit multiplication: 2x, 2(, x(, )x, )(
+  expr = expr.replace(/(\d)(x|\()/gi, "$1*$2");
+  expr = expr.replace(/(x|\))(\(|x|\d)/gi, "$1*$2");
+  // JS forbids a unary minus directly before **, so -x^2 becomes (-1)*x^2
+  expr = expr.replace(/(^|[(*/+\-])-/g, "$1(-1)*");
+  expr = expr.replace(/\^/g, "**");
+  if (!/^[\dx+\-*/().]+$/i.test(expr)) return null;
+  try {
+    const fn = new Function("x", `return ${expr.replace(/x/gi, "(x)")};`) as (x: number) => number;
+    fn(0);
+    return fn;
+  } catch {
+    return null;
+  }
+}
+
 // ============ Coordinate Plane ============
 function CoordinatePlaneRenderer({
   data,
@@ -191,6 +212,36 @@ function CoordinatePlaneRenderer({
           )}
         </g>
       ))}
+
+      {/* Function curves, split wherever they leave the visible grid */}
+      {data.functions?.map((func, i) => {
+        const fn = compileFunction(func.equation);
+        if (!fn) return null;
+        const [xStart, xEnd] = func.domain || [range.xMin, range.xMax];
+        const steps = 200;
+        const segments: string[] = [];
+        let current: string[] = [];
+        for (let s = 0; s <= steps; s++) {
+          const x = xStart + ((xEnd - xStart) * s) / steps;
+          const y = fn(x);
+          if (Number.isFinite(y) && y >= range.yMin && y <= range.yMax) {
+            current.push(`${scaleX(x)},${scaleY(y)}`);
+          } else if (current.length) {
+            segments.push(current.join(" "));
+            current = [];
+          }
+        }
+        if (current.length) segments.push(current.join(" "));
+        return segments.map((pts, j) => (
+          <polyline
+            key={`func-${i}-${j}`}
+            points={pts}
+            fill="none"
+            stroke={getColor(i, func.color)}
+            strokeWidth={2.5}
+          />
+        ));
+      })}
 
       {/* Vectors (with arrowheads) */}
       {data.vectors?.map((vec, i) => {
