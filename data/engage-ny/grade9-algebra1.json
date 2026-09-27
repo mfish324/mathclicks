@@ -5,7 +5,7 @@
     "answer_type": "integer",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "A.REI.B.3",
+    "standard_code": "A-REI.B.3",
     "topic": "Linear Equations & Inequalities",
     "hints": [
       "Undo the + 8",
@@ -25,7 +25,7 @@
     "answer_type": "integer",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "A.REI.B.3",
+    "standard_code": "A-REI.B.3",
     "topic": "Linear Equations & Inequalities",
     "hints": [
       "Subtract 7 first",
@@ -45,7 +45,7 @@
     "answer_type": "integer",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "A.REI.B.3",
+    "standard_code": "A-REI.B.3",
     "topic": "Linear Equations & Inequalities",
     "hints": [
       "Distribute the 5",
@@ -65,7 +65,7 @@
     "answer_type": "expression",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "A.REI.B.3",
+    "standard_code": "A-REI.B.3",
     "topic": "Linear Equations & Inequalities",
     "hints": [
       "Subtract 5 from both sides",
@@ -89,7 +89,7 @@
     "answer_type": "fraction",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "A.REI.B.3",
+    "standard_code": "A-REI.B.3",
     "topic": "Linear Equations & Inequalities",
     "hints": [
       "Multiply every term by 12 to clear the fractions",
@@ -115,7 +115,7 @@
     "answer_type": "integer",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "A.REI.C.6",
+    "standard_code": "A-REI.C.6",
     "topic": "Systems of Linear Equations",
     "hints": [
       "Substitute 3 for x",
@@ -134,7 +134,7 @@
     "answer_type": "coordinate",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "A.REI.C.6",
+    "standard_code": "A-REI.C.6",
     "topic": "Systems of Linear Equations",
     "hints": [
       "Both equal y, so set them equal",
@@ -155,7 +155,7 @@
     "answer_type": "coordinate",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "A.REI.C.6",
+    "standard_code": "A-REI.C.6",
     "topic": "Systems of Linear Equations",
     "hints": [
       "Add the two equations to eliminate y",
@@ -175,7 +175,7 @@
     "answer_type": "coordinate",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "A.REI.C.6",
+    "standard_code": "A-REI.C.6",
     "topic": "Systems of Linear Equations",
     "hints": [
       "Solve the second equation for y",
@@ -197,7 +197,7 @@
     "answer_type": "integer",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "A.REI.C.6",
+    "standard_code": "A-REI.C.6",
     "topic": "Systems of Linear Equations",
     "hints": [
       "Let a = adult tickets and s = student tickets",
@@ -219,7 +219,7 @@
     "answer_type": "expression",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "A.APR.A.1",
+    "standard_code": "A-APR.A.1",
     "topic": "Polynomial Operations",
     "hints": [
       "Combine the x terms",
@@ -239,7 +239,7 @@
     "answer_type": "expression",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "A.APR.A.1",
+    "standard_code": "A-APR.A.1",
     "topic": "Polynomial Operations",
     "hints": [
       "Distribute the negative to every term in the second polynomial",
@@ -264,7 +264,7 @@
     "answer_type": "expression",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "A.APR.A.1",
+    "standard_code": "A-APR.A.1",
     "topic": "Polynomial Operations",
     "hints": [
       "Use FOIL: First, Outer, Inner, Last",
@@ -288,7 +288,7 @@
     "answer_type": "expression",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "A.APR.A.1",
+    "standard_code": "A-APR.A.1",
     "topic": "Polynomial Operations",
     "hints": [
       "(2x - 3)² means (2x - 3)(2x - 3)",
@@ -311,7 +311,7 @@
     "answer_type": "expression",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "A.APR.A.1",
+    "standard_code": "A-APR.A.1",
     "topic": "Polynomial Operations",
     "hints": [
       "Multiply x by every term, then 2 by every term",
@@ -334,7 +334,7 @@
     "answer_type": "integer",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "N.RN.A.2",
+    "standard_code": "N-RN.A.2",
     "topic": "Radicals & Rational Exponents",
     "hints": [
       "A power of 1/2 means square root",
@@ -353,7 +353,7 @@
     "answer_type": "integer",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "N.RN.A.2",
+    "standard_code": "N-RN.A.2",
     "topic": "Radicals & Rational Exponents",
     "hints": [
       "The denominator 3 means cube root",
@@ -373,7 +373,7 @@
     "answer_type": "expression",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "N.RN.A.2",
+    "standard_code": "N-RN.A.2",
     "topic": "Radicals & Rational Exponents",
     "hints": [
       "Look for a perfect square factor of 50",
@@ -398,7 +398,7 @@
     "answer_type": "fraction",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "N.RN.A.2",
+    "standard_code": "N-RN.A.2",
     "topic": "Radicals & Rational Exponents",
     "hints": [
       "A negative exponent means take the reciprocal",
@@ -421,7 +421,7 @@
     "answer_type": "expression",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "N.RN.A.2",
+    "standard_code": "N-RN.A.2",
     "topic": "Radicals & Rational Exponents",
     "hints": [
       "When multiplying powers with the same base, add the exponents",
@@ -444,7 +444,7 @@
     "answer_type": "integer",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "F.IF.A.2",
+    "standard_code": "F-IF.A.2",
     "topic": "Function Notation",
     "hints": [
       "Replace x with 4",
@@ -464,7 +464,7 @@
     "answer_type": "integer",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "F.IF.A.2",
+    "standard_code": "F-IF.A.2",
     "topic": "Function Notation",
     "hints": [
       "Replace every x with (-2)",
@@ -484,7 +484,7 @@
     "answer_type": "integer",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "F.IF.A.2",
+    "standard_code": "F-IF.A.2",
     "topic": "Function Notation",
     "hints": [
       "f(a) = 9 means 2a + 1 = 9",
@@ -504,7 +504,7 @@
     "answer_type": "integer",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "F.IF.A.2",
+    "standard_code": "F-IF.A.2",
     "topic": "Function Notation",
     "hints": [
       "Work from the inside out: find g(2) first",
@@ -524,7 +524,7 @@
     "answer_type": "integer",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "F.IF.A.2",
+    "standard_code": "F-IF.A.2",
     "topic": "Function Notation",
     "hints": [
       "The ball hits the ground when h(t) = 0",
@@ -545,7 +545,7 @@
     "answer_type": "integer",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "F.IF.B.6",
+    "standard_code": "F-IF.B.6",
     "topic": "Average Rate of Change",
     "hints": [
       "Rate = distance ÷ time",
@@ -564,7 +564,7 @@
     "answer_type": "integer",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "F.IF.B.6",
+    "standard_code": "F-IF.B.6",
     "topic": "Average Rate of Change",
     "hints": [
       "Rate of change = (f(5) - f(0)) / (5 - 0)",
@@ -584,7 +584,7 @@
     "answer_type": "integer",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "F.IF.B.6",
+    "standard_code": "F-IF.B.6",
     "topic": "Average Rate of Change",
     "hints": [
       "Find f(3) and f(1)",
@@ -604,7 +604,7 @@
     "answer_type": "integer",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "F.IF.B.6",
+    "standard_code": "F-IF.B.6",
     "topic": "Average Rate of Change",
     "hints": [
       "Find f(4) and f(-1) carefully",
@@ -624,7 +624,7 @@
     "answer_type": "fraction",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "F.IF.B.6",
+    "standard_code": "F-IF.B.6",
     "topic": "Average Rate of Change",
     "hints": [
       "Find f(4) and f(1)",
@@ -647,7 +647,7 @@
     "answer_type": "expression",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "F.LE.A.2",
+    "standard_code": "F-LE.A.2",
     "topic": "Linear & Exponential Models",
     "hints": [
       "Use y = mx + b",
@@ -669,7 +669,7 @@
     "answer_type": "expression",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "F.LE.A.2",
+    "standard_code": "F-LE.A.2",
     "topic": "Linear & Exponential Models",
     "hints": [
       "Slope = (11 - 5) / (3 - 1)",
@@ -692,7 +692,7 @@
     "answer_type": "expression",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "F.LE.A.2",
+    "standard_code": "F-LE.A.2",
     "topic": "Linear & Exponential Models",
     "hints": [
       "Exponential form: y = a·b^x",
@@ -719,7 +719,7 @@
     "answer_type": "expression",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "F.LE.A.2",
+    "standard_code": "F-LE.A.2",
     "topic": "Linear & Exponential Models",
     "hints": [
       "The point (0, 3) gives a directly",
@@ -747,7 +747,7 @@
     "answer_type": "expression",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "F.LE.A.2",
+    "standard_code": "F-LE.A.2",
     "topic": "Linear & Exponential Models",
     "hints": [
       "Divide the two outputs: 54 ÷ 6 = b²",
@@ -774,8 +774,8 @@
     "answer": "40",
     "answer_type": "integer",
     "tier": 1,
-    "grade_level": 9,
-    "standard_code": "S.ID.C.7",
+    "grade_level": 12,
+    "standard_code": "S-ID.C.7",
     "topic": "Interpreting Linear Models",
     "hints": [
       "Substitute h = 0",
@@ -793,8 +793,8 @@
     "answer": "15",
     "answer_type": "integer",
     "tier": 2,
-    "grade_level": 9,
-    "standard_code": "S.ID.C.7",
+    "grade_level": 12,
+    "standard_code": "S-ID.C.7",
     "topic": "Interpreting Linear Models",
     "hints": [
       "The slope is the rate of change",
@@ -812,8 +812,8 @@
     "answer": "6",
     "answer_type": "integer",
     "tier": 3,
-    "grade_level": 9,
-    "standard_code": "S.ID.C.7",
+    "grade_level": 12,
+    "standard_code": "S-ID.C.7",
     "topic": "Interpreting Linear Models",
     "hints": [
       "The slope tells you how much it grows each week",
@@ -832,8 +832,8 @@
     "answer": "5",
     "answer_type": "integer",
     "tier": 4,
-    "grade_level": 9,
-    "standard_code": "S.ID.C.7",
+    "grade_level": 12,
+    "standard_code": "S-ID.C.7",
     "topic": "Interpreting Linear Models",
     "hints": [
       "Slope = change in score ÷ change in hours",
@@ -851,8 +851,8 @@
     "answer": "55",
     "answer_type": "integer",
     "tier": 5,
-    "grade_level": 9,
-    "standard_code": "S.ID.C.7",
+    "grade_level": 12,
+    "standard_code": "S-ID.C.7",
     "topic": "Interpreting Linear Models",
     "hints": [
       "Find the slope first",
@@ -873,7 +873,7 @@
     "answer_type": "expression",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "A.SSE.A.1",
+    "standard_code": "A-SSE.A.1",
     "topic": "Interpreting Expressions",
     "hints": [
       "Look at what each term is multiplied by",
@@ -896,7 +896,7 @@
     "answer_type": "integer",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "A.SSE.A.1",
+    "standard_code": "A-SSE.A.1",
     "topic": "Interpreting Expressions",
     "hints": [
       "The growth factor is 1.04",
@@ -919,7 +919,7 @@
     "answer_type": "integer",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "A.SSE.A.1",
+    "standard_code": "A-SSE.A.1",
     "topic": "Interpreting Expressions",
     "hints": [
       "A squared quantity can never be negative",
@@ -939,7 +939,7 @@
     "answer_type": "expression",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "A.SSE.A.2",
+    "standard_code": "A-SSE.A.2",
     "topic": "Expression Structure",
     "hints": [
       "What is the largest number that divides 6 and 9?",
@@ -962,7 +962,7 @@
     "answer_type": "expression",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "A.SSE.A.2",
+    "standard_code": "A-SSE.A.2",
     "topic": "Expression Structure",
     "hints": [
       "Both terms are perfect squares",
@@ -985,7 +985,7 @@
     "answer_type": "expression",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "A.SSE.A.2",
+    "standard_code": "A-SSE.A.2",
     "topic": "Expression Structure",
     "hints": [
       "See x⁴ - 16 as (x²)² - 4²",
@@ -1010,7 +1010,7 @@
     "answer_type": "integer",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "A.SSE.A.2",
+    "standard_code": "A-SSE.A.2",
     "topic": "Expression Structure",
     "hints": [
       "This is a difference of squares",
@@ -1030,7 +1030,7 @@
     "answer_type": "expression",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "A.SSE.B.3",
+    "standard_code": "A-SSE.B.3",
     "topic": "Factoring Quadratics",
     "hints": [
       "Both terms contain x",
@@ -1049,7 +1049,7 @@
     "answer_type": "expression",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "A.SSE.B.3",
+    "standard_code": "A-SSE.B.3",
     "topic": "Factoring Quadratics",
     "hints": [
       "Find two numbers that multiply to 2 × 3 = 6 and add to 7",
@@ -1072,7 +1072,7 @@
     "answer_type": "integer",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "A.SSE.B.3",
+    "standard_code": "A-SSE.B.3",
     "topic": "Factoring Quadratics",
     "hints": [
       "Half of 6 is 3, and 3² = 9",
@@ -1092,7 +1092,7 @@
     "answer_type": "integer",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "A.REI.B.4",
+    "standard_code": "A-REI.B.4",
     "topic": "Solving Quadratics",
     "hints": [
       "What number squared is 49?",
@@ -1112,7 +1112,7 @@
     "answer_type": "expression",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "A.REI.B.4",
+    "standard_code": "A-REI.B.4",
     "topic": "Solving Quadratics",
     "hints": [
       "Look for factors of 2x² - 3x - 2",
@@ -1142,7 +1142,7 @@
     "answer_type": "expression",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "A.REI.B.4",
+    "standard_code": "A-REI.B.4",
     "topic": "Solving Quadratics",
     "hints": [
       "Move the constant: x² + 4x = 1",
@@ -1171,7 +1171,7 @@
     "answer_type": "integer",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "A.CED.A.1",
+    "standard_code": "A-CED.A.1",
     "topic": "Creating Equations",
     "hints": [
       "Write it as x + 6 = 20",
@@ -1190,7 +1190,7 @@
     "answer_type": "integer",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "A.CED.A.1",
+    "standard_code": "A-CED.A.1",
     "topic": "Creating Equations",
     "hints": [
       "Let w = width, so length = w + 3",
@@ -1211,7 +1211,7 @@
     "answer_type": "integer",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "A.CED.A.1",
+    "standard_code": "A-CED.A.1",
     "topic": "Creating Equations",
     "hints": [
       "How many times must 2,000 double to reach 16,000?",
@@ -1232,7 +1232,7 @@
     "answer_type": "coordinate",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "F.IF.C.7a",
+    "standard_code": "F-IF.C.7",
     "topic": "Graphing Quadratic Functions",
     "hints": [
       "The x-coordinate of the vertex is -b/(2a)",
@@ -1252,7 +1252,7 @@
     "answer_type": "integer",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "F.IF.C.7a",
+    "standard_code": "F-IF.C.7",
     "topic": "Graphing Quadratic Functions",
     "hints": [
       "The parabola opens down, so the vertex is the maximum",
@@ -1273,7 +1273,7 @@
     "answer_type": "integer",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "F.IF.C.7a",
+    "standard_code": "F-IF.C.7",
     "topic": "Graphing Quadratic Functions",
     "hints": [
       "Factor out 2: 2(x² - 2x - 3)",
@@ -1293,7 +1293,7 @@
     "answer_type": "expression",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "F.BF.A.1",
+    "standard_code": "F-BF.A.1",
     "topic": "Building Functions",
     "hints": [
       "The monthly charge is the rate of change",
@@ -1318,7 +1318,7 @@
     "answer_type": "expression",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "F.BF.A.1",
+    "standard_code": "F-BF.A.1",
     "topic": "Building Functions",
     "hints": [
       "Losing 15% means keeping 85%",
@@ -1345,7 +1345,7 @@
     "answer_type": "integer",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "F.BF.A.1",
+    "standard_code": "F-BF.A.1",
     "topic": "Building Functions",
     "hints": [
       "After cutting, the base is (20 - 2x) by (20 - 2x)",

@@ -161,16 +161,15 @@ SUPABASE_SERVICE_KEY=eyJ...
 | `frontend/lib/types.ts` | All frontend TypeScript types |
 | `src/types/database.ts` | Database schema types |
 
-## Current Work in Progress
+## Problem Bank (Supabase)
 
-### Diagram Support (partially complete)
-- [x] DiagramRenderer component (8 diagram types)
-- [x] Type definitions for all diagram types
-- [x] Import pipeline supports diagram fields
-- [x] Sample diagram problems in `data/engage-ny/diagram-problems.json`
-- [ ] Database migration needs to be applied
-- [ ] Sample problems need to be imported
+The live Supabase database is the source of truth for coverage, not the files in `data/`.
+- ~8,300 problems across grades 3–12, mostly loaded from outside this repo.
+- The same database is shared with the sibling projects `MathClicksWorksheets` and `mathclicks-books`. Changes to standards or problems affect all three apps.
+- High school standards use official hyphenated codes (`A-REI.B.3`, `F-IF.C.7`). The 7 dotted codes in `seed-standards.sql` and `src/lib/math-standards.ts` (`A.REI.B.4`, `F.IF.C.7a`, ...) are legacy duplicates. Don't add new dotted-code standards.
+- `data/engage-ny/` holds only a small subset. `seed-standards.sql` does not reflect the live standards table.
+- To check coverage, query Supabase directly (keys in `.env`, e.g. a short `npx tsx` script using `@supabase/supabase-js`).
+- Migrations 001–003 have been applied.
 
-To complete:
-1. Run `supabase/migrations/001_add_diagram_support.sql` in Supabase SQL Editor
-2. Run: `npx tsx src/import/scripts/import-engage-ny.ts data/engage-ny/diagram-problems.json`
+### Known gap
+This app's standards picker and the image-extraction prompt only know the 7 legacy dotted high school codes. `/api/select-problems` looks problems up by that code, so grade 9+ students here only get the few legacy-coded problems plus AI-generated ones, not the ~900 hyphenated-code grade 9 problems. Grade 3 and grades 10–12 aren't selectable in this app.

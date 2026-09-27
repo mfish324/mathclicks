@@ -5,7 +5,7 @@
     "answer_type": "coordinate",
     "tier": 1,
     "grade_level": 9,
-    "standard_code": "A.REI.D.12",
+    "standard_code": "A-REI.D.12",
     "topic": "Graphing Linear Inequalities",
     "hints": [
       "Points in the shaded region make the inequality true",
@@ -91,7 +91,7 @@
     "answer_type": "expression",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "A.REI.D.12",
+    "standard_code": "A-REI.D.12",
     "topic": "Graphing Linear Inequalities",
     "hints": [
       "Find the slope and y-intercept of the boundary line",
@@ -179,7 +179,7 @@
     "answer_type": "expression",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "A.REI.D.12",
+    "standard_code": "A-REI.D.12",
     "topic": "Graphing Linear Inequalities",
     "hints": [
       "Find the slope and y-intercept of the boundary line",
@@ -261,7 +261,7 @@
     "answer_type": "coordinate",
     "tier": 4,
     "grade_level": 9,
-    "standard_code": "A.REI.D.12",
+    "standard_code": "A-REI.D.12",
     "topic": "Graphing Linear Inequalities",
     "hints": [
       "A solution must make both inequalities true",
@@ -393,7 +393,7 @@
     "answer_type": "integer",
     "tier": 5,
     "grade_level": 9,
-    "standard_code": "A.REI.D.12",
+    "standard_code": "A-REI.D.12",
     "topic": "Graphing Linear Inequalities",
     "hints": [
       "Check one column at a time: x = 0, x = 1, x = 2, ...",
@@ -506,7 +506,7 @@
     "answer_type": "coordinate",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "A.REI.C.6",
+    "standard_code": "A-REI.C.6",
     "topic": "Systems of Linear Equations",
     "hints": [
       "The solution to the system is where the lines cross",
@@ -547,7 +547,7 @@
     "answer_type": "integer",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "A.REI.C.6",
+    "standard_code": "A-REI.C.6",
     "topic": "Systems of Linear Equations",
     "hints": [
       "Look at the slopes of the two lines",
@@ -594,7 +594,7 @@
     "answer_type": "coordinate",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "F.IF.C.7a",
+    "standard_code": "F-IF.C.7",
     "topic": "Graphing Quadratic Functions",
     "hints": [
       "The vertex is the lowest point on this parabola",
@@ -632,7 +632,7 @@
     "answer_type": "integer",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "F.IF.C.7a",
+    "standard_code": "F-IF.C.7",
     "topic": "Graphing Quadratic Functions",
     "hints": [
       "The parabola opens down, so its highest point is the maximum",
@@ -669,7 +669,7 @@
     "answer_type": "integer",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "F.IF.B.6",
+    "standard_code": "F-IF.B.6",
     "topic": "Average Rate of Change",
     "hints": [
       "Read the y-values at the two points",
@@ -734,7 +734,7 @@
     "answer_type": "integer",
     "tier": 2,
     "grade_level": 9,
-    "standard_code": "F.LE.A.2",
+    "standard_code": "F-LE.A.2",
     "topic": "Linear & Exponential Models",
     "hints": [
       "Divide each y-value by the one before it",
@@ -790,7 +790,7 @@
     "answer_type": "expression",
     "tier": 3,
     "grade_level": 9,
-    "standard_code": "F.LE.A.2",
+    "standard_code": "F-LE.A.2",
     "topic": "Linear & Exponential Models",
     "hints": [
       "The y-intercept (0, 3) gives a",
@@ -843,8 +843,8 @@
     "answer": "2",
     "answer_type": "integer",
     "tier": 2,
-    "grade_level": 9,
-    "standard_code": "S.ID.C.7",
+    "grade_level": 12,
+    "standard_code": "S-ID.C.7",
     "topic": "Interpreting Linear Models",
     "hints": [
       "0 minutes of practice means x = 0",
@@ -922,8 +922,8 @@
     "answer": "0.5",
     "answer_type": "decimal",
     "tier": 3,
-    "grade_level": 9,
-    "standard_code": "S.ID.C.7",
+    "grade_level": 12,
+    "standard_code": "S-ID.C.7",
     "topic": "Interpreting Linear Models",
     "hints": [
       "The slope is the change in y for each 1-unit increase in x",

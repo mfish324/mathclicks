@@ -211,8 +211,15 @@ export async function mapExternalStandard(
     confidence: 'none',
   };
 
-  // First, check if it's already a CCSS code
-  if (/^\d+\.[A-Z]+\./.test(externalCode) || /^[AF]\.[A-Z]+\./.test(externalCode)) {
+  // A code that exists verbatim in the standards table is always an exact match
+  // (covers hyphenated high school codes like A-REI.B.3 and N-RN.A.2)
+  const directId = await getStandardIdByCode(externalCode);
+  if (directId) {
+    return { ...result, ccssCode: externalCode, standardId: directId, confidence: 'exact' };
+  }
+
+  // Otherwise, check if it's shaped like a CCSS code
+  if (/^\d+\.[A-Z]+\./.test(externalCode) || /^[AFGNS][.-][A-Z]+\./.test(externalCode)) {
     result.ccssCode = externalCode;
     result.confidence = 'exact';
 

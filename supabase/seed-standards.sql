@@ -15,10 +15,6 @@
 -- A-CED = Creating Equations
 -- F-IF = Interpreting Functions
 -- F-BF = Building Functions
--- A-APR = Arithmetic with Polynomials & Rational Expressions
--- N-RN = The Real Number System
--- F-LE = Linear, Quadratic & Exponential Models
--- S-ID = Interpreting Categorical & Quantitative Data
 
 -- Clear existing standards (for re-seeding)
 TRUNCATE standards CASCADE;
@@ -99,16 +95,7 @@ INSERT INTO standards (code, title, description, grade_level, domain, domain_nam
 ('A.REI.B.4', 'Solving Quadratics', 'Solve quadratic equations by factoring, completing square, quadratic formula', 9, 'A-REI', 'Reasoning with Equations & Inequalities', ARRAY['Solve x² + 5x + 6 = 0', 'Use quadratic formula']),
 ('A.CED.A.1', 'Creating Equations', 'Create equations in one variable to solve problems', 9, 'A-CED', 'Creating Equations', ARRAY['Write an equation for: "Twice a number plus 5 equals 17"']),
 ('F.IF.C.7a', 'Graphing Linear & Quadratic', 'Graph linear and quadratic functions and show key features', 9, 'F-IF', 'Interpreting Functions', ARRAY['Graph y = x² - 4x + 3 and identify vertex, zeros']),
-('F.BF.A.1', 'Building Functions', 'Write a function that describes a relationship', 9, 'F-BF', 'Building Functions', ARRAY['Write a function for area of a square given side length']),
-('A.REI.B.3', 'Linear Equations & Inequalities', 'Solve linear equations and inequalities in one variable, including equations with coefficients represented by letters', 9, 'A-REI', 'Reasoning with Equations & Inequalities', ARRAY['Solve 3x + 7 = 22', 'Solve -2x + 5 < 11']),
-('A.REI.C.6', 'Systems of Linear Equations', 'Solve systems of linear equations exactly and approximately, focusing on pairs of linear equations in two variables', 9, 'A-REI', 'Reasoning with Equations & Inequalities', ARRAY['Solve y = 2x + 1 and y = -x + 7', 'Solve x + y = 10 and x - y = 4']),
-('A.REI.D.12', 'Graphing Linear Inequalities', 'Graph the solutions to a linear inequality in two variables as a half-plane, and graph the solution set to a system of linear inequalities', 9, 'A-REI', 'Reasoning with Equations & Inequalities', ARRAY['Graph y > x + 1', 'Find a point that satisfies both y ≥ x - 2 and y < -x + 4']),
-('A.APR.A.1', 'Polynomial Operations', 'Add, subtract, and multiply polynomials', 9, 'A-APR', 'Arithmetic with Polynomials & Rational Expressions', ARRAY['Simplify (3x² + 2x) + (x² - 5x)', 'Multiply (x + 3)(x - 5)']),
-('N.RN.A.2', 'Radicals & Rational Exponents', 'Rewrite expressions involving radicals and rational exponents using the properties of exponents', 9, 'N-RN', 'The Real Number System', ARRAY['Evaluate 8^(2/3)', 'Simplify √50']),
-('F.IF.A.2', 'Function Notation', 'Use function notation, evaluate functions for inputs in their domains, and interpret statements that use function notation', 9, 'F-IF', 'Interpreting Functions', ARRAY['If f(x) = 3x - 2, find f(4)', 'If f(x) = 2x + 1 and f(a) = 9, find a']),
-('F.IF.B.6', 'Average Rate of Change', 'Calculate and interpret the average rate of change of a function over a specified interval', 9, 'F-IF', 'Interpreting Functions', ARRAY['Find the average rate of change of f(x) = x² from x = 1 to x = 3']),
-('F.LE.A.2', 'Linear & Exponential Models', 'Construct linear and exponential functions given a graph, a description of a relationship, or input-output pairs', 9, 'F-LE', 'Linear, Quadratic & Exponential Models', ARRAY['A population doubles every year starting at 50. Write the function.']),
-('S.ID.C.7', 'Interpreting Linear Models', 'Interpret the slope and intercept of a linear model in the context of the data', 9, 'S-ID', 'Interpreting Categorical & Quantitative Data', ARRAY['In C = 15h + 40, what does 15 represent?']);
+('F.BF.A.1', 'Building Functions', 'Write a function that describes a relationship', 9, 'F-BF', 'Building Functions', ARRAY['Write a function for area of a square given side length']);
 
 -- ============================================
 -- EngageNY Crosswalk (common mappings)

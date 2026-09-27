@@ -1,17 +1,22 @@
 -- Migration: Add diagram support to problems table
 -- Run this in Supabase SQL Editor to add diagram capabilities
 
--- Create enum for diagram types
-CREATE TYPE diagram_type AS ENUM (
-  'coordinate_plane',
-  'geometry',
-  'number_line',
-  'bar_model',
-  'area_model',
-  'tape_diagram',
-  'angle',
-  'circle_graph'
-);
+-- Create enum for diagram types (skipped if it already exists, so this is safe to re-run)
+DO $$
+BEGIN
+  CREATE TYPE diagram_type AS ENUM (
+    'coordinate_plane',
+    'geometry',
+    'number_line',
+    'bar_model',
+    'area_model',
+    'tape_diagram',
+    'angle',
+    'circle_graph'
+  );
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
 -- Add diagram columns to problems table
 ALTER TABLE problems
