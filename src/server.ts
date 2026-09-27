@@ -3,6 +3,9 @@
  * Express server providing REST API for image processing and answer validation
  */
 
+// Load environment variables first: some modules read process.env at import time
+import 'dotenv/config';
+
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import multer from 'multer';
@@ -29,11 +32,8 @@ import {
   type GradeLevel,
   type WarmUpSettings,
 } from './lib/class-store';
-import { getStandardByCode, type MathStandard } from './lib/math-standards';
+import { getStandardByCode } from './lib/standards-service';
 import Anthropic from '@anthropic-ai/sdk';
-
-// Load environment variables
-import 'dotenv/config';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -269,7 +269,7 @@ app.post('/api/generate-from-standard', async (req: Request, res: Response) => {
     getPipeline();
 
     // Look up the standard
-    const standard = getStandardByCode(standardCode);
+    const standard = await getStandardByCode(standardCode);
     if (!standard) {
       res.status(404).json({ success: false, error: `Standard not found: ${standardCode}` });
       return;
@@ -884,7 +884,6 @@ app.get('/api/standards/:code', async (req: Request, res: Response) => {
   try {
     const { code } = req.params;
 
-    const { getStandardByCode } = await import('./lib/standards-service');
     const standard = await getStandardByCode(code);
 
     if (!standard) {

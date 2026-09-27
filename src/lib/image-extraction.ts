@@ -91,12 +91,17 @@ Middle School:
 - 8.EE.C.7: Solve linear equations in one variable
 
 High School Algebra:
-- A.SSE.A.2: Use structure of expressions (factoring, completing square)
-- A.SSE.B.3: Write expressions in equivalent forms to solve problems
-- A.APR.A.1: Polynomial arithmetic (add, subtract, multiply)
-- A.REI.B.4: Solve quadratic equations (factoring, completing square, quadratic formula)
-- F.IF.C.7a: Graph linear and quadratic functions, show key features
-- F.IF.C.8a: Factor quadratics to show zeros, max/min, symmetry
+- A-SSE.A.2: Use structure of expressions (factoring, completing square)
+- A-SSE.B.3: Write expressions in equivalent forms to solve problems
+- A-APR.A.1: Polynomial arithmetic (add, subtract, multiply)
+- A-REI.B.3: Solve linear equations and inequalities in one variable
+- A-REI.B.4: Solve quadratic equations (factoring, completing square, quadratic formula)
+- A-REI.C.6: Solve systems of linear equations
+- F-IF.C.7: Graph linear and quadratic functions, show key features
+- F-IF.C.8: Factor quadratics to show zeros, max/min, symmetry
+- F-LE.A.2: Construct linear and exponential functions
+
+Use official high school codes with a hyphen after the conceptual category (A-REI, not A.REI).
 
 If the image is unclear, does not contain math content, or cannot be analyzed:
 Return an error object: {"error": true, "message": "description of the issue", "suggestion": "what the user could do"}

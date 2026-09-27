@@ -171,5 +171,7 @@ The live Supabase database is the source of truth for coverage, not the files in
 - To check coverage, query Supabase directly (keys in `.env`, e.g. a short `npx tsx` script using `@supabase/supabase-js`).
 - Migrations 001–003 have been applied.
 
-### Known gap
-This app's standards picker and the image-extraction prompt only know the 7 legacy dotted high school codes. `/api/select-problems` looks problems up by that code, so grade 9+ students here only get the few legacy-coded problems plus AI-generated ones, not the ~900 hyphenated-code grade 9 problems. Grade 3 and grades 10–12 aren't selectable in this app.
+### How the app uses standards
+- The standards picker loads the live list from `/api/standards` (grades 3–12) and only falls back to the hard-coded `frontend/lib/math-standards.ts` if the backend is unreachable.
+- `standards-service.ts` hides the legacy dotted duplicates from lists and resolves any dotted code to its hyphenated match (`A.REI.B.4` → `A-REI.B.4`, `F.IF.C.8a` → `F-IF.C.8`). Problem selection, mastery and storing generated problems all go through it.
+- `src/server.ts` must load `dotenv/config` before any import that reaches `src/lib/supabase.ts`, which reads env vars at import time.

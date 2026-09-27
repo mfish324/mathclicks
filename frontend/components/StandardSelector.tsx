@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, X, ChevronDown, ChevronRight, Sparkles, Loader2 } from "lucide-react";
 import {
   STANDARDS_BY_GRADE,
   DOMAIN_NAMES,
-  getStandardsForGrade,
-  getAvailableGrades,
   getGradeName,
+  getGradeShortName,
   type MathStandard,
 } from "@/lib/math-standards";
+
+// Built-in list, used only if the backend standards API is unreachable
+const FALLBACK_STANDARDS: MathStandard[] = Object.values(STANDARDS_BY_GRADE).flat();
 
 interface StandardSelectorProps {
   isOpen: boolean;
@@ -27,8 +29,38 @@ export function StandardSelector({
 }: StandardSelectorProps) {
   const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
   const [expandedDomains, setExpandedDomains] = useState<Set<string>>(new Set());
+  const [allStandards, setAllStandards] = useState<MathStandard[] | null>(null);
 
-  const grades = getAvailableGrades();
+  // Load the live standards list the first time the selector opens
+  useEffect(() => {
+    if (!isOpen || allStandards) return;
+    let cancelled = false;
+    fetch("/api/standards")
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled) return;
+        const list: MathStandard[] = data.success && Array.isArray(data.data) ? data.data : [];
+        setAllStandards(list.length > 0 ? list : FALLBACK_STANDARDS);
+      })
+      .catch(() => {
+        if (!cancelled) setAllStandards(FALLBACK_STANDARDS);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, allStandards]);
+
+  const standardsByGrade = useMemo(() => {
+    const byGrade = new Map<number, MathStandard[]>();
+    for (const std of allStandards ?? []) {
+      if (!byGrade.has(std.gradeLevel)) byGrade.set(std.gradeLevel, []);
+      byGrade.get(std.gradeLevel)!.push(std);
+    }
+    return byGrade;
+  }, [allStandards]);
+
+  const grades = Array.from(standardsByGrade.keys()).sort((a, b) => a - b);
+  const getStandardsForGrade = (grade: number) => standardsByGrade.get(grade) ?? [];
 
   const toggleDomain = (domain: string) => {
     const newExpanded = new Set(expandedDomains);
@@ -130,6 +162,11 @@ export function StandardSelector({
                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                   <p className="text-gray-600">Generating practice problems...</p>
                 </div>
+              ) : allStandards === null ? (
+                <div className="flex flex-col items-center justify-center h-full gap-4">
+                  <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                  <p className="text-gray-600">Loading standards...</p>
+                </div>
               ) : selectedGrade === null ? (
                 // Grade selection
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -140,7 +177,7 @@ export function StandardSelector({
                       className="p-4 bg-gray-50 hover:bg-blue-50 border border-gray-200 hover:border-blue-300 rounded-xl transition-colors text-left"
                     >
                       <div className="text-2xl font-bold text-gray-800">
-                        {grade === 9 ? "Alg" : grade}
+                        {getGradeShortName(grade)}
                       </div>
                       <div className="text-sm text-gray-500">{getGradeName(grade)}</div>
                       <div className="text-xs text-gray-400 mt-1">
@@ -165,7 +202,7 @@ export function StandardSelector({
                             <ChevronRight className="w-4 h-4 text-gray-400" />
                           )}
                           <span className="font-medium text-gray-700">
-                            {DOMAIN_NAMES[domain] || domain}
+                            {standards[0]?.domainName || DOMAIN_NAMES[domain] || domain}
                           </span>
                         </div>
                         <span className="text-xs text-gray-400">

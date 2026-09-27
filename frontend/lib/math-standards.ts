@@ -9,6 +9,7 @@ export interface MathStandard {
   description: string;
   gradeLevel: number;
   domain: string;
+  domainName?: string;
   examples?: string[];
 }
 
@@ -124,7 +125,17 @@ export function getAvailableGrades(): number[] {
   return [4, 5, 6, 7, 8, 9];
 }
 
+const HIGH_SCHOOL_COURSES: Record<number, { short: string; name: string }> = {
+  9: { short: 'Alg I', name: 'Algebra I' },
+  10: { short: 'Geo', name: 'Geometry' },
+  11: { short: 'Alg II', name: 'Algebra II' },
+  12: { short: 'Stats', name: 'Statistics & Precalculus' },
+};
+
 export function getGradeName(grade: number): string {
-  if (grade === 9) return 'Algebra I';
-  return `Grade ${grade}`;
+  return HIGH_SCHOOL_COURSES[grade]?.name ?? `Grade ${grade}`;
+}
+
+export function getGradeShortName(grade: number): string {
+  return HIGH_SCHOOL_COURSES[grade]?.short ?? String(grade);
 }

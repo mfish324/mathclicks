@@ -21,22 +21,59 @@ let standardsCache: Map<number, Standard[]> | null = null;
 let cacheTimestamp: number = 0;
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
-// Domain name mappings
+// Domain name mappings (most rows in the standards table have no domain_name)
 const DOMAIN_NAMES: Record<string, string> = {
   'OA': 'Operations & Algebraic Thinking',
   'NBT': 'Number & Operations in Base Ten',
   'NF': 'Number & Operations - Fractions',
+  'MD': 'Measurement & Data',
   'G': 'Geometry',
   'RP': 'Ratios & Proportional Relationships',
   'NS': 'The Number System',
   'EE': 'Expressions & Equations',
+  'SP': 'Statistics & Probability',
   'F': 'Functions',
+  'N-RN': 'The Real Number System',
+  'N-CN': 'Complex Numbers',
+  'N-VM': 'Vectors & Matrices',
   'A-SSE': 'Seeing Structure in Expressions',
-  'A-REI': 'Reasoning with Equations & Inequalities',
+  'A-APR': 'Polynomials & Rational Expressions',
   'A-CED': 'Creating Equations',
+  'A-REI': 'Reasoning with Equations & Inequalities',
   'F-IF': 'Interpreting Functions',
   'F-BF': 'Building Functions',
+  'F-LE': 'Linear, Quadratic & Exponential Models',
+  'F-TF': 'Trigonometric Functions',
+  'G-CO': 'Congruence',
+  'G-SRT': 'Similarity, Right Triangles & Trigonometry',
+  'G-C': 'Circles',
+  'G-GPE': 'Geometric Properties with Equations',
+  'G-GMD': 'Geometric Measurement & Dimension',
+  'G-MG': 'Modeling with Geometry',
+  'S-ID': 'Interpreting Data',
+  'S-IC': 'Making Inferences & Justifying Conclusions',
+  'S-CP': 'Conditional Probability',
+  'S-MD': 'Using Probability to Make Decisions',
 };
+
+/**
+ * Legacy high school codes use dots ("A.REI.B.4"); the live bank files the
+ * same standards under official hyphenated codes ("A-REI.B.4"). The dotted
+ * rows are duplicates kept for the other apps sharing this database.
+ */
+function isLegacyHighSchoolCode(code: string): boolean {
+  return /^[AFGNS]\.[A-Z]+\./.test(code);
+}
+
+/**
+ * Candidate codes to try for a lookup, most canonical first:
+ * "F.IF.C.8a" -> ["F-IF.C.8a", "F-IF.C.8", "F.IF.C.8a"]
+ */
+function codeCandidates(code: string): string[] {
+  const hyphenated = code.replace(/^([AFGNS])\.([A-Z]+)\./, '$1-$2.');
+  const withoutSuffix = hyphenated.replace(/(\.\d+)[a-z]$/, '$1');
+  return [...new Set([hyphenated, withoutSuffix, code])];
+}
 
 /**
  * Convert database Standard to MathStandard format for compatibility
@@ -48,6 +85,7 @@ function dbStandardToMathStandard(std: Standard): MathStandard {
     description: std.description,
     gradeLevel: std.grade_level,
     domain: std.domain,
+    domainName: std.domain_name || DOMAIN_NAMES[std.domain] || std.domain,
     examples: std.examples || undefined,
   };
 }
@@ -90,6 +128,7 @@ async function fetchAndCacheStandards(): Promise<Map<number, Standard[]>> {
   // Group by grade level
   const byGrade = new Map<number, Standard[]>();
   for (const std of data || []) {
+    if (isLegacyHighSchoolCode(std.code)) continue;
     const grade = std.grade_level;
     if (!byGrade.has(grade)) {
       byGrade.set(grade, []);
@@ -137,7 +176,7 @@ export async function getStandardsByDomain(grade: number): Promise<StandardCateg
 
   return Array.from(domains.entries()).map(([domain, stds]) => ({
     domain,
-    domainName: DOMAIN_NAMES[domain] || domain,
+    domainName: stds[0].domainName || DOMAIN_NAMES[domain] || domain,
     standards: stds,
   }));
 }
@@ -152,17 +191,18 @@ export async function getStandardByCode(code: string): Promise<MathStandard | nu
 
   try {
     const supabase = getSupabaseAdmin();
+    const candidates = codeCandidates(code);
     const { data, error } = await supabase
       .from('standards')
       .select('*')
-      .eq('code', code)
-      .single();
+      .in('code', candidates);
 
-    if (error || !data) {
+    const match = candidates.map((c) => data?.find((s) => s.code === c)).find(Boolean);
+    if (error || !match) {
       return getHardcodedStandardByCode(code);
     }
 
-    return dbStandardToMathStandard(data);
+    return dbStandardToMathStandard(match);
   } catch (error) {
     console.warn('Falling back to hardcoded standard:', error);
     return getHardcodedStandardByCode(code);
@@ -200,17 +240,18 @@ export async function getStandardIdByCode(code: string): Promise<string | null> 
   }
 
   const supabase = getSupabaseAdmin();
+  const candidates = codeCandidates(code);
   const { data, error } = await supabase
     .from('standards')
-    .select('id')
-    .eq('code', code)
-    .single();
+    .select('id, code')
+    .in('code', candidates);
 
   if (error || !data) {
     return null;
   }
 
-  return data.id;
+  const match = candidates.map((c) => data.find((s) => s.code === c)).find(Boolean);
+  return match?.id ?? null;
 }
 
 /**
@@ -242,7 +283,9 @@ export async function searchStandards(
       return searchHardcodedStandards(query, gradeFilter);
     }
 
-    return (data || []).map(dbStandardToMathStandard);
+    return (data || [])
+      .filter((std) => !isLegacyHighSchoolCode(std.code))
+      .map(dbStandardToMathStandard);
   } catch (error) {
     console.warn('Falling back to hardcoded search:', error);
     return searchHardcodedStandards(query, gradeFilter);

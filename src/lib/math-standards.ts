@@ -9,6 +9,7 @@ export interface MathStandard {
   description: string;
   gradeLevel: number;
   domain: string;
+  domainName?: string;
   examples?: string[];
 }
 
